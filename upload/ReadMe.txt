@@ -1,0 +1,1 @@
+File nay phai co de fix loi khong up thu muc trong cua Git

@@ -1,0 +1,5 @@
+Private Sub CommandButton1_Click() 
+    Worksheets("Sheet4").Range("A1").Value = Me.ComboBox1.Value 'set the cell value
+    Unload Me 'unloads userform running code
+End Sub 
+
