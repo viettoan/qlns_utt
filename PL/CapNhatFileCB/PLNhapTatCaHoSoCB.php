@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] != "POST"){
 
 //echo "in post<br>";
 //var_dump ($_SESSION["file_list_import"]);
-require("../../BLL/NhapFileCB/ImportAllData.php");
+require("../../BLL/CapNhatFileCB/ImportAllData.php");
 list($ok, $err) = nhapTatCa();
 //var_dump($ok, $err);
 //die('here');
@@ -31,14 +31,14 @@ list($ok, $err) = nhapTatCa();
     <nav class="art-nav">
       <ul class="art-hmenu">
 	    <li>
-		  <a href="../NhapFileCB/PLNhapFileCB.php" class="active">Nhập lý lịch</a>
+          <a href="../CapNhatFileCB/PLCapNhatCB.php">Cập nhật lý lịch</a>
           <ul class="active">
-            <li><a href="../CapNhatFileCB/PLCapNhatCB.php" >Cập nhật lý lịch</a></li>
+            <li><a href="../NhapFileCB/PLNhapFileCB.php" class="active">Nhập lý lịch</a></li>
           </ul>
         </li>
         <li><a href="../NhapFileCB/PLDanhSachCB.php" class="">Danh sách cán bộ</a></li>
         <li><a href="../NhapFileCB/PLTienIch.php" class="">Tiện ích</a></li>
-        </ul>
+      </ul>
       <ul class="art-hmenu-user">
         <li>
           <a href="#" >Chào, <?=$_SESSION["username_user"]?></a>
@@ -62,7 +62,7 @@ list($ok, $err) = nhapTatCa();
                   <div class="art-layout-cell layout-item-1" style="width: 50%" >
 				  <br>
 				    <fieldset style="border: 1px solid lightgray;">
-                      <legend><i><b>Danh sách hồ sơ đã nhập thành công</b></i></legend><br>
+                      <legend><i><b>Danh sách hồ sơ đã cập nhập thành công</b></i></legend><br>
                       <div>
                         <table style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: hidden; border-color: initial; width: 100%;">
                           <tbody>

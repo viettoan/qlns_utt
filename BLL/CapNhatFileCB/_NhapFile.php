@@ -3,9 +3,8 @@
 /*error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', TRUE);
-*/
+echo "<meta charset='utf-8'>";*/
 ini_set('max_execution_time', 3*60);
-
 
 $g_excel = null;
 
@@ -72,6 +71,7 @@ class MyGetter {
 			$this->_excel->getActiveSheet()->getStyle($cellName)->getFill()->getStartColor()->setARGB('FFFFFFFF');
 		}
 		
+		//var_dump($val);
 		return $val;
 	}
 	
@@ -309,9 +309,33 @@ function isExistCMND($cmnd){
 	return false;
 }
 
+function buildQuery(& $sql, $key, $var){
+	if ($var != "")
+		$sql = $sql . " $key = '$var', ";
+	return $sql;
+}
+
+function getLyLichIdFromCmnd($cmnd){
+	$sql = "SELECT * FROM lylich WHERE cmnd='$cmnd'";
+	$result = mysql_query($sql);
+	$count = mysql_num_rows($result);
+	$row = mysql_fetch_array($result);
+	if ($count == 1){
+		$lylich_id = $row['id'];
+	} else {
+		$lylich_id = false;
+	}
+	return $lylich_id;
+}
+
 function xuLyFile2($fileName){
 	$success = true;
 	$errors = array();
+	$ttcb = array();
+	$ttcb['hoten'] = 'ho ten';
+	$ttcb['namsinh'] = 'nam sinh';
+	$ttcb['capuy_donvi'] = 'cap uy don vi';
+	$ttcb['cmnd'] = 123;
 	
 	require_once(__DIR__."/../../config/config.php");
 	date_default_timezone_set('Europe/London');
@@ -342,252 +366,127 @@ function xuLyFile2($fileName){
 	$excel->setActiveSheetIndex(0);
 	$myget = new MyGetter($excel);
 	
+	$sql = "UPDATE lylich SET ";
+	
+	
 	// read from excel
-	$dvTrucThuoc = $myget->getCell('dvTrucThuoc2');
-	$dvCoSo = $myget->getCell('dvCoSo2');
-	$sohieucb = $myget->getCell("sohieucb");
+	$cmnd = $myget->getCell("cmnd", "CMND", MyGetter::$FLAG_INTEGER_ONLY);
+	if (!isExistCMND($cmnd)){
+		return array(2, array('ttcb'=>$ttcb));
+	}
 	
 	//1
 	$hoTen = $myget->getCell("hoten", "Mục 1: Họ và tên khai sinh");
-	$gioiTinh = $myget->getCell("gioitinh", "Mục 1: Giới tính");
+	buildQuery($sql, 'hoten', $hoTen);
+	$gioiTinh = $myget->getCell("gioitinh", "Mục 4: Giới tính");
+	if ($gioiTinh == "Nam") $gioiTinh = 1;
+	else $gioiTinh = 0;
+	buildQuery($sql, 'gioitinh', $gioiTinh);
 	//2
-	$tenKhac = $myget->getCell("tenkhac", "Mục 2: Tên khác");
+	$tenKhac = $myget->getCell("tengoikhac", "Mục 1: Tên khác");
+	buildQuery($sql, 'tengoikhac', $tenKhac);
 	//3
-	$capUyHienTai = $myget->getCell("capuyht", "Mục 3: Cấp ủy hiện tại");
-	$capUyKiem = $myget->getCell("capuykiem", "Mục 3: Cấp ủy kiểm");
-	$chucVu = $myget->getCell("chucvu", "Mục 3: Chức vụ");
-	$chucVuNgay = $myget->getCell("chucvungay", "Mục 3: Ngày bổ nhiệm chức vụ", MyGetter::$FLAG_INTEGER_ONLY);
-	$chucVuThang = $myget->getCell("chucvuthang", "Mục 3: Tháng bổ nhiệm chức vụ", MyGetter::$FLAG_INTEGER_ONLY);
-	$chucVuNam = $myget->getCell("chucvunam", "Mục 3: Năm bổ nhiệm chức vụ", MyGetter::$FLAG_INTEGER_ONLY);
-	if ($chucVuNgay == "" || $chucVuThang == "" || $chucVuNam == ""
-		|| !checkdate($chucVuThang, $chucVuNgay, $chucVuNam)){
-		$success = false;
-		$errors[] = "Mục 3: Ngày/Tháng/Năm bổ nhiệm chức vụ";
-		$myget->highLightCell('chucvungay');
-		$myget->highLightCell('chucvuthang');
-		$myget->highLightCell('chucvunam');
-	}
-	$phuCapCV = $myget->getCell("phucapcv", "Mục 3: Phụ cấp chức vụ");
+	$chucVu = $myget->getCell("chucvu", "Mục 3: Chức vụ");	
+	buildQuery($sql, 'chucvu', $chucVu);
+	//***$phuCapCV = $myget->getCell("phucap_chucvu", "Mục 9: Phụ cấp chức vụ");
 	//4
-	$sinhNgay = $myget->getCell("sngay", "Mục 4: ngày sinh", MyGetter::$FLAG_INTEGER_ONLY);
-	$sinhThang = $myget->getCell("sthang", "Mục 4: tháng sinh", MyGetter::$FLAG_INTEGER_ONLY);
-	$sinhNam = $myget->getCell("snam", "Mục 4: năm sinh", MyGetter::$FLAG_INTEGER_ONLY);
-	if ($sinhNgay == "" || $sinhThang == "" || $sinhNam == ""
-		|| !checkdate($sinhThang, $sinhNgay, $sinhNam)){
-		$success = false;
-		$errors[] = "Mục 4: Ngày/Tháng/Năm sinh";
-		$myget->highLightCell('sngay');
-		$myget->highLightCell('sthang');
-		$myget->highLightCell('snam');
-	}
-	$nsXa = $myget->getCell("nsxa", "Mục 4: Nơi sinh (xã)");
-	$nsHuyen = $myget->getCell("nsDistrict2", "Mục 4: Nơi sinh (huyện)");
-	$nsTinh = $myget->getCell("nsProvince2", "Mục 4: Nơi sinh (tỉnh)");
-	$nsHuyen = getHuyenID($nsHuyen);
-	$nsTinh = getTinhID($nsTinh);
-	//5
-	$queXa = $myget->getCell("quexa", "Mục 4: quê quán (xã)");
-	$queHuyen = $myget->getCell("queDistrict2", "Mục 4: quê quán (huyện)");
-	$queTinh = $myget->getCell("queProvince2", "Mục 4: quê quán (tỉnh)");
-	$queHuyen = getHuyenID($queHuyen);
-	$queTinh = getTinhID($queTinh);
-	//6
-	$noiO = $myget->getCell("noio", "Mục 6: Nơi ở hiện nay");
-	//7
-	$dienThoai = $myget->getCell("dthoai", "Mục 7: Số điện thoại", MyGetter::$FLAG_INTEGER_ONLY);
-	//8
-	$danToc = $myget->getCell("dantoc2", "Mục 8: Dân tộc");
-	//9
-	$tonGiao = $myget->getCell("tongiao2", "Mục 9: Tôn giáo");
-	//10
-	$tpgdXuatThan = $myget->getCell("xuatthan2", "Mục 10: Thành phần xuất thân");
-	//11
-	$ngheTruocTuyenDung = $myget->getCell("nghetruoctd");
-	//12
-	$ngayTuyenDung = $myget->getCell("ngaytd", "Mục 12: Ngày tuyển dụng", MyGetter::$FLAG_DATE);
-	convertDate($ngayTuyenDung);
-	
-	$coQuanTuyenDung = $myget->getCell("coquantd", "Mục 12: Cơ quan tuyển dụng");
-	//13
-	$ngayVaoCoQuan = $myget->getCell("ngayvaocq", "Mục 12: Ngày vào cơ quan", MyGetter::$FLAG_DATE);
-	convertDate($ngayVaoCoQuan);
-	
-	$ngayThamGiaCM = $myget->getCell("ngaythamgiacm", "Mục 13: Ngày tham gia cách mạng", MyGetter::$FLAG_DATE);
-	convertDate($ngayThamGiaCM);
+	$ngaySinh = $myget->getCell("ngaysinh", "Mục 3: ngày sinh", MyGetter::$FLAG_DATE);
+	convertDate($ngaySinh);
+	buildQuery($sql, 'ngaysinh', $ngaySinh);
 	
 	//14
-	$ngayVaoDang = $myget->getCell("ngayvaodang", "Mục 14: Ngày vào Đảng Cộng Sản", MyGetter::$FLAG_DATE);
+	$ngayVaoDang = $myget->getCell("dang_ngayvao", "Mục 9: Ngày vào Đảng Cộng Sản", MyGetter::$FLAG_DATE);
 	convertDate($ngayVaoDang);
+	buildQuery($sql, 'dangcongsan_ngayvao', $ngayVaoDang);
 	
-	$ngayChinhThucDang = $myget->getCell("ngaychinhthuc", "Mục 14: Ngày vào Đảng Cộng Sản chính thức", MyGetter::$FLAG_DATE);
+	$ngayChinhThucDang = $myget->getCell("dang_ngaychinhthuc", "Mục 9: Ngày vào Đảng Cộng Sản chính thức", MyGetter::$FLAG_DATE);
 	convertDate($ngayChinhThucDang);
-	//15
-	$ngayThamGiaToChucTC = $myget->getCell("ngaythamgiatc", "Mục 14: Ngày tham gia tổ chức chính trị", MyGetter::$FLAG_DATE);
-	convertDate($ngayThamGiaToChucTC);
-	//16
-	$ngayNhapNgu = $myget->getCell("ngaynn", "Mục 16: Ngày nhập ngũ", MyGetter::$FLAG_OPTION);
-	convertDate($ngayNhapNgu);
-	$ngayXuatNgu = $myget->getCell("ngayxn", "Mục 16: Ngày xuất ngũ", MyGetter::$FLAG_OPTION);
-	convertDate($ngayXuatNgu);
+	buildQuery($sql, 'dangcongsan_ngaychinhthuc', $ngayChinhThucDang);
 	
-	$tmp = $myget->getCell2(array(
-		array("cellName" => "quanham", "description" => "Mục 16: Quân hàm", "flag"=> 0), 
-		array("cellName" => "namquanham", "description" => "Mục 16: Năm quân hàm", "flag"=> MyGetter::$FLAG_INTEGER_ONLY)));
-	$quanHam = $tmp['quanham'];
-	$namQuanHam = $tmp["namquanham"];
-	//17
-	$lopHocVan = $myget->getCell("lophocvan", "Mục 17: Lớp học vấn");
-	$tenHocVi = $myget->getCell("hocham2", "Mục 17: Học hàm");
-	$namHocVi = $myget->getCell("namhocvi", "Mục 17: Năm học vị", MyGetter::$FLAG_INTEGER_ONLY);
-	$chuyenNganh = $myget->getCell("chuyennganh", "Mục 17: Chuyên ngành");
-	$capLyLuan = $myget->getCell("caplyluan", "Mục 17: Cấp lý luận");
-	$ngoaiNgu = $myget->getCell("ngoaingu", "Mục 17: Ngoại ngữ");
-	$tmp = explode('(', $ngoaiNgu);
-	if (count($tmp) == 2){
-		$ngoaiNguTen = trim($tmp[0]);
-		preg_match('/.*([a-dA-D][0-9]*).*/', $tmp[1], $match);
-		if (count($match) == 2){
-			$ngoaiNguTrinhDo = trim($match[1]);
-		} else {
-			$ngoaiNguTrinhDo = "";
-		}
-	}
-	else {
-		$ngoaiNguTen = "";
-		$ngoaiNguTrinhDo = "";
-	}
-	//18
-	$congTacChinh = $myget->getCell("congtacchinh", "Mục 18: Công tác đang làm");
 	//19
-	$ngachCongChuc = $myget->getCell("ngachcongchuc", "Mục 19: Tên ngạch công chức");
-	$maNgach = $myget->getCell("mangach", "Mục 19: Mã ngạch");
-	$bacLuong = $myget->getCell("bacluong", "Mục 19: Bậc lương");
-	$heSoLuong = $myget->getCell("hesoluong", "Mục 19: Hệ số lương");
-	$ngayLuong = $myget->getCell("ngayluong", "Mục 19: Ngày lương", MyGetter::$FLAG_MONTHDATE);
+	$ngachCongChuc = $myget->getCell("congchuc_ngach", "Mục 5: Tên ngạch công chức");
+	buildQuery($sql, 'ngachcongchuc_ten', $ngachCongChuc);
+	$maNgach = $myget->getCell("congchuc_mangach", "Mục 6: Mã ngạch");
+	buildQuery($sql, 'ngachcongchuc_maso', $maNgach);
+	$bacLuong = $myget->getCell("bacluong", "Mục 7: Bậc lương");
+	buildQuery($sql, 'ngachcongchuc_bacluong', $bacLuong);
+	$heSoLuong = $myget->getCell("luong_heso", "Mục 8: Hệ số lương");
+	buildQuery($sql, 'ngachcongchuc_heso', $heSoLuong);
+	$ngayLuong = $myget->getCell("ngayluong", "Mục 8: Ngày lương", MyGetter::$FLAG_MONTHDATE);
 	$tmp = explode('/', $ngayLuong);
 	if (count($tmp) == 2){
-		$ngayLuongNam = $ngayLuong[1];
-		$ngayLuongThang = $ngayLuong[0];
+		$ngayLuongNam = $tmp[1];
+		$ngayLuongThang = $tmp[0];
 	} else {
 		$ngayLuongNam = "";
 		$ngayLuongThang = "";
 	}
+	buildQuery($sql, 'ngachcongchuc_thang', "$ngayLuongNam-$ngayLuongThang");
+	
 	//20
-	//
-	$tmp = $myget->getCell2(array(array("cellName" => "danhhieu2", "description" => "Mục 20: Danh hiệu", "flag"=> 0), 
-		array("cellName" => "namdanhhieu", "description" => "Mục 20: Năm danh hiệu", "flag"=> MyGetter::$FLAG_INTEGER_ONLY)));
-	$tenDanhHieu = $tmp["danhhieu2"];
-	$namDanhHieu = $tmp["namdanhhieu"];
-	//21
-	$soTruongCongTac = $myget->getCell("sotruongct", "Mục 21: Sở trường công tác");
-	$congViecLauNhat = $myget->getCell("congvieclaunhat", "Mục 21: Công việc lâu nhất");
-	//22
 	$tmp = $myget->getCell2(array(
-		array("cellName" => "huanchuong", "description" => "Mục 22: Huân chương", "flag"=> 0), 
-		array("cellName" => "namhuanchuong", "description" => "Mục 22: Năm huân chương", "flag"=> MyGetter::$FLAG_INTEGER_ONLY)));
-	$khenThuong = $tmp["huanchuong"];
-	$namKhenThuong = $tmp["namhuanchuong"];
-	//23
+		array("cellName" => "khenthuong", "description" => "Khen thưởng", "flag"=> 0), 
+		array("cellName" => "khenthuong_nam", "description" => "Năm khen thưởng", "flag"=> 0)));
+	$tenDanhHieu = $tmp["khenthuong"];
+	$namDanhHieu = $tmp["khenthuong_nam"];
+	buildQuery($sql, 'danhhieu_ten', $tenDanhHieu);
+	buildQuery($sql, 'danhhieu_nam', $namDanhHieu);
+
+	
 	//24
-	$sucKhoe = $myget->getCell("suckhoe", "Mục 24: Sức khỏe");
-	$cao = $myget->getCell("cao", "Mục 24: Chiều cao");
-	$nang = $myget->getCell("nang", "Mục 24: Cân nặng");
-	$nhomMau = $myget->getCell("nhommau", "Mục 24: Nhóm máu");
-	//25
-	$cmnd = $myget->getCell("cmnd", "Mục 25: Chứng minh nhân dân", MyGetter::$FLAG_INTEGER_ONLY);
+	$sucKhoe = $myget->getCell("suckhoe_tinhtrang", "Sức khỏe: tình trạng");
+	$cao = $myget->getCell("suckhoe_chieucao", "Sức khỏe: Chiều cao");
+	$nang = $myget->getCell("suckhoe_cannang", "Sức khỏe: Cân nặng");
+	$nhomMau = $myget->getCell("suckhoe_nhommau", "Sức khỏe: Nhóm máu");
+	
+	buildQuery($sql, 'tinhtrangsuckhoe', $sucKhoe);
+	buildQuery($sql, 'chieucao', $cao);
+	buildQuery($sql, 'cannang', $nang);
+	buildQuery($sql, 'nhommau', $nhomMau);
 	
 	// thong tin can bo -> thong bao ket qua
 	$ttcb = array();
 	$ttcb['hoten'] = ($hoTen != "") ? $hoTen : "Lỗi khi đọc";
-	$ttcb['namsinh'] = ($sinhNam != "" && $sinhThang != "" && $sinhNgay != "") ? ($sinhNgay.'/'.$sinhThang.'/'.$sinhNam) : "Lỗi khi đọc";
-	$ttcb['capuy_donvi'] = ($capUyHienTai != "" && $dvCoSo != "") ? ($capUyHienTai.' - '.$dvCoSo) : "Lỗi khi đọc";
+	$ttcb['namsinh'] = ($ngaySinh != "") ? ($ngaySinh) : "Lỗi khi đọc";
 	
-	if (isExistCMND($cmnd)){
-		return array(2, array('ttcb'=>$ttcb));
-	}
-	$loaiThuongBinh = $myget->getCell("loaithuongbinh", "Mục 25: Loại thương  binh", MyGetter::$FLAG_OPTION);
-	$gdLietSi = $myget->getCell("lalietsi2", "Mục 25: Là liệt sĩ", MyGetter::$FLAG_OPTION);
-	//26
-	//27
-	//28
-	//29
-	//30
 	//31
-	$luong = $myget->getCell("luong", "Mục 31: Lương");
-	$nguonKhac = $myget->getCell("nguonkhac", "Mục 31: Nguồn khác");
+	$luong = $myget->getCell("kinhte_luong", "Lương");
+	$nguonKhac = $myget->getCell("kinhte_nguonkhac", "Nguồn khác");
+	
+	buildQuery($sql, 'luong', $luong);
+	buildQuery($sql, 'thunhapkhac', $nguonKhac);
+	
 	
 	//
 	// insert to lylich
 	//
-	$sql = "INSERT INTO `QLCBDoan`.`lylich` (`id`, 
-	`botinh`, `donvitructhuoc`, `donvicoso`, `sohieucanbo`, 
-	`hoten`, `gioitinh`, `tengoikhac`, `capuyhientai`, `capuykiem`, 
-	`ngaysinh`, `noisinh`, `quequan_xa`, `quequan_huyen`, `quequan_tinh`, 
-	`noiohiennay`, `dienthoai`, 
-	`dantoc`, `tongiao`, 
-	`xuatthan`, `nghetruoctuyendung`, `ngaytuyendung`, `coquanhientai_ngayvao`,
-	`cachmang_ngayvao`, `dangcongsan_ngayvao`, `dangcongsan_ngaychinhthuc`, 
-	`doantncs_ngayvao`, `congdoan_ngayvao`, `ngaynhapngu`, `ngayxuatngu`, 
-	`quanhamcaonhat_ten`, `quanhamcaonhat_nam`, `giaoducphothong`, 
-	`hochamcaonhat_ten`, `hochamcaonhat_nam`, `hochamcaonhat_chuyennganh`, 
-	`lyluanchinhtri`, `ngoaingu_ten`, `ngoaingu_trinhdo`, `congtacdanglam`, 
-	`ngachcongchuc_ten`, `ngachcongchuc_maso`, `ngachcongchuc_bacluong`, `ngachcongchuc_heso`, 
-	`ngachcongchuc_thang`, `ngachcongchuc_nam`, 
-	`danhhieu_ten`, `danhhieu_nam`, `sotruongcongtac`, `congvieclaunhat`, 
-	`tinhtrangsuckhoe`, `chieucao`, `cannang`, `nhommau`, `cmnd`, 
-	`thuongbinhloai`, `giadinhlietsy`,`chucvu`,
-	`chucvudate`,
-	`luong`, `thunhapkhac`,
-	`khenthuong`, `namkhenthuong`)
-	VALUES (NULL, 
-	NULL, '$dvTrucThuoc', '$dvCoSo', '$sohieucb', 
-	'$hoTen', '$gioiTinh', '$tenKhac', '$capUyHienTai', '$capUyKiem', 
-	'$sinhNam-$sinhThang-$sinhNgay', '$nsXa - $nsHuyen - $nsTinh', '$queXa', '$queHuyen', '$queTinh', 
-	'$noiO', '$dienThoai', 
-	'$danToc', '$tonGiao',
-	'$tpgdXuatThan', '$ngheTruocTuyenDung', '$ngayTuyenDung', '$ngayVaoCoQuan', 
-	'$ngayThamGiaCM', '$ngayVaoDang', '$ngayChinhThucDang', 
-	'$ngayThamGiaToChucTC', 'congdoan_ngayvao=boqua', '$ngayNhapNgu', '$ngayXuatNgu', 
-	'$quanHam', '$namQuanHam', '$lopHocVan', 
-	'$tenHocVi', '$namHocVi', '$chuyenNganh', 
-	'$capLyLuan', '$ngoaiNguTen', '$ngoaiNguTrinhDo', '$congTacChinh', 
-	'$ngachCongChuc', '$maNgach', '$bacLuong', '$heSoLuong', 
-	'$ngayLuongThang', '$ngayLuongNam', 
-	'$tenDanhHieu', '$namDanhHieu', '$soTruongCongTac', '$congViecLauNhat', 
-	'$sucKhoe', '$cao', '$nang', '$nhomMau', '$cmnd',
-	'$loaiThuongBinh', '$gdLietSi','$chucVu',
-	'$chucVuNam-$chucVuThang-$chucVuNgay',
-	'$luong', '$nguonKhac',
-	'$khenThuong', '$namKhenThuong')";
+	$sql = $sql . " cmnd = $cmnd where cmnd = $cmnd ";
 	
 	// execute sql if no error found
 	$success = $success && $myget->getReturnCode();
 	if ($success){
 		$result = mysql_query($sql);
 		if (!$result){
-			//$error .= "Invalid Query";
 			die(mysql_error());
-		} else {
-			//echo "<p>Ok Ly lich</p>";
 		}
-		$lylich_id = mysql_insert_id();
 	}
+	$lylich_id = getLyLichIdFromCmnd($cmnd);
 	
 	//
 	// tbl_daotao
 	//
 	list($x, $y) = $myget->getAddressCell("tbl_daotao");
 	$y++;
-	$array = $myget->getCellTable("B".$y, array(
-		array("cellName" => "B", "description" => "Mục 26: Tên trường", "flag"=> 0),
+	$array = $myget->getCellTable("A".$y, array(
+		array("cellName" => "A", "description" => "Mục 26: Tên trường", "flag"=> 0),
 		array("cellName" => "D", "description" => "Mục 26: Ngành học hoặc tên lớp", "flag"=> 0), 
 		array("cellName" => "H", "description" => "Mục 26: Thời gian học", "flag"=> MyGetter::$FLAG_2DATE),
 		array("cellName" => "K", "description" => "Mục 26: Hình thức học", "flag"=> 0),
 		array("cellName" => "M", "description" => "Mục 26: Văn bằng, chứng chỉ", "flag"=> 0),), false);
+	//var_dump($array);
 	if ($array != false && $success){
-		//var_dump($array);
 		foreach ($array as $row){
-			$tenTruong 		= $row['B'.$y];
+			$tenTruong 		= $row['A'.$y];
 			$nganhHoc 		= $row['D'.$y];
 			$thoiGianHoc 	= $row['H'.$y];
 			$hinhThucHoc 	= $row['K'.$y];
@@ -598,7 +497,7 @@ function xuLyFile2($fileName){
 			`thoigianhoc`, `hinhthuchoc`, `vanbang`, `daotao_boiduong`) 
 			VALUES (NULL, '$lylich_id', '$tenTruong', '$nganhHoc', 
 			'$thoiGianHoc', '$hinhThucHoc', '$vanBang', '0')";
-	
+			
 			$result = mysql_query($sql);
 			if (!$result){
 				die(mysql_error());
@@ -608,23 +507,25 @@ function xuLyFile2($fileName){
 		}
 	}
 	
+	//return array(-1, array('ttcb'=>$ttcb, 'errors'=>array("dsfasf","dfasfd")));
+	
 	//
 	// tbl_kyluat
 	//
 	list($x, $y) = $myget->getAddressCell("tbl_kyluat");
 	$y++;
-	$array = $myget->getCellTable("B".$y, array(
-		array("cellName" => "B", "description" => "Mục 23: Cấp quyết định", "flag"=> 0),
+	$array = $myget->getCellTable("A".$y, array(
+		array("cellName" => "A", "description" => "Mục 23: Cấp quyết định", "flag"=> 0),
 		array("cellName" => "D", "description" => "Mục 23: Năm quyết định", "flag"=> MyGetter::$FLAG_INTEGER_ONLY), 
 		array("cellName" => "E", "description" => "Mục 23: Lý do", "flag"=> 0),
-		array("cellName" => "F", "description" => "Mục 23: Hình thức", "flag"=> 0),), false);
+		array("cellName" => "J", "description" => "Mục 23: Hình thức", "flag"=> 0),), false);
+	//var_dump($array);
 	if ($array != false && $success){
-		//var_dump($array);
 		foreach ($array as $row){
-			$capQuyetDinh 	= $row['B'.$y];
+			$capQuyetDinh 	= $row['A'.$y];
 			$namKL 			= $row['D'.$y];
-			$lyDoKL 			= $row['E'.$y];
-			$hinhThucKL 	= $row['F'.$y];
+			$lyDoKL 		= $row['E'.$y];
+			$hinhThucKL 	= $row['J'.$y];
 			
 			// insert to database
 			$sql = "INSERT INTO `QLCBDoan`.`kyluat` (`id`, `lylich_id`, `capquyetdinh`, `nam`, `lydo`, `hinhthuc`) 
@@ -634,108 +535,7 @@ function xuLyFile2($fileName){
 			if (!$result){
 				die(mysql_error());
 			}
-			///echo "<p>ok kyluat</p>";
-			$y++;
-		}
-	}
-	
-	//
-	// tbl_qtcongtac
-	//
-	list($x, $y) = $myget->getAddressCell("tbl_congtac");
-	$y += 2;
-	$array = $myget->getCellTable("$x$y", array(
-		array("cellName" => "B", "description" => "Mục 27: Thời gian công tác", "flag"=> MyGetter::$FLAG_2DATE),
-		array("cellName" => "E", "description" => "Mục 27: Chức danh, chức vụ, đơn vị công tác", "flag"=> 0),), false);
-	if ($array != false && $success){
-		//var_dump($array);
-		foreach ($array as $row){
-			$thoiGian 		= $row['B'.$y];
-			$chucVuCT 		= $row['E'.$y];
-			
-			$thoiGian = explode('-', $thoiGian);
-			convertDate($thoiGian[0]);
-			convertDate($thoiGian[1]);
-			
-			// insert to database
-			$sql = "INSERT INTO `QLCBDoan`.`congtac` (`id`, `lylich_id`, `thoidiem_batdau`, `thoidiem_ketthuc`, `chucvu`) 
-			VALUES (NULL, '$lylich_id', '$thoiGian[0]', '$thoiGian[1]', '$chucVuCT')";
-	
-			$result = mysql_query($sql);
-			if (!$result){
-				die(mysql_error());
-			}
-			//echo "<p>ok congtac</p>";
-			$y++;
-		}
-	}
-	
-	//
-	// tbl_bibat
-	//
-	list($x, $y) = $myget->getAddressCell("tbl_bibat");
-	$y++;
-	$array = $myget->getCellTable("$x$y", array(
-		array("cellName" => "B", "description" => "Mục 28: Thời gian bị bát", "flag"=> MyGetter::$FLAG_2DATE),
-		array("cellName" => "D", "description" => "Mục 28: Khai báo cho ai", "flag"=> 0),
-		array("cellName" => "F", "description" => "Mục 28: Vấn đề khai báo", "flag"=> 0),), false);
-	if ($array != false && $success){
-		//var_dump($array);
-		foreach ($array as $row){
-			$thoiGian 		= $row['B'.$y];
-			$khaiBaoChoAi 	= $row['D'.$y];
-			$vandeKhaiBao 	= $row['F'.$y];
-			// *** do chua co lydo, nen mac dinh de bibat
-			$lyDo = "bi bat";
-			$oDau = "bi bat o dau";
-			
-			// process data here
-			$thoiGian = explode('-', $thoiGian);
-			convertDate($thoiGian[0]);
-			convertDate($thoiGian[1]);
-			
-			// insert to database
-			$sql = "INSERT INTO `QLCBDoan`.`phamphap` (`id`, `lylich_id`, `lydo`, `thoidiem_batdau`, `thoidiem_ketthuc`, `odau`, `khaibaocho`, `vande`) 
-			VALUES (NULL, '$lylich_id', 'lyDo', '$thoiGian[0]', '$thoiGian[1]', '$oDau', '$khaiBaoChoAi', '$vandeKhaiBao')";
-	
-			$result = mysql_query($sql);
-			if (!$result){
-				die(mysql_error());
-			}
-			//echo "<p>ok phamphap</p>";
-			$y++;
-		}
-	}
-	
-	//
-	// tbl_chedocu
-	//
-	list($x, $y) = $myget->getAddressCell("tbl_chedocu");
-	$y++;
-	$array = $myget->getCellTable("$x$y", array(
-		array("cellName" => "B", "description" => "Mục 28: Thời gian", "flag"=> MyGetter::$FLAG_MONTHDATE),
-		array("cellName" => "D", "description" => "Mục 28: Cơ quan", "flag"=> 0),
-		array("cellName" => "F", "description" => "Mục 28: Đơn vị", "flag"=> 0),
-		array("cellName" => "H", "description" => "Mục 28: Chức vụ", "flag"=> 0),
-		array("cellName" => "J", "description" => "Mục 28: Địa điểm	", "flag"=> 0),), false);
-	if ($array != false && $success){
-		//var_dump($array);
-		foreach ($array as $row){
-			$soNamThang = $row['B'.$y];
-			$coQuan = $row['D'.$y];
-			$donVi = $row['F'.$y];
-			$chucVu = $row['H'.$y];
-			$diaDiem = $row['J'.$y];
-	
-			// insert to database
-			$sql = "INSERT INTO `QLCBDoan`.`chedocu` (`id`, `lylich_id`, `coquan`, `donvi`, `diadiem`, `chucvu`, `thoigian`) 
-			VALUES (NULL, '$lylich_id', '$coQuan', '$donVi', '$diaDiem', '$chucVu', '$soNamThang')";
-	
-			$result = mysql_query($sql);
-			if (!$result){
-				die(mysql_error());
-			}
-			//echo "<p>ok chedocu</p>";
+			//echo "<p>ok kyluat</p>";
 			$y++;
 		}
 	}
@@ -747,14 +547,14 @@ function xuLyFile2($fileName){
 	$y++;
 	$array = $myget->getCellTable("$x$y", array(
 		array("cellName" => "B", "description" => "Mục 29: Tên tổ chức", "flag"=> 0),
-		array("cellName" => "D", "description" => "Mục 29: Trụ sở", "flag"=> 0),
-		array("cellName" => "F", "description" => "Mục 29: Nhiệm vụ", "flag"=> 0),), false);
+		array("cellName" => "E", "description" => "Mục 29: Trụ sở", "flag"=> 0),
+		array("cellName" => "H", "description" => "Mục 29: Nhiệm vụ", "flag"=> 0),), false);
+	//var_dump($array);
 	if ($array != false && $success){
-		//var_dump($array);
 		foreach ($array as $row){
 			$tenToChuc 	= $row['B'.$y];
-			$truSo 		= $row['D'.$y];
-			$nhiemVu 	= $row['F'.$y];
+			$truSo 		= $row['E'.$y];
+			$nhiemVu 	= $row['H'.$y];
 	
 			// insert to database
 			$sql = "INSERT INTO `QLCBDoan`.`tochucnuocngoai` (`id`, `lylich_id`, `lamgi`, `tochuc`, `truso`) 
@@ -770,148 +570,85 @@ function xuLyFile2($fileName){
 	}
 	
 	//
-	// tbl_thannhannn
-	//
-	list($x, $y) = $myget->getAddressCell("tbl_thannhannn"); $y++;
-	$array = $myget->getCellTable("$x$y", array(
-		array("cellName" => "B", "description" => "Mục 29: Mối quan hệ", "flag"=> 0),
-		array("cellName" => "C", "description" => "Mục 29: Họ và tên", "flag"=> 0),
-		array("cellName" => "F", "description" => "Mục 29: Công việc", "flag"=> 0),
-		array("cellName" => "I", "description" => "Mục 29: Địa chỉ", "flag"=> 0),), false);
-	if ($array != false && $success){
-		//var_dump($array);
-		foreach ($array as $row){
-			$mqh 			= $row['B'.$y];
-			$hoTen 		= $row['C'.$y];
-			$congViec 	= $row['F'.$y];
-			$diaChi 		= $row['I'.$y];
-	
-			// insert to database
-			$sql = "INSERT INTO `QLCBDoan`.`thannhannuocngoai` (`id`, `lylich_id`, `quanhe`, `hoten`, `lamgi`, `diachi`) 
-			VALUES (NULL, '$lylich_id', '$mqh', '$hoTen', '$congViec', '$diaChi')";
-	
-			$result = mysql_query($sql);
-			if (!$result){
-				die(mysql_error());
-			}
-			///echo "<p>ok thannhannuocngoai</p>";
-			$y++;
-		}
-	}
-	
-	//
 	// tbl_quanhegiadinh benruot
 	//
-	list($x, $y) = $myget->getAddressCell("tbl_giadinhruot");
-	$y++; $y++; // jump to value row
+	$gd = array();
+	list($x, $y) = $myget->getAddressCell("tbl_giadinh");
+	$y++; // jump to value row
 	$allowBreak = false;
 	while (!($x < 0))
 	{
 		$quanhe = $myget->getCell("$x$y", "Mục 30a: Quan hệ", MyGetter::$FLAG_OPTION);
-		
-		if ($quanhe == "Anh chị em") {
+		if ($quanhe == "Anh chị em ruột") {
 			$allowBreak = true;
 		}
 		// bo qua tieu de
-		$title = array("Bố, mẹ", "Vợ chồng", "Các con", "Anh chị em");
+		$title = array("Bố mẹ", "Vợ, chồng", "Các con", "Anh chị em ruột");
 		if (in_array($quanhe, $title)){
 			$y++;
-			continue;		
+			continue;
 		}
 		
+		// bo qua dong trong
 		if ($quanhe == ""){
-			//echo "<p>=NULL BREAK HERE</p>";
 			if ($allowBreak) break;
 			$y++; continue;
 		}
+		
 		// process data here
-		$hoten = $myget->getCell("C".$y, "Mục 30a: Họ và tên");
-		$namSinh = $myget->getCell("F".$y, "Mục 30a: Năm sinh", MyGetter::$FLAG_INTEGER_ONLY);
+		$hoten = $myget->getCell("D".$y, "Mục 30a: Họ và tên");
+		$namSinh = $myget->getCell("G".$y, "Mục 30a: Năm sinh", MyGetter::$FLAG_INTEGER_ONLY);
 		$mota = $myget->getCell("H".$y, "Mục 30a: Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi ở");
 		$banthan_vochong = 0; // anh, chi, em ruot
-
-		if (!$success){
-			$y++;
-			continue;
-		}
 		
-		// insert to database
-		$sql = "INSERT INTO `QLCBDoan`.`quanhegiadinh` (`id`, `lylich_id`, `quanhe`, `hoten`, `namsinh`, `mota`, `banthan_vochong`) 
-		VALUES (NULL, '$lylich_id', '$quanhe', '$hoten', '$namSinh', '$mota', '$banthan_vochong')";
-
-		$result = mysql_query($sql);
-		if (!$result){
-			die(mysql_error());
-		}
-		//echo "<p>ok quanhegiadinh benruot</p>";
+		$row = array();
+		$row['quanhe'] = $quanhe;
+		$row['hoten'] = $hoten;
+		$row['namsinh'] = $namSinh;
+		$row['mota'] = $mota;
+		$gd[] = $row;
+		
 		$y++;
 	}
-	
-	//
-	// tbl_quanhegiadinh benvo(chong)
-	//
-	list($x, $y) = $myget->getAddressCell("tbl_giadinhvochong");
-	$y++; $y++; // jump to value row
-	$allowBreak = false;
-	while (!($x < 0))
-	{
-		$quanhe = $myget->getCell("$x$y", "Mục 30b: Quan hệ", MyGetter::$FLAG_OPTION);
-		
-		if ($quanhe == "Anh chị em") {
-			$allowBreak = true;
+	//var_dump($gd);
+	foreach ($gd as $row){
+		// neu co quan he truoc do -> set thong tin
+		$sql = "SELECT * FROM quanhegiadinh WHERE lylich_id='$lylich_id' and banthan_vochong=0 and quanhe='{$row['quanhe']}' and namsinh='{$row['namsinh']}'";
+		$result = mysql_query($sql);
+		$count = mysql_num_rows($result);
+		if ($count == 1){
+			$qh = mysql_fetch_array($result);
+			$id = $qh['id'];
+			$sql = "UPDATE quanhegiadinh set hoten = '{$row['hoten']}' , namsinh='{$row['namsinh']}', mota='{$row['mota']}' where id={$id}";
 		}
-		// bo qua tieu de
-		$title = array("Bố, mẹ", "Anh chị em");
-		if (in_array($quanhe, $title)){
-			$y++;
-			continue;		
+		// neu chua co -> them vao
+		else if ($count == 0) {
+			$sql = "INSERT INTO `quanhegiadinh` (`id`, `lylich_id`, `quanhe`, `hoten`, `namsinh`, `mota`, `banthan_vochong`) 
+				VALUES (NULL, '$lylich_id', '{$row['quanhe']}', '{$row['hoten']}', '{$row['namsinh']}', '{$row['mota']}', '0')";
 		}
 		
-		if ($quanhe == ""){
-			//echo "<p>=NULL BREAK HERE</p>";
-			if ($allowBreak) break;
-			$y++; continue;
-		}
-		
-		// process data here
-		$hoten = $myget->getCell("C".$y, "Mục 30b: Họ và tên");
-		$namSinh = $myget->getCell("E".$y, "Mục 30b: Năm sinh", MyGetter::$FLAG_INTEGER_ONLY);
-		$mota = $myget->getCell("G".$y, "Mục 30b: Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi ở");
-		$banthan_vochong = 1; // anh, chi, em benvo(chong)
-		
-		if (!$success){
-			$y++;
-			continue;
-		}
-
-		// insert to database
-		$sql = "INSERT INTO `QLCBDoan`.`quanhegiadinh` (`id`, `lylich_id`, `quanhe`, `hoten`, `namsinh`, `mota`, `banthan_vochong`) 
-		VALUES (NULL, '$lylich_id', '$quanhe', '$hoten', '$namSinh', '$mota', '$banthan_vochong')";
-
 		$result = mysql_query($sql);
 		if (!$result){
 			die(mysql_error());
 		}
-		//echo "<p>ok quanhegiadinh benvo(chong)</p>";
-		$y++;
 	}
 	
 	//
 	// tbl_quatrinhluong
 	//
-	list($x, $y) = $myget->getAddressCell("tbl_hoancanhgiadinh"); $y++;
+	list($x, $y) = $myget->getAddressCell("tbl_qtluong"); $y++;
 	$array = $myget->getCellTable("$x$y", array(
 		array("cellName" => "B", "description" => "Mục 31: Tháng/Năm", "flag"=> MyGetter::$FLAG_MONTHDATE),
-		array("cellName" => "C", "description" => "Mục 31: Ngạch", "flag"=> 0),
-		array("cellName" => "D", "description" => "Mục 31: Bậc", "flag"=> 0),
-		array("cellName" => "E", "description" => "Mục 31: Hế số lương", "flag"=> 0),), false);
+		array("cellName" => "D", "description" => "Mục 31: Ngạch", "flag"=> 0),
+		array("cellName" => "E", "description" => "Mục 31: Bậc", "flag"=> 0),
+		array("cellName" => "F", "description" => "Mục 31: Hế số lương", "flag"=> 0),), false);
+	//var_dump($array);
 	if ($array != false && $success){
-		//var_dump($array);
 		foreach ($array as $row){
 			$thoidiem 	= $row['B'.$y];
-			$ngach 		= $row['C'.$y];
-			$bac 			= $row['D'.$y];
-			$heso 		= $row['E'.$y];
+			$ngach 		= $row['D'.$y];
+			$bac 		= $row['E'.$y];
+			$heso 		= $row['F'.$y];
 			
 			convertDate($thoidiem);
 	
@@ -936,12 +673,13 @@ function xuLyFile2($fileName){
 	list($x, $y) = $myget->getAddressCell("tbl_loainha"); $y++;
 	$array = $myget->getCellTable("$x$y", array(
 		array("cellName" => "B", "description" => "Nhà ở: loại nhà", "flag" => 0),
-		array("cellName" => "C", "description" => "Nhà ở: diện tích sử dụng", "flag" => MyGetter::$FLAG_INTEGER_ONLY),), false);
+		array("cellName" => "D", "description" => "Nhà ở: diện tích sử dụng", "flag" => MyGetter::$FLAG_INTEGER_ONLY),), false);
+	//var_dump($array);
 	if ($array != false && $success){
-		//var_dump($array);
+		
 		foreach ($array as $row){
 			$loainha 	= $row['B'.$y];
-			$dientich 	= $row['C'.$y];
+			$dientich 	= $row['D'.$y];
 	
 			// insert to database
 			$sql = "INSERT INTO `QLCBDoan`.`sohuunha` (`id`, `lylich_id`, `loainha`, `dientich`) 
@@ -964,12 +702,13 @@ function xuLyFile2($fileName){
 	list($x, $y) = $myget->getAddressCell("tbl_loaidat"); $y++;
 	$array = $myget->getCellTable("$x$y", array(
 		array("cellName" => "B", "description" => "Đất ở: loại đất", "flag"=> 0),
-		array("cellName" => "C", "description" => "Đất ở: diện tích sử dụng", "flag"=> MyGetter::$FLAG_INTEGER_ONLY),), false);
+		array("cellName" => "D", "description" => "Đất ở: diện tích sử dụng", "flag"=> MyGetter::$FLAG_INTEGER_ONLY),), false);
+	//var_dump($array);
 	if ($array != false && $success){
-		//var_dump($array);
+		
 		foreach ($array as $row){
 			$loaidat 	= $row['B'.$y];
-			$dientich 	= $row['C'.$y];
+			$dientich 	= $row['D'.$y];
 	
 			// insert to database
 			$sql = "INSERT INTO `QLCBDoan`.`sohuudat` (`id`, `lylich_id`, `loaidat`, `dientich`) 
@@ -984,43 +723,11 @@ function xuLyFile2($fileName){
 		}
 	}
 	
-	//
-	// tbl_thidua
-	//
-	//*** format ngay/thang/nam trong excel co van de???
-	list($x, $y) = $myget->getAddressCell("tbl_thidua"); $y++;
-	$array = $myget->getCellTable("$x$y", array(
-		array("cellName" => "B", "description" => "Thi đua: Ngày/Tháng/Năm", "flag"=> MyGetter::$FLAG_DATE),
-		array("cellName" => "D", "description" => "Thi đua: Danh hiệu thi đua", "flag"=> 0),
-		array("cellName" => "G", "description" => "Thi đua: Lý do không xếp loại", "flag"=> 0),), false);
-	if ($array != false && $success){
-		//var_dump($array);
-		foreach ($array as $row){
-			$nam 			= $row['B'.$y];
-			$danhhieu 	= $row['D'.$y];
-			$lydo 		= $row['G'.$y];
-			
-			convertDate($nam);
-	
-			// insert to database
-			$sql = "INSERT INTO `QLCBDoan`.`thidua` (`id`, `lylich_id`, `nam`, `danhhieu`, `lydo`) 
-			VALUES (NULL, '$lylich_id', '$nam', '$danhhieu', '$lydo')";
-	
-			$result = mysql_query($sql);
-			if (!$result){
-				die(mysql_error());
-			}
-			//echo "<p>ok thidua</p>";
-			$y++;
-		}
-	}
-	
 	if (!$myget->isValidExcelFile()){
 		return array(3, array());
 	}
-	//var_dump($myget->getReturnCode(), $myget->getErrorTexts());die("");
+	//var_dump($myget->getReturnCode(), $myget->getErrorTexts());
 	
-	//echo $sql;
 	if ($myget->getReturnCode() && $success){
 		return array(0, array('ttcb'=>$ttcb));
 	} else {

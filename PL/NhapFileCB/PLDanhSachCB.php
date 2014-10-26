@@ -18,11 +18,16 @@
     <div class="art-shapes">
     </div>
     <nav class="art-nav">
-      <ul class="art-hmenu">
-        <li><a href="PLNhapFileCB.php">Nhập lý lịch</a></li>
-        <li><a href="PLDanhSachCB.php" class="active">Danh sách cán bộ</a></li>
-        <li><a href="PLTienIch.php" class="">Tiện ích</a></li>
-      </ul>
+        <ul class="art-hmenu">
+	    <li>
+		  <a href="../NhapFileCB/PLNhapFileCB.php" class="">Nhập lý lịch</a>
+          <ul class="active">
+            <li><a href="../CapNhatFileCB/PLCapNhatCB.php" >Cập nhật lý lịch</a></li>
+          </ul>
+        </li>
+        <li><a href="../NhapFileCB/PLDanhSachCB.php" class="active">Danh sách cán bộ</a></li>
+        <li><a href="../NhapFileCB/PLTienIch.php" class="">Tiện ích</a></li>
+        </ul>
       <ul class="art-hmenu-user">
         <li>
           <a href="#" >Chào, <?=$_SESSION["username_user"]?></a>

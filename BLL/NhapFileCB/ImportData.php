@@ -49,6 +49,7 @@
 				break;
 			default:
 				$_SESSION["error"]=$data['errors'];
+				$_SESSION["notice"] .= "<p>Tải hồ sơ về để chính sửa: <a href='../../upload/{$filename}'>Tải về</a></p>";
 				break;
 		}
 	}

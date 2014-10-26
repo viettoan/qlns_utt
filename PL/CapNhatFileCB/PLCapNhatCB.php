@@ -44,16 +44,16 @@
     <div class="art-shapes">
     </div>
     <nav class="art-nav">
-      <ul class="art-hmenu">
+       <ul class="art-hmenu">
 	    <li>
-		  <a href="../NhapFileCB/PLNhapFileCB.php" class="active">Nhập lý lịch</a>
+          <a href="../CapNhatFileCB/PLCapNhatCB.php" class="active">Cập nhật lý lịch</a>
           <ul class="active">
-            <li><a href="../CapNhatFileCB/PLCapNhatCB.php" >Cập nhật lý lịch</a></li>
+            <li><a href="../NhapFileCB/PLNhapFileCB.php" >Nhập lý lịch</a></li>
           </ul>
         </li>
         <li><a href="../NhapFileCB/PLDanhSachCB.php" class="">Danh sách cán bộ</a></li>
         <li><a href="../NhapFileCB/PLTienIch.php" class="">Tiện ích</a></li>
-        </ul>
+      </ul>
       <ul class="art-hmenu-user">
         <li>
           <a href="#" >Chào, <?=$_SESSION["username_user"]?></a>
@@ -76,7 +76,7 @@
                 <div class="art-content-layout-row">
                   <div class="art-layout-cell layout-item-1" style="width: 50%" >
                     <fieldset style="border: 1px solid lightgray;">
-                      <legend><i><b>Upload hồ sơ mới</b></i></legend>
+                      <legend><i><b>Upload hồ sơ cập nhật</b></i></legend>
                       <div style:="width:">
                         <table style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: hidden; border-color: initial; width: 100%;">
                           <tbody>
@@ -98,14 +98,14 @@
                                   $_SESSION["count"] = 0;
                                 }
                                 ?>
-                                <p>Kích thuớc tối đa 1Mb, chấp nhận đuôi xls, xlsx</p>
+                                <p>Kích thuớc tối đa 1Mb, chấp nhận đuôi xlsx, xlsm</p>
                                 <!-- Multiple file upload html form-->
-                                <form action="../../BLL/NhapFileCB/UploadFiles.php" method="post" enctype="multipart/form-data" name="uploadForm">
+                                <form action="../../BLL/CapNhatFileCB/UploadFiles.php" method="post" enctype="multipart/form-data" name="uploadForm">
 								  <div id="uploadBtn" onclick="getFile()">Chọn hồ sơ để tải lên</div>
 								  <!-- this is your file input tag, so i hide it!-->
 								  <!-- i used the onchange event to fire the form submission-->
 								  <div style='height: 0px;width: 0px; overflow:hidden;'>
-								  <input id="upfile" type="file" name="files[]" value="upload" multiple="multiple" accept=".xls, .xlsx, .xlsm" onchange="sub(this)"/></div>
+								  <input id="upfile" type="file" name="files[]" value="upload" multiple="multiple" accept=".xlsx, .xlsm" onchange="sub(this)"/></div>
 								  <!-- here you can have file submit button or you can write a simple script to upload the file automatically-->
 								  <!-- <input type="submit" value='submit' > -->
                                 </form>
@@ -123,7 +123,7 @@
                     </fieldset>
                     <br>
                     <fieldset style="border: 1px solid lightgray;">
-                      <legend><i><b>Danh sách hồ sơ chờ nhập</b></i></legend>
+                      <legend><i><b>Danh sách hồ sơ chờ cập nhập</b></i></legend>
                       <?php if ($_SESSION["success"] != ""){
                       ?>
                         <p style="color: green"><?php echo $_SESSION["success"]; $_SESSION["success"] = ""; ?></p>
@@ -158,7 +158,7 @@
                             </tr>
                                 <?php
                                 $_SESSION["file_list_import"] = array();
-                                $dir    = '../../upload/';
+                                $dir    = '../../upload_capnhat/';
                                 $files = scandir($dir,1);
                                 $check_empty = true;
                                 
@@ -182,12 +182,12 @@
                                       require_once dirname(__FILE__) . '/../../BLL/lib/PHPExcel/Classes/PHPExcel/IOFactory.php';
 
                                       // Bat dau doc file
-                                      $objPHPExcel = PHPExcel_IOFactory::load("../../upload/".$files[$i]);
+                                      $objPHPExcel = PHPExcel_IOFactory::load($dir . $files[$i]);
                                       $objWorksheet = $objPHPExcel->setActiveSheetIndex('0');
                                       try {
                                       	$cmnd = $objPHPExcel->getActiveSheet()->getCell('cmnd')->getFormattedValue();
                                       	$hoten = $objPHPExcel->getActiveSheet()->getCell('hoten')->getFormattedValue();
-                                      	$soyeulylich = $objPHPExcel->getActiveSheet()->getCell('J2')->getFormattedValue();
+                                      	$soyeulylich = $objPHPExcel->getActiveSheet()->getCell('A3')->getFormattedValue();
                                       } catch (Exception $ex){
                                       	$cmnd = "";
                                       	$hoten = "";
@@ -195,7 +195,7 @@
                                       }
                                       
                                       $file_chuan = true;
-                                      if ((int)($cmnd) == 0 || $soyeulylich != "SƠ YẾU LÝ LỊCH") $file_chuan = false;
+                                      if ((int)($cmnd) == 0 || $soyeulylich != "PHIẾU BỔ SUNG LÝ LỊCH CÁN BỘ CÔNG CHỨC") $file_chuan = false;
                                     ?>
 
                                     <td>
@@ -220,33 +220,26 @@
                                       if ($file_chuan == false){
                                         $lylich_tontai = 0;
                                         echo "<p style='color: gray; text-decoration: line-through;'>Hồ sơ không đúng chuẩn</p>";
-                                      } elseif ($count > 0){
-                                        $lylich_tontai = 1;
-                                        $lylich_id = $row['id'];
-                                        echo "<p style='color: red'>Đã tồn tại</p>";
-                                      } else {
+                                      } elseif ($count <= 0){
                                         $lylich_tontai = 0;
+                                        echo "<p style='color: red'>Chưa tồn tại</p>";
+                                      } else {
+                                        $lylich_tontai = 1;
+										$lylich_id = $row['id'];
                                         echo "<p style='color: #0080FF'>Chưa được nhập</p>";
                                       }
                                     ?>
                                     </td>
                                     <td>
-                                      <?php if ($lylich_tontai == 0 && $file_chuan == true){
-                                        $_SESSION["file_list_import"][count($_SESSION["file_list_import"])] = $files[$i];
+                                      <?php if ($lylich_tontai == 1 && $file_chuan == true){
+                                        $_SESSION["file_list_import"][] = $files[$i];
                                       ?>
-                                        <form action="../../BLL/NhapFileCB/ImportData.php" method="post" style="width: 55px; float: left;">
+                                        <form action="../../BLL/CapNhatFileCB/ImportData.php" method="post" style="width: 55px; float: left;">
                                         <input type="hidden" name="filename" value="<?php echo $files[$i]; ?>">
                                           <button type="submit">Nhập</button>
                                         </form>
-                                      <?php } elseif ($file_chuan == true) {?>
-                                        <form action="../../BLL/NhapFileCB/ImportData.php" method="post" style="width: 60px; float: left;">
-                                        <input type="hidden" name="filename" value="<?php echo $files[$i]; ?>">
-                                        <input type="hidden" name="overwrite" value="true">
-                                        <input type="hidden" name="lylich_id" value="<?php echo $lylich_id; ?>">
-                                          <button type="submit">Ghi đè</button>
-                                        </form>
-                                      <?php }?>
-                                      <form action="../../BLL/NhapFileCB/CancelFile.php" method="post" style="width: 50px; float: left;">
+                                      <?php } ?>
+                                      <form action="../../BLL/CapNhatFileCB/CancelFile.php" method="post" style="width: 50px; float: left;">
                                         <input type="hidden" name="filename" value="<?php echo $files[$i]; ?>">
                                         <button type="submit">Hủy</button>
                                       </form>
