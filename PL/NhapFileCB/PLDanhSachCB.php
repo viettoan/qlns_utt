@@ -101,10 +101,10 @@
                                   </td>
                                   <td>
                                     <img src="../../images/edit.png" style="width: 20px; height: 20px; cursor: pointer;">
-                                    <form action="../../BLL/QuanLyCB/BLLDelete.php" method="post" id="delete_form" style="display: none">
+                                    <form action="../../BLL/QuanLyCB/BLLDelete.php" method="post" id="delete_form_<?php echo $row["id"];?>" style="display: none">
                                       <input type="hidden" name="lylich_id" value="<?php echo $row["id"];?>"/>
                                     </form>
-                                      <img src="../../images/delete.png" style="width: 20px; height: 20px; cursor: pointer;" onclick="if (confirm('Bạn có thực sự muốn xóa cán bộ: <?php echo $row["hoten"];?>?')) $('#delete_form').submit()">
+                                      <img src="../../images/delete.png" style="width: 20px; height: 20px; cursor: pointer;" onclick="if (confirm('Bạn có thực sự muốn xóa cán bộ: <?php echo $row["hoten"];?>?')) $('#delete_form_<?php echo $row["id"];?>').submit()">
                                   </td>
                               </tr>
                             <?php } ?>
