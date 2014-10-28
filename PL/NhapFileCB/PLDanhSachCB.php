@@ -54,6 +54,9 @@
                     <ul>
                       <li><a href="../../BLL/QuanLyCB/BLLDanhSachTrichNgang.php">Danh sách trích ngang cán bộ</a></li>
                       <li><a href="../../BLL/QuanLyCB/BLLDanhSachDaoTao.php">Danh sách thông tin đào tạo</a></li>
+                      <li><a href="../../BLL/BieuMau/m1.php">Mẫu M1</a></li>
+                      <li><a href="../../BLL/BieuMau/m2.php">Mẫu M2</a></li>
+                      <li><a href="../../BLL/BieuMau/m3.php">Mẫu M3</a></li>
                     </ul>
                     
                   </p>

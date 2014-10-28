@@ -97,12 +97,18 @@
                                   <td>
                                     <!-- <img src="../../images/icon_word.gif" style="width: 20px; height: 20px; cursor: pointer;" alt="Quyết định"> -->
                                     <a href="../../BLL/TienIch/bo_nhiem/BLLThongBao.php?lylich_id=<?php echo $row["id"];?>">
-                                      <img src="../../images/icon_word.gif" style="width: 20px; height: 20px; cursor: pointer;" alt="Tải file thông báo">
-                                    </a>: Thông báo
-                                    <br>
-                                    <a href="../../BLL/TienIch/bo_nhiem/BLLQuyetDinh.php?lylich_id=<?php echo $row["id"];?>">
-                                      <img src="../../images/icon_word.gif" style="width: 20px; height: 20px; cursor: pointer;" alt="Tải file quyết định">
-                                    </a>: Quyết định 
+                                      <p style="margin: 0 0 2px 0; padding: 0; height: 23px; line-height: 23px; clear:left; float:left;">
+                                          <img src="../../images/icon_word.gif" style="width: 20px; height: 20px; cursor: pointer;" alt="Tải file thông báo">
+                                          : Thông báo
+                                      </p>
+                                    </a>
+                                    <!-- <br> -->
+                                    <a style="height: 23px; line-height: 23px; clear:left; float:left;" href="../../BLL/TienIch/bo_nhiem/BLLQuyetDinh.php?lylich_id=<?php echo $row["id"];?>">
+                                      <p style="margin: 0 0 2px 0; padding: 0; height: 23px; line-height: 23px; clear:left; float:left;">
+                                        <img src="../../images/icon_word.gif" style="width: 20px; height: 20px; cursor: pointer;" alt="Tải file quyết định">
+                                      : Quyết định
+                                      </p>
+                                    </a>
                                   </td>
                               </tr>
                             <?php } ?>
@@ -164,12 +170,18 @@
                                   </td>
                                   <td>
                                     <a href="../../BLL/TienIch/huu_tri/BLLThongBao.php?lylich_id=<?php echo $row["id"];?>">
-                                      <img src="../../images/icon_word.gif" style="width: 20px; height: 20px; cursor: pointer;" alt="Tải file thông báo">
-                                    </a>: Thông báo
+                                      <p style="margin: 0 0 2px 0; padding: 0; height: 23px; line-height: 23px; clear:left; float:left;">
+                                        <img src="../../images/icon_word.gif" style="width: 20px; height: 20px; cursor: pointer;" alt="Tải file thông báo">
+                                        : Thông báo
+                                      </p>
+                                    </a>
                                     <br>
                                     <a href="../../BLL/TienIch/huu_tri/BLLQuyetDinh.php?lylich_id=<?php echo $row["id"];?>">
-                                      <img src="../../images/icon_word.gif" style="width: 20px; height: 20px; cursor: pointer;" alt="Tải file quyết định">
-                                    </a>: Quyết định 
+                                      <p style="margin: 0 0 2px 0; padding: 0; height: 23px; line-height: 23px; clear:left; float:left;">
+                                        <img src="../../images/icon_word.gif" style="width: 20px; height: 20px; cursor: pointer;" alt="Tải file quyết định">
+                                        : Quyết định
+                                      </p>
+                                    </a>
                                   </td>
                               </tr>
                             <?php } ?>
@@ -206,7 +218,7 @@
                       }
                     ?>
                       <a href="../../BLL/TienIch/nang_luong/BLLToTrinh.php?count_can_bo=<?php echo $count_can_bo; ?>">
-                        <img src="../../images/icon_excel.gif" style="width: 20px; height: 20px; cursor: pointer;" alt="Danh sách bổ nhiệm lại">
+                        <img src="../../images/icon_word.gif" style="width: 20px; height: 20px; cursor: pointer;" alt="Danh sách bổ nhiệm lại">
                       </a>
                     </p>
 
@@ -269,8 +281,11 @@
                                     </a>: Thông báo
                                     <br> -->
                                     <a href="../../BLL/TienIch/nang_luong/BLLQuyetDinh.php?lylich_id=<?php echo $row["id"];?>">
-                                      <img src="../../images/icon_word.gif" style="width: 20px; height: 20px; cursor: pointer;" alt="Tải file quyết định">
-                                    </a>: Quyết định 
+                                      <p style="margin: 0 0 2px 0; padding: 0; height: 23px; line-height: 23px; clear:left; float:left;">
+                                        <img src="../../images/icon_word.gif" style="width: 20px; height: 20px; cursor: pointer;" alt="Tải file quyết định">
+                                        : Quyết định
+                                      </p>
+                                    </a>
                                   </td>
                               </tr>
                             <?php 
