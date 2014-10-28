@@ -54,11 +54,7 @@
                     <ul>
                       <li><a href="../../BLL/QuanLyCB/BLLDanhSachTrichNgang.php">Danh sách trích ngang cán bộ</a></li>
                       <li><a href="../../BLL/QuanLyCB/BLLDanhSachDaoTao.php">Danh sách thông tin đào tạo</a></li>
-                      <li><a href="../../BLL/BieuMau/m1.php">Mẫu M1</a></li>
-                      <li><a href="../../BLL/BieuMau/m2.php">Mẫu M2</a></li>
-                      <li><a href="../../BLL/BieuMau/m3.php">Mẫu M3</a></li>
                     </ul>
-                    
                   </p>
                     <div style:="width:">
                       <table style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: hidden; border-color: initial; width: 100%;">

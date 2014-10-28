@@ -49,6 +49,14 @@
               <div class="art-content-layout">
                 <div class="art-content-layout-row">
                   <div class="art-layout-cell layout-item-1" style="width: 50%" >
+                  <p>
+                    <b>Tải tài liệu:</b><br>
+                    <ul>
+                      <li>Mẫu M1: <a href="../../BLL/BieuMau/m1.php">Download</a> | <a href="../../BLL/BieuMau/m1_online.php" target="_blank">Xem online</a></li>
+                      <li>Mẫu M2: <a href="../../BLL/BieuMau/m2.php">Download</a> | <a href="../../BLL/BieuMau/m2_online.php" target="_blank">Xem online</a></li>
+                      <li>Mẫu M3(chưa sẵn sàng)<!--<a href="../../BLL/BieuMau/m3.php">Download</a>--></li>
+                    </ul>
+                  </p>
                     <fieldset style="border: 1px solid lightgray;">
                     <legend><span style="font-weight: bold; color: #0080FF">Cán bộ được bổ nhiệm lại</span></legend>
                     <div style:="width:">
