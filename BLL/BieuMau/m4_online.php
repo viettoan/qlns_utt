@@ -5,7 +5,6 @@ if( !isset($_SESSION["login_user"]) ) {
 	header('Location: index.php');
 	exit();
 }
-
 function get_age($ngaysinh){
 	$birthDate = $ngaysinh;
 	//explode the date to get month, day and year
@@ -16,6 +15,30 @@ function get_age($ngaysinh){
 		: (date("Y") - $birthDate[0]));
 	return $age;
 }
+function vn_str_filter ($str){
+	$unicode = array(
+		'a'=>'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ',
+		'd'=>'đ',
+		'e'=>'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ',
+		'i'=>'í|ì|ỉ|ĩ|ị',
+		'o'=>'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ',
+		'u'=>'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự',
+		'y'=>'ý|ỳ|ỷ|ỹ|ỵ',
+		'A'=>'Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
+		'D'=>'Đ',
+		'E'=>'É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
+		'I'=>'Í|Ì|Ỉ|Ĩ|Ị',
+		'O'=>'Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
+		'U'=>'Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
+		'Y'=>'Ý|Ỳ|Ỷ|Ỹ|Ỵ',
+	);
+	
+	foreach($unicode as $nonUnicode=>$uni){
+		$str = preg_replace("/($uni)/i", $nonUnicode, $str);
+	}
+	return $str;
+}
+
 
 require("../../config/config.php");
 
@@ -79,43 +102,51 @@ while ($r = mysql_fetch_array($result)){
 	$ngaysinh = $r["ngaysinh"];
 	$chucvu = $r['chucvu'];
 	$line = false;
+	$chucvu = trim(mb_strtolower(vn_str_filter($chucvu)));
+	var_dump($chucvu);
 	switch ($chucvu){
-		case "Bí thư":
+		case "bi thu":
 			//var_dump("Bí thư $chucvu");
 			$line = 11;
 			break;
-		case "Phó Bí thư":
+		case "pho bi thu":
 			//var_dump($chucvu);
 			$line = 12;
 			break;
-		case "Uỷ viên BTV":
+		case "uy vien ban thuong vu":
+		case "uy vien btv":
 			//var_dump($chucvu);
 			$line = 13;
 			break;
-		case "Uỷ viên BCH":
+		case "uy vien ban chap hanh":
+		case "uy vien bch":
 			//var_dump($chucvu);
 			$line = 14;
 			break;
 		default:
-			die ("Unknow chucvu");
+			break;
+			//die ("Unknow chucvu");
 	}
-	$col = false;
-	var_dump($ngaysinh);var_dump(get_age($ngaysinh));
-	$age = get_age($ngaysinh);
-	if ($age < 25) $col = "D";
-	else if ($age > 42) $col = "W";
-	else {
-		$tmp = $age - 25;
-		$col = "E";
-		//var_dump($tmp);
-		for ($i = 0; $i < $tmp; $i++)
-			$col++;
-		//var_dump($col);
+	var_dump($line);
+	if ($line){
+		$col = false;
+		//var_dump($ngaysinh);var_dump(get_age($ngaysinh));
+		$age = get_age($ngaysinh);
+		if ($age < 25) $col = "D";
+		else if ($age > 42) $col = "W";
+		else {
+			$tmp = $age - 25;
+			$col = "E";
+			//var_dump($tmp);
+			for ($i = 0; $i < $tmp; $i++)
+				$col++;
+			//var_dump($col);
+		}
+		$v = $sheet->getCell("$col$line")->getValue();
+		if ($v) $v++;
+		else $v = 1;
+		$sheet->setCellValue("$col$line", $v);
 	}
-	$v = $sheet->getCell("$col$line")->getValue();
-	if ($v) $v++;
-	else $v = 1;
-	$sheet->setCellValue("$col$line", $v);
 }
 //var_dump(date('Y-m-d'));die('kk');
 
