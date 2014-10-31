@@ -65,28 +65,28 @@ $objPHPExcel = PHPExcel_IOFactory::load("../../file_export/bieu_mau/m4.xlsx");
 // ====================Lay du lieu tu CSDL cho Uy vien Thuong vu Doan==================================
 $sheet = $objPHPExcel->setActiveSheetIndex(0);
 $sum = 0;
-$sql = "SELECT count(*) as `count` FROM `lylich` WHERE `chucvu` = 'Bí thư'";
+$sql = "SELECT count(*) as `count` FROM `lylich` WHERE trim(`chucvu`) = 'Bí thư'";
 $result = mysql_query($sql) or die(mysql_error());
 $r = mysql_fetch_array($result);
 $count = (int)($r["count"]);
 $sheet->setCellValue("C11", $count);
 $sum += $count;
 
-$sql = "SELECT count(*) as `count` FROM `lylich` WHERE `chucvu` = 'Phó Bí thư'";
+$sql = "SELECT count(*) as `count` FROM `lylich` WHERE trim(`chucvu`) = 'Phó Bí thư'";
 $result = mysql_query($sql) or die(mysql_error());
 $r = mysql_fetch_array($result);
 $count = (int)($r["count"]);
 $sheet->setCellValue("C12", $count);
 $sum += $count;
 
-$sql = "SELECT count(*) as `count` FROM `lylich` WHERE `chucvu` = 'Uỷ viên BTV'";
+$sql = "SELECT count(*) as `count` FROM `lylich` WHERE trim(`chucvu`) = 'Uỷ viên BTV' or trim(`chucvu`) = 'Uỷ viên ban thường vụ'";
 $result = mysql_query($sql) or die(mysql_error());
 $r = mysql_fetch_array($result);
 $count = (int)($r["count"]);
 $sheet->setCellValue("C13", $count);
 $sum += $count;
 
-$sql = "SELECT count(*) as `count` FROM `lylich` WHERE `chucvu` = 'Uỷ viên BCH'";
+$sql = "SELECT count(*) as `count` FROM `lylich` WHERE trim(`chucvu`) = 'Uỷ viên BCH' or trim(`chucvu`) = 'Uỷ viên ban chấp hành'";
 $result = mysql_query($sql) or die(mysql_error());
 $r = mysql_fetch_array($result);
 $count = (int)($r["count"]);
@@ -102,6 +102,7 @@ while ($r = mysql_fetch_array($result)){
 	$ngaysinh = $r["ngaysinh"];
 	$chucvu = $r['chucvu'];
 	$line = false;
+	//var_dump(mb_strtolower($chucvu, "utf8"));die('kk');
 	$chucvu = trim(mb_strtolower(vn_str_filter($chucvu)));
 	var_dump($chucvu);
 	switch ($chucvu){
@@ -160,6 +161,7 @@ $styleArray = array(
 	)
 );
 // Tao file da xong du lieu
+
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'HTML');
 $filename = "../../file_export/bieu_mau/Mau m4.html";
 unlink($filename);
