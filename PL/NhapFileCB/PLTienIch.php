@@ -54,7 +54,8 @@
                     <ul>
                       <li>Mẫu M1: <a href="../../BLL/BieuMau/m1.php">Download</a> | <a href="../../BLL/BieuMau/m1_online.php" target="_blank">Xem online</a></li>
                       <li>Mẫu M2: <a href="../../BLL/BieuMau/m2.php">Download</a> | <a href="../../BLL/BieuMau/m2_online.php" target="_blank">Xem online</a></li>
-                      <li>Mẫu M3(chưa sẵn sàng)<!--<a href="../../BLL/BieuMau/m3.php">Download</a>--></li>
+                      <li>Mẫu M3: <a href="../../BLL/BieuMau/m3.php">Download</a> | <a href="../../BLL/BieuMau/m3_online.php" target="_blank">Xem online</a></li>
+                      <li>Mẫu M4: <a href="../../BLL/BieuMau/m4.php">Download</a> | <a href="../../BLL/BieuMau/m4_online.php" target="_blank">Xem online</a></li>
                     </ul>
                   </p>
                     <fieldset style="border: 1px solid lightgray;">

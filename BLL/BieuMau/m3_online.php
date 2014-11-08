@@ -194,8 +194,9 @@
       );
 
 	  // Tao file da xong du lieu
-	  $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-	  $objWriter->save("../../file_export/bieu_mau/Mau m3.xlsx");
+	  $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'HTML');
+    unlink("../../file_export/bieu_mau/Mau m3.html");
+	  $objWriter->save("../../file_export/bieu_mau/Mau m3.html");
 	}
-  header("Location: ../../file_export/bieu_mau/Mau m3.xlsx");
+  header("Location: ../../file_export/bieu_mau/Mau m3.html");
 ?>
