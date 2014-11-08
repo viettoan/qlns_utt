@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 26, 2014 at 04:36 PM
+-- Generation Time: Nov 08, 2014 at 01:13 AM
 -- Server version: 5.6.20
 -- PHP Version: 5.5.15
 
@@ -34,21 +34,21 @@ CREATE TABLE IF NOT EXISTS `chedocu` (
   `diadiem` varchar(255) NOT NULL,
   `chucvu` varchar(255) NOT NULL,
   `thoigian` varchar(255) NOT NULL COMMENT 'Ghi so nam hoac so thang'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `chedocu`
 --
 
 INSERT INTO `chedocu` (`id`, `lylich_id`, `coquan`, `donvi`, `diadiem`, `chucvu`, `thoigian`) VALUES
-(3, 15, 'Bộ tư pháp', 'Tòa án', '302-Bà Triệu', 'Thẩm phán', '2/1954'),
-(4, 15, 'Liên Đoàn luật sư', 'Đơn vị số 1', '144-Xuân Thủy', 'Luật sư', '3/1954'),
 (5, 16, 'Bộ tư pháp', 'Tòa án', '302-Bà Triệu', 'Thẩm phán', '2/1954'),
 (6, 16, 'Liên Đoàn luật sư', 'Đơn vị số 1', '144-Xuân Thủy', 'Luật sư', '3/1954'),
 (7, 17, 'Bộ tư pháp', 'Tòa án', '302-Bà Triệu', 'Thẩm phán', '2/1954'),
 (8, 17, 'Liên Đoàn luật sư', 'Đơn vị số 1', '144-Xuân Thủy', 'Luật sư', '3/1954'),
-(9, 18, 'Cơ quan', 'Donvi', 'Diadiem', 'Chức vụ', '8/2008'),
-(10, 18, 'Cơ quan', 'Donvi', 'Diadiem', 'Chức vụ', '9/2009');
+(9, 18, 'Bộ tư pháp', 'Tòa án', '302-Bà Triệu', 'Thẩm phán', '2/1954'),
+(10, 18, 'Liên Đoàn luật sư', 'Đơn vị số 1', '144-Xuân Thủy', 'Luật sư', '3/1954'),
+(11, 19, 'Cơ quan', 'Donvi', 'Diadiem', 'Chức vụ', '8/2008'),
+(12, 19, 'Cơ quan', 'Donvi', 'Diadiem', 'Chức vụ', '9/2009');
 
 -- --------------------------------------------------------
 
@@ -77,20 +77,13 @@ CREATE TABLE IF NOT EXISTS `congtac` (
   `thoidiem_batdau` date NOT NULL,
   `thoidiem_ketthuc` date NOT NULL COMMENT 'Neu la row moi nhat tuc la "Nay"',
   `chucvu` varchar(255) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=53 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=57 ;
 
 --
 -- Dumping data for table `congtac`
 --
 
 INSERT INTO `congtac` (`id`, `lylich_id`, `thoidiem_batdau`, `thoidiem_ketthuc`, `chucvu`) VALUES
-(31, 13, '2008-08-01', '2008-09-01', 'Chức danh, chức vụ, đơn vị công tác (Đảng, Chính quyền, Đoàn thể)'),
-(32, 13, '2009-09-01', '2009-10-01', 'Chức danh, chức vụ, đơn vị công tác (Đảng, Chính quyền, Đoàn thể)'),
-(33, 13, '2009-10-01', '0000-00-00', 'khong làm gì'),
-(38, 15, '1999-09-01', '2004-05-01', 'Học sinh tại  tiểu học Thanh Cao'),
-(39, 15, '2004-09-01', '2008-05-01', 'Học sinh tại THCS Nguyễn Trực'),
-(40, 15, '2008-09-01', '2011-05-01', 'Học sinh tại THPT Nguyễn Huệ'),
-(41, 15, '2011-09-01', '0000-00-00', 'Sinh Viên ĐH Công Nghệ'),
 (42, 16, '1999-09-01', '2004-05-01', 'Học sinh tại  tiểu học Thanh Cao'),
 (43, 16, '2004-09-01', '2008-05-01', 'Học sinh tại THCS Nguyễn Trực'),
 (44, 16, '2008-09-01', '2011-05-01', 'Học sinh tại THPT Nguyễn Huệ'),
@@ -99,9 +92,13 @@ INSERT INTO `congtac` (`id`, `lylich_id`, `thoidiem_batdau`, `thoidiem_ketthuc`,
 (47, 17, '2004-09-01', '2008-05-01', 'Học sinh tại THCS Nguyễn Trực'),
 (48, 17, '2008-09-01', '2011-05-01', 'Học sinh tại THPT Nguyễn Huệ'),
 (49, 17, '2011-09-01', '0000-00-00', 'Sinh Viên ĐH Công Nghệ'),
-(50, 18, '2008-08-01', '2008-09-01', 'Chức danh, chức vụ, đơn vị công tác (Đảng, Chính quyền, Đoàn thể)'),
-(51, 18, '2009-09-01', '2009-10-01', 'Chức danh, chức vụ, đơn vị công tác (Đảng, Chính quyền, Đoàn thể)'),
-(52, 18, '2009-10-01', '0000-00-00', 'khong làm gì');
+(50, 18, '1999-09-01', '2004-05-01', 'Học sinh tại  tiểu học Thanh Cao'),
+(51, 18, '2004-09-01', '2008-05-01', 'Học sinh tại THCS Nguyễn Trực'),
+(52, 18, '2008-09-01', '2011-05-01', 'Học sinh tại THPT Nguyễn Huệ'),
+(53, 18, '2011-09-01', '0000-00-00', 'Sinh Viên ĐH Công Nghệ'),
+(54, 19, '2008-08-01', '2008-09-01', 'Chức danh, chức vụ, đơn vị công tác (Đảng, Chính quyền, Đoàn thể)'),
+(55, 19, '2009-09-01', '2009-10-01', 'Chức danh, chức vụ, đơn vị công tác (Đảng, Chính quyền, Đoàn thể)'),
+(56, 19, '2009-10-01', '0000-00-00', 'khong làm gì');
 
 -- --------------------------------------------------------
 
@@ -118,23 +115,21 @@ CREATE TABLE IF NOT EXISTS `daotao` (
   `hinhthuchoc` varchar(255) NOT NULL,
   `vanbang` varchar(255) NOT NULL,
   `daotao_boiduong` tinyint(1) NOT NULL COMMENT 'Daotao: 0, Boi duong: 1'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `daotao`
 --
 
 INSERT INTO `daotao` (`id`, `lylich_id`, `tentruong`, `nganhhoc`, `thoigianhoc`, `hinhthuchoc`, `vanbang`, `daotao_boiduong`) VALUES
-(21, 13, 'VNU', 'CNTT', '7/1990-8/2001', 'chính quy', 'Tiến sĩ', 0),
-(22, 13, 'Tên trường', 'Ngành học hoặc tên lớp học', '8/2000-9/2001', 'Hình thức học', 'Văn bằng, chứng chỉ', 0),
-(25, 15, 'ĐH Công Nghệ', 'CNTT', '7/1990-8/2001', 'chính quy', 'Tiến sĩ', 0),
-(26, 15, 'THCS Nguyễn Trực', 'Công nghệ thông tin', '8/2000-9/2001', 'Chính quy', 'Tốt nghiệp cấp 2', 0),
 (27, 16, 'ĐH Công Nghệ', 'CNTT', '7/1990-8/2001', 'chính quy', 'Tiến sĩ', 0),
 (28, 16, 'THCS Nguyễn Trực', 'Công nghệ thông tin', '8/2000-9/2001', 'Chính quy', 'Tốt nghiệp cấp 2', 0),
 (29, 17, 'ĐH Công Nghệ', 'CNTT', '7/1990-8/2001', 'chính quy', 'Tiến sĩ', 0),
 (30, 17, 'THCS Nguyễn Trực', 'Công nghệ thông tin', '8/2000-9/2001', 'Chính quy', 'Tốt nghiệp cấp 2', 0),
-(31, 18, 'VNU', 'CNTT', '7/1990-8/2001', 'chính quy', 'Tiến sĩ', 0),
-(32, 18, 'Tên trường', 'Ngành học hoặc tên lớp học', '8/2000-9/2001', 'Hình thức học', 'Văn bằng, chứng chỉ', 0);
+(31, 18, 'ĐH Công Nghệ', 'CNTT', '7/1990-8/2001', 'chính quy', 'Tiến sĩ', 0),
+(32, 18, 'THCS Nguyễn Trực', 'Công nghệ thông tin', '8/2000-9/2001', 'Chính quy', 'Tốt nghiệp cấp 2', 0),
+(33, 19, 'VNU', 'CNTT', '7/1990-8/2001', 'chính quy', 'Tiến sĩ', 0),
+(34, 19, 'Tên trường', 'Ngành học hoặc tên lớp học', '8/2000-9/2001', 'Hình thức học', 'Văn bằng, chứng chỉ', 0);
 
 -- --------------------------------------------------------
 
@@ -902,20 +897,18 @@ CREATE TABLE IF NOT EXISTS `kyluat` (
   `nam` int(4) NOT NULL,
   `lydo` varchar(255) NOT NULL,
   `hinhthuc` varchar(255) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
 
 --
 -- Dumping data for table `kyluat`
 --
 
 INSERT INTO `kyluat` (`id`, `lylich_id`, `capquyetdinh`, `nam`, `lydo`, `hinhthuc`) VALUES
-(21, 13, 'Cấp quyết định', 1999, 'Lý do', 'Hình thức'),
-(22, 13, 'Cấp quyết định', 1998, 'Lý do', 'Hình thức'),
-(24, 15, 'Trung học phổ thông', 2009, 'Bỏ học', 'Kỷ luật'),
 (25, 16, 'Trung học phổ thông', 2009, 'Bỏ học', 'Kỷ luật'),
 (26, 17, 'Trung học phổ thông', 2009, 'Bỏ học', 'Kỷ luật'),
-(27, 18, 'Cấp quyết định', 1999, 'Lý do', 'Hình thức'),
-(28, 18, 'Cấp quyết định', 1998, 'Lý do', 'Hình thức');
+(27, 18, 'Trung học phổ thông', 2009, 'Bỏ học', 'Kỷ luật'),
+(28, 19, 'Cấp quyết định', 1999, 'Lý do', 'Hình thức'),
+(29, 19, 'Cấp quyết định', 1998, 'Lý do', 'Hình thức');
 
 -- --------------------------------------------------------
 
@@ -998,18 +991,17 @@ CREATE TABLE IF NOT EXISTS `lylich` (
   `thunhapkhac` int(11) NOT NULL,
   `khenthuong` varchar(255) NOT NULL,
   `namkhenthuong` int(4) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `lylich`
 --
 
 INSERT INTO `lylich` (`id`, `botinh`, `donvitructhuoc`, `donvicoso`, `sohieucanbo`, `hoten`, `gioitinh`, `tengoikhac`, `capuyhientai`, `capuykiem`, `ngaysinh`, `noisinh`, `quequan_xa`, `quequan_huyen`, `quequan_tinh`, `noiohiennay`, `dienthoai`, `dantoc`, `tongiao`, `xuatthan`, `nghetruoctuyendung`, `ngaytuyendung`, `coquanhientai_ngayvao`, `cachmang_ngayvao`, `dangcongsan_ngayvao`, `dangcongsan_ngaychinhthuc`, `doantncs_ngayvao`, `congdoan_ngayvao`, `ngaynhapngu`, `ngayxuatngu`, `quanhamcaonhat_ten`, `quanhamcaonhat_nam`, `giaoducphothong`, `hochamcaonhat_ten`, `hochamcaonhat_nam`, `hochamcaonhat_chuyennganh`, `lyluanchinhtri`, `ngoaingu_ten`, `ngoaingu_trinhdo`, `congtacdanglam`, `ngachcongchuc_ten`, `ngachcongchuc_maso`, `ngachcongchuc_bacluong`, `ngachcongchuc_heso`, `ngachcongchuc_thang`, `ngachcongchuc_nam`, `danhhieu_ten`, `danhhieu_nam`, `sotruongcongtac`, `congvieclaunhat`, `tinhtrangsuckhoe`, `chieucao`, `cannang`, `nhommau`, `cmnd`, `thuongbinhloai`, `giadinhlietsy`, `chucvu`, `chucvudate`, `luong`, `thunhapkhac`, `khenthuong`, `namkhenthuong`) VALUES
-(13, NULL, 'Khối các ban phong trào và Văn phòng', 'Ban Kiểm tra Trung ương Đoàn', '13580', 'Lê Khánh Trình', 0, 'Bá đạo', 'Thủ Tướng', 'Tổng thống', '1945-12-15', 'xã Hoằng Đạo - 724 - 74', 'xã Hoằng Đạo', '902', '91', 'Hoằng Đạo - Hoằng Hóa - Thanh Hóa', '1667703512', 'Kinh', 'Không tôn giáo', 'nông dân', 'sinh viên', '1992-08-20', '1320-08-20', '1550-08-20', '2004-03-02', '2012-03-12', '1331-03-26', '0000-00-00', '2003-02-13', '2004-01-20', 'Đại tướng', 1990, '12', 'Kỹ sư', 2000, 'chém gió', 'Cao cấp', 'Anh', 'D1', 'Thuyền trưởng', '2.25', '9.9', 10, 10, 0, 0, 'Nghệ sĩ ưu tú', 1990, 'chém gió', 'cưa bom', 'bình thường', 1, 95, 'A', '1922500221', '', 0, 'Bí thư', '2009-02-22', 123123, 0, 'khenthuong', 1999),
-(15, NULL, 'Khối các ban phong trào và Văn phòng', 'Ban Thanh niên công nhân và đô thị Trung ương Đoàn', '120282', 'Nguyễn Văn Nam', 0, 'Hoàng Văn Đạo, Quách Văn Tỉnh', 'Ủy viên bộ chính trị', 'Ủy viên trung ương Đảng', '1993-02-13', 'Xã Thanh Cao - 960 - 95', 'Xã Thanh Cao', '960', '95', 'Thanh Cao - Thanh Oai - Hà Nội', '1685222522', 'Kinh', 'Không tôn giáo', 'nông dân', 'sinh viên', '2011-03-20', '1960-12-12', '1945-08-19', '1961-01-12', '1962-02-22', '1999-12-23', '0000-00-00', '2003-06-30', '2003-07-30', 'Thiếu úy', 2003, '12', 'cử nhân', 2001, 'Công nghệ thông tin', 'Trung Cấp', 'Anh', 'B1', 'Sinh viên Đại học Công Nghệ', '2.25', '9.9', 10, 10, 0, 0, 'Anh hùng lực lượng vũ trang', 2003, 'Công việc văn phòng', 'In ấn tài liệu', 'bình thường', 1, 55, 'A', '156472222', '', 0, 'Phó bí thư', '2005-05-14', 200000000, 0, 'Học sinh giỏi toàn diện', 2011),
 (16, NULL, 'Khối các ban phong trào và Văn phòng', 'Ban Thanh niên công nhân và đô thị Trung ương Đoàn', '120270', 'Nguyễn Đức Hai', 0, 'Hoàng Văn Đạo, Quách Văn Tỉnh', 'Ủy viên bộ chính trị', 'Ủy viên trung ương Đảng', '1993-02-13', 'Xã Thanh Cao - 290 - 30', 'Xã Thanh Cao', '297', '30', 'Thanh Cao - Thanh Oai - Hà Nội', '1685222522', 'Kinh', 'Không tôn giáo', 'nông dân', 'sinh viên', '2011-03-20', '1960-12-12', '1945-08-19', '1961-01-12', '1962-02-22', '1999-12-23', '0000-00-00', '2003-06-30', '2003-07-30', 'Thiếu úy', 2003, '12', 'cử nhân', 2001, 'Công nghệ thông tin', 'Trung Cấp', 'Anh', 'B1', 'Sinh viên Đại học Công Nghệ', '2.25', '9.9', 10, 10, 0, 0, 'Anh hùng lực lượng vũ trang', 2003, 'Công việc văn phòng', 'In ấn tài liệu', 'bình thường', 1, 55, 'A', '123654789', '', 0, 'BÍ thư', '2005-05-14', 200000000, 0, 'Học sinh giỏi toàn diện', 2011),
-(17, NULL, 'Khối các ban phong trào và Văn phòng', 'Ban Thanh niên công nhân và đô thị Trung ương Đoàn', '120281', 'Mẫn Việt Dũng', 0, 'Hoàng Văn Đạo, Quách Văn Tỉnh', 'Ủy viên bộ chính trị', 'Ủy viên trung ương Đảng', '1993-02-13', 'Xã Thanh Cao - 258 - 27', 'Xã Thanh Cao', '258', '27', 'Thanh Cao - Thanh Oai - Hà Nội', '1685222522', 'Kinh', 'Không tôn giáo', 'nông dân', 'sinh viên', '2011-03-20', '1960-12-12', '1945-08-19', '1961-01-12', '1962-02-22', '1999-12-23', '0000-00-00', '2003-06-30', '2003-07-30', 'Thiếu úy', 2003, '12', 'cử nhân', 2001, 'Công nghệ thông tin', 'Trung Cấp', 'Anh', 'B1', 'Sinh viên Đại học Công Nghệ', '2.25', '9.9', 10, 10, 0, 0, 'Anh hùng lực lượng vũ trang', 2003, 'Công việc văn phòng', 'In ấn tài liệu', 'bình thường', 1, 55, 'A', '156472365', '', 0, 'Phó bí thư', '2005-05-14', 200000000, 0, 'Học sinh giỏi toàn diện', 2011),
-(18, NULL, 'Khối các ban phong trào và Văn phòng', 'Ban Kiểm tra Trung ương Đoàn', '325435', 'Mẫn Việt Dũng', 0, 'Bá đạo', 'Thủ Tướng', 'Tổng thống', '1992-12-15', 'xã Hoằng Đạo - 724 - 74', 'xã Hoằng Đạo', '902', '91', 'Hoằng Đạo - Hoằng Hóa - Thanh Hóa', '1667703512', 'Kinh', 'Không tôn giáo', 'nông dân', 'sinh viên', '1992-08-20', '1320-08-20', '1550-08-20', '2004-03-02', '2012-03-12', '1331-03-26', '0000-00-00', '2003-02-13', '2004-01-20', 'Đại tướng', 1990, '12', 'Kỹ sư', 2000, 'chém gió', 'Cao cấp', 'Anh', 'D1', 'Thuyền trưởng', '2.25', '9.9', 10, 10, 0, 0, 'Nghệ sĩ ưu tú', 1990, 'chém gió', 'cưa bom', 'bình thường', 1, 95, 'A', '353453436', '', 0, 'Chức vụ', '2010-03-22', 123123, 0, 'khenthuong', 1999);
+(17, NULL, 'Khối các ban phong trào và Văn phòng', 'Ban Thanh niên công nhân và đô thị Trung ương Đoàn', '120281', 'Mẫn Việt Dũng', 0, 'Hoàng Văn Đạo, Quách Văn Tỉnh', 'Ủy viên bộ chính trị', 'Ủy viên trung ương Đảng', '1950-02-13', 'Xã Thanh Cao - 258 - 27', 'Xã Thanh Cao', '258', '27', 'Thanh Cao - Thanh Oai - Hà Nội', '1685222522', 'Kinh', 'Không tôn giáo', 'nông dân', 'sinh viên', '2011-03-20', '1960-12-12', '1945-08-19', '1961-01-12', '1962-02-22', '1999-12-23', '0000-00-00', '2003-06-30', '2003-07-30', 'Thiếu úy', 2003, '12', 'cử nhân', 2001, 'Công nghệ thông tin', 'Trung Cấp', 'Anh', 'B1', 'Sinh viên Đại học Công Nghệ', '2.25', '9.9', 10, 10, 0, 0, 'Anh hùng lực lượng vũ trang', 2003, 'Công việc văn phòng', 'In ấn tài liệu', 'bình thường', 1, 55, 'A', '156472365', '', 0, 'Phó bí thư', '2005-05-14', 200000000, 0, 'Học sinh giỏi toàn diện', 2011),
+(18, NULL, 'Khối các ban phong trào và Văn phòng', 'Ban Thanh niên công nhân và đô thị Trung ương Đoàn', '120282', 'Nguyễn Văn Nam', 0, 'Hoàng Văn Đạo, Quách Văn Tỉnh', 'Ủy viên bộ chính trị', 'Ủy viên trung ương Đảng', '1993-02-13', 'Xã Thanh Cao - 960 - 95', 'Xã Thanh Cao', '960', '95', 'Thanh Cao - Thanh Oai - Hà Nội', '1685222522', 'Kinh', 'Không tôn giáo', 'nông dân', 'sinh viên', '2011-03-20', '1960-12-12', '1945-08-19', '1961-01-12', '1962-02-22', '1999-12-23', '0000-00-00', '2003-06-30', '2003-07-30', 'Thiếu úy', 2003, '12', 'cử nhân', 2001, 'Công nghệ thông tin', 'Trung Cấp', 'Anh', 'B1', 'Sinh viên Đại học Công Nghệ', '2.25', '9.9', 10, 10, 0, 0, 'Anh hùng lực lượng vũ trang', 2003, 'Công việc văn phòng', 'In ấn tài liệu', 'bình thường', 1, 55, 'A', '156472222', '', 0, 'Trưởng ban trung ương phòng chống tham nhũng', '2005-05-14', 200000000, 0, 'Học sinh giỏi toàn diện', 2011),
+(19, NULL, 'Khối các ban phong trào và Văn phòng', 'Ban Kiểm tra Trung ương Đoàn', '325435', 'Mẫn Việt Dũng', 0, 'Bá đạo', 'Thủ Tướng', 'Tổng thống', '1992-12-15', 'xã Hoằng Đạo - 724 - 74', 'xã Hoằng Đạo', '902', '91', 'Hoằng Đạo - Hoằng Hóa - Thanh Hóa', '1667703512', 'Kinh', 'Không tôn giáo', 'nông dân', 'sinh viên', '1992-08-20', '1320-08-20', '1550-08-20', '2004-03-02', '2012-03-12', '1331-03-26', '0000-00-00', '2003-02-13', '2004-01-20', 'Đại tướng', 1990, '12', 'Kỹ sư', 2000, 'chém gió', 'Cao cấp', 'Anh', 'D1', 'Thuyền trưởng', '2.25', '9.9', 10, 10, 0, 0, 'Nghệ sĩ ưu tú', 1990, 'chém gió', 'cưa bom', 'bình thường', 1, 95, 'A', '353453436', '', 0, 'Chức vụ', '2010-03-22', 123123, 0, 'khenthuong', 1999);
 
 -- --------------------------------------------------------
 
@@ -1026,20 +1018,18 @@ CREATE TABLE IF NOT EXISTS `phamphap` (
   `odau` varchar(255) NOT NULL,
   `khaibaocho` varchar(255) NOT NULL,
   `vande` varchar(255) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
 
 --
 -- Dumping data for table `phamphap`
 --
 
 INSERT INTO `phamphap` (`id`, `lylich_id`, `lydo`, `thoidiem_batdau`, `thoidiem_ketthuc`, `odau`, `khaibaocho`, `vande`) VALUES
-(21, 13, 'lyDo', '2008-08-01', '2009-09-01', 'bi bat o dau', 'Khai báo cho ai', 'Vấn đề khai báo'),
-(22, 13, 'lyDo', '2009-09-01', '2009-10-01', 'bi bat o dau', 'Khai báo cho ai', 'Vấn đề khai báo'),
-(24, 15, 'lyDo', '1945-08-01', '1946-08-01', 'bi bat o dau', 'Trưởng xóm', 'Bị giặc đuổi'),
 (25, 16, 'lyDo', '1945-08-01', '1946-08-01', 'bi bat o dau', 'Trưởng xóm', 'Bị giặc đuổi'),
 (26, 17, 'lyDo', '1945-08-01', '1946-08-01', 'bi bat o dau', 'Trưởng xóm', 'Bị giặc đuổi'),
-(27, 18, 'lyDo', '2008-08-01', '2009-09-01', 'bi bat o dau', 'Khai báo cho ai', 'Vấn đề khai báo'),
-(28, 18, 'lyDo', '2009-09-01', '2009-10-01', 'bi bat o dau', 'Khai báo cho ai', 'Vấn đề khai báo');
+(27, 18, 'lyDo', '1945-08-01', '1946-08-01', 'bi bat o dau', 'Trưởng xóm', 'Bị giặc đuổi'),
+(28, 19, 'lyDo', '2008-08-01', '2009-09-01', 'bi bat o dau', 'Khai báo cho ai', 'Vấn đề khai báo'),
+(29, 19, 'lyDo', '2009-09-01', '2009-10-01', 'bi bat o dau', 'Khai báo cho ai', 'Vấn đề khai báo');
 
 -- --------------------------------------------------------
 
@@ -1055,24 +1045,13 @@ CREATE TABLE IF NOT EXISTS `quanhegiadinh` (
   `namsinh` int(4) NOT NULL,
   `mota` text NOT NULL,
   `banthan_vochong` tinyint(1) NOT NULL COMMENT 'Ban than: 0, Ben vo hoac chong: 1'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=56 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=67 ;
 
 --
 -- Dumping data for table `quanhegiadinh`
 --
 
 INSERT INTO `quanhegiadinh` (`id`, `lylich_id`, `quanhe`, `hoten`, `namsinh`, `mota`, `banthan_vochong`) VALUES
-(12, 15, 'Bố', 'Nguyễn Xuân Hồng', 1964, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(13, 15, 'Mẹ', 'Nguyễn Thị Miên', 1968, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(14, 15, 'Vợ', 'Lưu Diệc Phi', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(15, 15, 'Con trai', 'Nguyễn Hữu Toàn', 2013, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(16, 15, 'Con gái', 'Nguyễn Khánh Linh', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(17, 15, 'anh', 'Nguyễn Thành Long', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(18, 15, 'chi', 'Nguyễn Thị Hương', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(19, 15, 'Bo', 'Nguyễn Hữu Hồng', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
-(20, 15, 'Me', 'Nguyễn Thị Mai', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
-(21, 15, 'anh', 'Nguyễn Văn Đại', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
-(22, 15, 'em trai', 'Nguyễn Văn Thắng', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
 (23, 16, 'Bố', 'Nguyễn Xuân Hồng', 1964, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
 (24, 16, 'Mẹ', 'Nguyễn Thị Miên', 1968, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
 (25, 16, 'Vợ', 'Lưu Diệc Phi', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
@@ -1095,17 +1074,28 @@ INSERT INTO `quanhegiadinh` (`id`, `lylich_id`, `quanhe`, `hoten`, `namsinh`, `m
 (42, 17, 'Me', 'Nguyễn Thị Mai', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
 (43, 17, 'anh', 'Nguyễn Văn Đại', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
 (44, 17, 'em trai', 'Nguyễn Văn Thắng', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
-(45, 18, 'Bo', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
-(46, 18, 'Me', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
-(47, 18, 'Vo', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
-(48, 18, 'con trai', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
-(49, 18, 'con gai', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
-(50, 18, 'anh', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
-(51, 18, 'chi', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
-(52, 18, 'Bo', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 1),
-(53, 18, 'Me', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 1),
-(54, 18, 'anh', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 1),
-(55, 18, 'em trai', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 1);
+(45, 18, 'Bố', 'Nguyễn Xuân Hồng', 1964, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
+(46, 18, 'Mẹ', 'Nguyễn Thị Miên', 1968, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
+(47, 18, 'Vợ', 'Lưu Diệc Phi', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
+(48, 18, 'Con trai', 'Nguyễn Hữu Toàn', 2013, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
+(49, 18, 'Con gái', 'Nguyễn Khánh Linh', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
+(50, 18, 'anh', 'Nguyễn Thành Long', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
+(51, 18, 'chi', 'Nguyễn Thị Hương', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
+(52, 18, 'Bo', 'Nguyễn Hữu Hồng', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
+(53, 18, 'Me', 'Nguyễn Thị Mai', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
+(54, 18, 'anh', 'Nguyễn Văn Đại', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
+(55, 18, 'em trai', 'Nguyễn Văn Thắng', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
+(56, 19, 'Bo', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
+(57, 19, 'Me', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
+(58, 19, 'Vo', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
+(59, 19, 'con trai', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
+(60, 19, 'con gai', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
+(61, 19, 'anh', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
+(62, 19, 'chi', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
+(63, 19, 'Bo', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 1),
+(64, 19, 'Me', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 1),
+(65, 19, 'anh', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 1),
+(66, 19, 'em trai', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 1);
 
 -- --------------------------------------------------------
 
@@ -1120,23 +1110,21 @@ CREATE TABLE IF NOT EXISTS `quatrinhluong` (
   `ngach` varchar(255) NOT NULL,
   `bac` int(10) NOT NULL,
   `heso` float NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `quatrinhluong`
 --
 
 INSERT INTO `quatrinhluong` (`id`, `lylich_id`, `thoidiem`, `ngach`, `bac`, `heso`) VALUES
-(21, 13, '2013-09-01', 'Ngạch', 1, 2),
-(22, 13, '2001-01-01', 'Ngạch', 2, 3),
-(25, 15, '2014-09-01', 'Ngạch', 1, 2),
-(26, 15, '2010-01-01', 'Ngạch', 2, 3),
-(27, 16, '2014-09-01', 'Ngạch', 1, 2),
+(27, 16, '2007-09-01', 'Ngạch', 1, 2),
 (28, 16, '2010-01-01', 'Ngạch', 2, 3),
 (29, 17, '2014-09-01', 'Ngạch', 1, 2),
 (30, 17, '2010-01-01', 'Ngạch', 2, 3),
 (31, 18, '2014-09-01', 'Ngạch', 1, 2),
-(32, 18, '2010-01-01', 'Ngạch', 2, 3);
+(32, 18, '2010-01-01', 'Ngạch', 2, 3),
+(33, 19, '2008-09-01', 'Ngạch', 1, 2),
+(34, 19, '2010-01-01', 'Ngạch', 2, 3);
 
 -- --------------------------------------------------------
 
@@ -1150,23 +1138,21 @@ CREATE TABLE IF NOT EXISTS `sohuudat` (
   `loaidat` varchar(255) NOT NULL,
   `cap_mua_khaipha` tinyint(4) NOT NULL COMMENT 'Duoc cap: 0, Tu mua: 1, Tu khai pha: 2',
   `dientich` int(11) NOT NULL COMMENT 'Don vi m2'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `sohuudat`
 --
 
 INSERT INTO `sohuudat` (`id`, `lylich_id`, `loaidat`, `cap_mua_khaipha`, `dientich`) VALUES
-(21, 13, 'Tự mua', 0, 333),
-(22, 13, 'Tự khai phá', 0, 234),
-(25, 15, 'Tự mua', 0, 400),
-(26, 15, 'Tự khai phá', 0, 500),
 (27, 16, 'Tự mua', 0, 400),
 (28, 16, 'Tự khai phá', 0, 500),
 (29, 17, 'Tự mua', 0, 400),
 (30, 17, 'Tự khai phá', 0, 500),
-(31, 18, 'Tự mua', 0, 333),
-(32, 18, 'Tự khai phá', 0, 234);
+(31, 18, 'Tự mua', 0, 400),
+(32, 18, 'Tự khai phá', 0, 500),
+(33, 19, 'Tự mua', 0, 333),
+(34, 19, 'Tự khai phá', 0, 234);
 
 -- --------------------------------------------------------
 
@@ -1180,23 +1166,21 @@ CREATE TABLE IF NOT EXISTS `sohuunha` (
   `cap_thue_mua_xay` tinyint(1) NOT NULL COMMENT 'Duoc cap: 0, Duoc thue: 1, Tu mua: 2, Tu xay: 3',
   `loainha` varchar(255) NOT NULL,
   `dientich` int(11) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `sohuunha`
 --
 
 INSERT INTO `sohuunha` (`id`, `lylich_id`, `cap_thue_mua_xay`, `loainha`, `dientich`) VALUES
-(21, 13, 0, 'Được thuê', 123),
-(22, 13, 0, 'Tự mua', 234),
-(25, 15, 0, 'Được thuê', 200),
-(26, 15, 0, 'Tự mua', 300),
 (27, 16, 0, 'Được thuê', 200),
 (28, 16, 0, 'Tự mua', 300),
 (29, 17, 0, 'Được thuê', 200),
 (30, 17, 0, 'Tự mua', 300),
-(31, 18, 0, 'Được thuê', 123),
-(32, 18, 0, 'Tự mua', 234);
+(31, 18, 0, 'Được thuê', 200),
+(32, 18, 0, 'Tự mua', 300),
+(33, 19, 0, 'Được thuê', 123),
+(34, 19, 0, 'Tự mua', 234);
 
 -- --------------------------------------------------------
 
@@ -1232,23 +1216,21 @@ CREATE TABLE IF NOT EXISTS `thannhannuocngoai` (
   `hoten` varchar(255) NOT NULL,
   `lamgi` varchar(255) NOT NULL,
   `diachi` varchar(255) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `thannhannuocngoai`
 --
 
 INSERT INTO `thannhannuocngoai` (`id`, `lylich_id`, `quanhe`, `hoten`, `lamgi`, `diachi`) VALUES
-(21, 13, 'Bo', 'Họ và tên', 'Công việc', 'Diachi'),
-(22, 13, 'Me', 'Họ và tên', 'Công việc', 'Diachi'),
-(25, 15, 'Bạn thân', 'Nguyễn Tuấn Anh', 'Nghiên cứu', 'New York'),
-(26, 15, 'Em họ', 'Nguyễn Thị Thanh Tâm', 'Đua xe F1', 'California'),
 (27, 16, 'Bạn thân', 'Nguyễn Tuấn Anh', 'Nghiên cứu', 'New York'),
 (28, 16, 'Em họ', 'Nguyễn Thị Thanh Tâm', 'Đua xe F1', 'California'),
 (29, 17, 'Bạn thân', 'Nguyễn Tuấn Anh', 'Nghiên cứu', 'New York'),
 (30, 17, 'Em họ', 'Nguyễn Thị Thanh Tâm', 'Đua xe F1', 'California'),
-(31, 18, 'Bo', 'Họ và tên', 'Công việc', 'Diachi'),
-(32, 18, 'Me', 'Họ và tên', 'Công việc', 'Diachi');
+(31, 18, 'Bạn thân', 'Nguyễn Tuấn Anh', 'Nghiên cứu', 'New York'),
+(32, 18, 'Em họ', 'Nguyễn Thị Thanh Tâm', 'Đua xe F1', 'California'),
+(33, 19, 'Bo', 'Họ và tên', 'Công việc', 'Diachi'),
+(34, 19, 'Me', 'Họ và tên', 'Công việc', 'Diachi');
 
 -- --------------------------------------------------------
 
@@ -1262,23 +1244,21 @@ CREATE TABLE IF NOT EXISTS `thidua` (
   `nam` date NOT NULL,
   `danhhieu` varchar(255) NOT NULL,
   `lydo` varchar(255) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `thidua`
 --
 
 INSERT INTO `thidua` (`id`, `lylich_id`, `nam`, `danhhieu`, `lydo`) VALUES
-(21, 13, '2000-02-08', 'Lao động tiên tiến', 'Khong'),
-(22, 13, '2013-03-08', 'Chiến sĩ thi đua Trung ương Đoàn', 'Khong'),
-(25, 15, '2000-02-08', 'Lao động tiên tiến', 'Khong'),
-(26, 15, '2013-03-08', 'Chiến sĩ thi đua Trung ương Đoàn', 'Khong'),
 (27, 16, '2000-02-08', 'Lao động tiên tiến', 'Khong'),
 (28, 16, '2013-03-08', 'Chiến sĩ thi đua Trung ương Đoàn', 'Khong'),
 (29, 17, '2000-02-08', 'Lao động tiên tiến', 'Khong'),
 (30, 17, '2013-03-08', 'Chiến sĩ thi đua Trung ương Đoàn', 'Khong'),
 (31, 18, '2000-02-08', 'Lao động tiên tiến', 'Khong'),
-(32, 18, '2013-03-08', 'Chiến sĩ thi đua Trung ương Đoàn', 'Khong');
+(32, 18, '2013-03-08', 'Chiến sĩ thi đua Trung ương Đoàn', 'Khong'),
+(33, 19, '2000-02-08', 'Lao động tiên tiến', 'Khong'),
+(34, 19, '2013-03-08', 'Chiến sĩ thi đua Trung ương Đoàn', 'Khong');
 
 -- --------------------------------------------------------
 
@@ -1388,23 +1368,21 @@ CREATE TABLE IF NOT EXISTS `tochucnuocngoai` (
   `lamgi` varchar(255) NOT NULL,
   `tochuc` varchar(255) NOT NULL,
   `truso` varchar(255) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `tochucnuocngoai`
 --
 
 INSERT INTO `tochucnuocngoai` (`id`, `lylich_id`, `lamgi`, `tochuc`, `truso`) VALUES
-(21, 13, 'Nhiệm vụ', 'Tên tổ chức', 'Trụ sở'),
-(22, 13, 'Nhiệm vụ', 'Tên tổ chức', 'Trụ sở'),
-(25, 15, 'In ấn tài liệu', 'Đại sứ quán Đức', 'Hà Nội'),
-(26, 15, 'Sao lưu tài liệu', 'Đại sứ quán Pháp', 'Hà Nội'),
 (27, 16, 'In ấn tài liệu', 'Đại sứ quán Đức', 'Hà Nội'),
 (28, 16, 'Sao lưu tài liệu', 'Đại sứ quán Pháp', 'Hà Nội'),
 (29, 17, 'In ấn tài liệu', 'Đại sứ quán Đức', 'Hà Nội'),
 (30, 17, 'Sao lưu tài liệu', 'Đại sứ quán Pháp', 'Hà Nội'),
-(31, 18, 'Nhiệm vụ', 'Tên tổ chức', 'Trụ sở'),
-(32, 18, 'Nhiệm vụ', 'Tên tổ chức', 'Trụ sở');
+(31, 18, 'In ấn tài liệu', 'Đại sứ quán Đức', 'Hà Nội'),
+(32, 18, 'Sao lưu tài liệu', 'Đại sứ quán Pháp', 'Hà Nội'),
+(33, 19, 'Nhiệm vụ', 'Tên tổ chức', 'Trụ sở'),
+(34, 19, 'Nhiệm vụ', 'Tên tổ chức', 'Trụ sở');
 
 -- --------------------------------------------------------
 
@@ -12700,7 +12678,7 @@ ALTER TABLE `xa`
 -- AUTO_INCREMENT for table `chedocu`
 --
 ALTER TABLE `chedocu`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `chucvu`
 --
@@ -12710,12 +12688,12 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `congtac`
 --
 ALTER TABLE `congtac`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=53;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=57;
 --
 -- AUTO_INCREMENT for table `daotao`
 --
 ALTER TABLE `daotao`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
 --
 -- AUTO_INCREMENT for table `donvicoso`
 --
@@ -12735,7 +12713,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `kyluat`
 --
 ALTER TABLE `kyluat`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
 --
 -- AUTO_INCREMENT for table `loaichucvu`
 --
@@ -12745,32 +12723,32 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `lylich`
 --
 ALTER TABLE `lylich`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT for table `phamphap`
 --
 ALTER TABLE `phamphap`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
 --
 -- AUTO_INCREMENT for table `quanhegiadinh`
 --
 ALTER TABLE `quanhegiadinh`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=56;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=67;
 --
 -- AUTO_INCREMENT for table `quatrinhluong`
 --
 ALTER TABLE `quatrinhluong`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
 --
 -- AUTO_INCREMENT for table `sohuudat`
 --
 ALTER TABLE `sohuudat`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
 --
 -- AUTO_INCREMENT for table `sohuunha`
 --
 ALTER TABLE `sohuunha`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
 --
 -- AUTO_INCREMENT for table `taikhoan`
 --
@@ -12780,12 +12758,12 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 -- AUTO_INCREMENT for table `thannhannuocngoai`
 --
 ALTER TABLE `thannhannuocngoai`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
 --
 -- AUTO_INCREMENT for table `thidua`
 --
 ALTER TABLE `thidua`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
 --
 -- AUTO_INCREMENT for table `thunhap`
 --
@@ -12795,7 +12773,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `tochucnuocngoai`
 --
 ALTER TABLE `tochucnuocngoai`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
 --
 -- Constraints for dumped tables
 --
