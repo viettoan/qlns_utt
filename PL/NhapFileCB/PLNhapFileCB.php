@@ -52,6 +52,7 @@
           </ul>
         </li>
         <li><a href="../NhapFileCB/PLDanhSachCB.php" class="">Danh sách cán bộ</a></li>
+		<li><a href="../DieuChuyenCB/PLDieuChuyenCB.php" class="">Điều chuyển</a></li>
         <li><a href="../NhapFileCB/PLTienIch.php" class="">Tiện ích</a></li>
         </ul>
       <ul class="art-hmenu-user">

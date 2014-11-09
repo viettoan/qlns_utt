@@ -55,6 +55,7 @@
         <li><a href="PLNhapFileCB.php" class="active">Nhập lý lịch</a></li>
 		
         <li><a href="PLDanhSachCB.php" class="">Danh sách cán bộ</a></li>
+		<li><a href="../DieuChuyenCB/PLDieuChuyenCB.php" class="">Điều chuyển</a></li>
         <li><a href="PLTienIch.php" class="">Tiện ích</a></li>
       </ul>
       <ul class="art-hmenu-user">
