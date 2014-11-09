@@ -1020,6 +1020,11 @@ function xuLyFile2($fileName){
 	}
 	//var_dump($myget->getReturnCode(), $myget->getErrorTexts());die("");
 	
+	$curYear = date("Y");
+	$sql = "insert into luanchuyen (id, canbo_id, vitri, nam, flag)
+	values(null, '$lylich_id', 'Cơ quan Đoàn thể', '$curYear', 0);";
+	$result = mysql_query($sql) or die(mysql_error());
+	
 	//echo $sql;
 	if ($myget->getReturnCode() && $success){
 		return array(0, array('ttcb'=>$ttcb));

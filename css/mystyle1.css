@@ -1,0 +1,51 @@
+.myform01 {
+	margin-left: 58px;
+	margin-right: 58px;
+	height: 400px;
+}
+.myform01 h3, .hoz-line-space {
+	margin-left:-10px;
+	margin-right:-10px;
+	border-bottom: solid 1px #c0c0c0;
+}
+.myform01 h3 {
+	#background-color:lightblue;
+	background: -webkit-linear-gradient(left, #efefef, #ffffff);
+	background: -moz-linear-gradient(left, #efefef, #ffffff );
+	padding:10px;
+}
+.myform01 table,th,tr,td {
+	border-collapse:collapse;
+	border:solid 1px black; 
+	padding: 5px 5px 5px 5px;
+}
+.myform01 a {
+	text-decoration: none;
+	//font-style: normal;
+}
+.myform01 a:hover {
+	text-decoration: underline;
+	//font-style: italic;
+}
+.divNoidungbaocao {
+	border:solid 1px rgb(177, 177, 177);
+	padding: 9px 9px 9px 9px;
+}
+.divChonBaoCao  input{
+	background-color: black;
+	padding: 100px;
+}
+
+@media print {
+	.no-print {
+		display:none;
+	}
+	.myform01{
+		margin: 0px;
+		width: 100%;
+	}
+	.divNoidungbaocao {
+		border: none;
+		padding: 0px;
+	}
+}
