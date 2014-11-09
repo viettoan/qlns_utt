@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.7.1
+-- version 4.1.12
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 08, 2014 at 01:13 AM
--- Server version: 5.6.20
--- PHP Version: 5.5.15
+-- Generation Time: Nov 09, 2014 at 05:34 PM
+-- Server version: 5.6.16
+-- PHP Version: 5.5.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -27,28 +27,16 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `chedocu` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `lylich_id` int(11) NOT NULL,
   `coquan` varchar(255) NOT NULL,
   `donvi` varchar(255) NOT NULL,
   `diadiem` varchar(255) NOT NULL,
   `chucvu` varchar(255) NOT NULL,
-  `thoigian` varchar(255) NOT NULL COMMENT 'Ghi so nam hoac so thang'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
-
---
--- Dumping data for table `chedocu`
---
-
-INSERT INTO `chedocu` (`id`, `lylich_id`, `coquan`, `donvi`, `diadiem`, `chucvu`, `thoigian`) VALUES
-(5, 16, 'Bộ tư pháp', 'Tòa án', '302-Bà Triệu', 'Thẩm phán', '2/1954'),
-(6, 16, 'Liên Đoàn luật sư', 'Đơn vị số 1', '144-Xuân Thủy', 'Luật sư', '3/1954'),
-(7, 17, 'Bộ tư pháp', 'Tòa án', '302-Bà Triệu', 'Thẩm phán', '2/1954'),
-(8, 17, 'Liên Đoàn luật sư', 'Đơn vị số 1', '144-Xuân Thủy', 'Luật sư', '3/1954'),
-(9, 18, 'Bộ tư pháp', 'Tòa án', '302-Bà Triệu', 'Thẩm phán', '2/1954'),
-(10, 18, 'Liên Đoàn luật sư', 'Đơn vị số 1', '144-Xuân Thủy', 'Luật sư', '3/1954'),
-(11, 19, 'Cơ quan', 'Donvi', 'Diadiem', 'Chức vụ', '8/2008'),
-(12, 19, 'Cơ quan', 'Donvi', 'Diadiem', 'Chức vụ', '9/2009');
+  `thoigian` varchar(255) NOT NULL COMMENT 'Ghi so nam hoac so thang',
+  PRIMARY KEY (`id`),
+  KEY `lylich_id` (`lylich_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
 
 -- --------------------------------------------------------
 
@@ -57,12 +45,15 @@ INSERT INTO `chedocu` (`id`, `lylich_id`, `coquan`, `donvi`, `diadiem`, `chucvu`
 --
 
 CREATE TABLE IF NOT EXISTS `chucvu` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `lylich_id` int(11) NOT NULL,
   `loaichucvu_id` int(11) NOT NULL,
   `ten` varchar(255) DEFAULT NULL,
   `thoidiem` date DEFAULT NULL,
-  `phucap` int(11) DEFAULT NULL COMMENT 'Don vi vnd'
+  `phucap` int(11) DEFAULT NULL COMMENT 'Don vi vnd',
+  PRIMARY KEY (`id`),
+  KEY `lylich_id` (`lylich_id`),
+  KEY `loaichucvu_id` (`loaichucvu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -72,33 +63,14 @@ CREATE TABLE IF NOT EXISTS `chucvu` (
 --
 
 CREATE TABLE IF NOT EXISTS `congtac` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `lylich_id` int(11) NOT NULL,
   `thoidiem_batdau` date NOT NULL,
   `thoidiem_ketthuc` date NOT NULL COMMENT 'Neu la row moi nhat tuc la "Nay"',
-  `chucvu` varchar(255) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=57 ;
-
---
--- Dumping data for table `congtac`
---
-
-INSERT INTO `congtac` (`id`, `lylich_id`, `thoidiem_batdau`, `thoidiem_ketthuc`, `chucvu`) VALUES
-(42, 16, '1999-09-01', '2004-05-01', 'Học sinh tại  tiểu học Thanh Cao'),
-(43, 16, '2004-09-01', '2008-05-01', 'Học sinh tại THCS Nguyễn Trực'),
-(44, 16, '2008-09-01', '2011-05-01', 'Học sinh tại THPT Nguyễn Huệ'),
-(45, 16, '2011-09-01', '0000-00-00', 'Sinh Viên ĐH Công Nghệ'),
-(46, 17, '1999-09-01', '2004-05-01', 'Học sinh tại  tiểu học Thanh Cao'),
-(47, 17, '2004-09-01', '2008-05-01', 'Học sinh tại THCS Nguyễn Trực'),
-(48, 17, '2008-09-01', '2011-05-01', 'Học sinh tại THPT Nguyễn Huệ'),
-(49, 17, '2011-09-01', '0000-00-00', 'Sinh Viên ĐH Công Nghệ'),
-(50, 18, '1999-09-01', '2004-05-01', 'Học sinh tại  tiểu học Thanh Cao'),
-(51, 18, '2004-09-01', '2008-05-01', 'Học sinh tại THCS Nguyễn Trực'),
-(52, 18, '2008-09-01', '2011-05-01', 'Học sinh tại THPT Nguyễn Huệ'),
-(53, 18, '2011-09-01', '0000-00-00', 'Sinh Viên ĐH Công Nghệ'),
-(54, 19, '2008-08-01', '2008-09-01', 'Chức danh, chức vụ, đơn vị công tác (Đảng, Chính quyền, Đoàn thể)'),
-(55, 19, '2009-09-01', '2009-10-01', 'Chức danh, chức vụ, đơn vị công tác (Đảng, Chính quyền, Đoàn thể)'),
-(56, 19, '2009-10-01', '0000-00-00', 'khong làm gì');
+  `chucvu` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `lylich_id` (`lylich_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=77 ;
 
 -- --------------------------------------------------------
 
@@ -107,29 +79,17 @@ INSERT INTO `congtac` (`id`, `lylich_id`, `thoidiem_batdau`, `thoidiem_ketthuc`,
 --
 
 CREATE TABLE IF NOT EXISTS `daotao` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `lylich_id` int(11) NOT NULL,
   `tentruong` varchar(255) NOT NULL,
   `nganhhoc` varchar(255) NOT NULL,
   `thoigianhoc` varchar(255) NOT NULL,
   `hinhthuchoc` varchar(255) NOT NULL,
   `vanbang` varchar(255) NOT NULL,
-  `daotao_boiduong` tinyint(1) NOT NULL COMMENT 'Daotao: 0, Boi duong: 1'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
-
---
--- Dumping data for table `daotao`
---
-
-INSERT INTO `daotao` (`id`, `lylich_id`, `tentruong`, `nganhhoc`, `thoigianhoc`, `hinhthuchoc`, `vanbang`, `daotao_boiduong`) VALUES
-(27, 16, 'ĐH Công Nghệ', 'CNTT', '7/1990-8/2001', 'chính quy', 'Tiến sĩ', 0),
-(28, 16, 'THCS Nguyễn Trực', 'Công nghệ thông tin', '8/2000-9/2001', 'Chính quy', 'Tốt nghiệp cấp 2', 0),
-(29, 17, 'ĐH Công Nghệ', 'CNTT', '7/1990-8/2001', 'chính quy', 'Tiến sĩ', 0),
-(30, 17, 'THCS Nguyễn Trực', 'Công nghệ thông tin', '8/2000-9/2001', 'Chính quy', 'Tốt nghiệp cấp 2', 0),
-(31, 18, 'ĐH Công Nghệ', 'CNTT', '7/1990-8/2001', 'chính quy', 'Tiến sĩ', 0),
-(32, 18, 'THCS Nguyễn Trực', 'Công nghệ thông tin', '8/2000-9/2001', 'Chính quy', 'Tốt nghiệp cấp 2', 0),
-(33, 19, 'VNU', 'CNTT', '7/1990-8/2001', 'chính quy', 'Tiến sĩ', 0),
-(34, 19, 'Tên trường', 'Ngành học hoặc tên lớp học', '8/2000-9/2001', 'Hình thức học', 'Văn bằng, chứng chỉ', 0);
+  `daotao_boiduong` tinyint(1) NOT NULL COMMENT 'Daotao: 0, Boi duong: 1',
+  PRIMARY KEY (`id`),
+  KEY `lylich_id` (`lylich_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
 
 -- --------------------------------------------------------
 
@@ -138,9 +98,11 @@ INSERT INTO `daotao` (`id`, `lylich_id`, `tentruong`, `nganhhoc`, `thoigianhoc`,
 --
 
 CREATE TABLE IF NOT EXISTS `donvicoso` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `donvitructhuoc_id` int(11) NOT NULL,
-  `ten` int(11) NOT NULL
+  `ten` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `donvitructhuoc_id` (`donvitructhuoc_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -150,8 +112,9 @@ CREATE TABLE IF NOT EXISTS `donvicoso` (
 --
 
 CREATE TABLE IF NOT EXISTS `donvitructhuoc` (
-`id` int(11) NOT NULL,
-  `ten` int(11) NOT NULL
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ten` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -165,7 +128,9 @@ CREATE TABLE IF NOT EXISTS `huyen` (
   `name` varchar(100) NOT NULL,
   `type` varchar(30) NOT NULL,
   `location` varchar(30) NOT NULL,
-  `provinceid` varchar(5) NOT NULL
+  `provinceid` varchar(5) NOT NULL,
+  PRIMARY KEY (`districtid`),
+  KEY `provinceid` (`provinceid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -878,10 +843,11 @@ INSERT INTO `huyen` (`districtid`, `name`, `type`, `location`, `provinceid`) VAL
 --
 
 CREATE TABLE IF NOT EXISTS `khenthuong` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `lylich_id` int(11) NOT NULL,
   `huanchuong` int(11) NOT NULL COMMENT 'Ten huan, huy chuong',
-  `nam` int(11) NOT NULL
+  `nam` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -891,24 +857,15 @@ CREATE TABLE IF NOT EXISTS `khenthuong` (
 --
 
 CREATE TABLE IF NOT EXISTS `kyluat` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `lylich_id` int(11) NOT NULL,
   `capquyetdinh` varchar(255) NOT NULL,
   `nam` int(4) NOT NULL,
   `lydo` varchar(255) NOT NULL,
-  `hinhthuc` varchar(255) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
-
---
--- Dumping data for table `kyluat`
---
-
-INSERT INTO `kyluat` (`id`, `lylich_id`, `capquyetdinh`, `nam`, `lydo`, `hinhthuc`) VALUES
-(25, 16, 'Trung học phổ thông', 2009, 'Bỏ học', 'Kỷ luật'),
-(26, 17, 'Trung học phổ thông', 2009, 'Bỏ học', 'Kỷ luật'),
-(27, 18, 'Trung học phổ thông', 2009, 'Bỏ học', 'Kỷ luật'),
-(28, 19, 'Cấp quyết định', 1999, 'Lý do', 'Hình thức'),
-(29, 19, 'Cấp quyết định', 1998, 'Lý do', 'Hình thức');
+  `hinhthuc` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `lylich_id` (`lylich_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
 
 -- --------------------------------------------------------
 
@@ -917,9 +874,26 @@ INSERT INTO `kyluat` (`id`, `lylich_id`, `capquyetdinh`, `nam`, `lydo`, `hinhthu
 --
 
 CREATE TABLE IF NOT EXISTS `loaichucvu` (
-`id` int(11) NOT NULL,
-  `ten` int(11) NOT NULL
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ten` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `luanchuyen`
+--
+
+CREATE TABLE IF NOT EXISTS `luanchuyen` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `canbo_id` int(11) NOT NULL,
+  `vitri` text COLLATE utf8_unicode_ci NOT NULL,
+  `nam` int(11) NOT NULL,
+  `flag` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `luanchuyen_ibfk_1` (`canbo_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=28 ;
 
 -- --------------------------------------------------------
 
@@ -928,7 +902,7 @@ CREATE TABLE IF NOT EXISTS `loaichucvu` (
 --
 
 CREATE TABLE IF NOT EXISTS `lylich` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `botinh` varchar(255) DEFAULT NULL,
   `donvitructhuoc` varchar(255) DEFAULT NULL,
   `donvicoso` varchar(255) DEFAULT NULL,
@@ -990,18 +964,11 @@ CREATE TABLE IF NOT EXISTS `lylich` (
   `luong` int(11) NOT NULL,
   `thunhapkhac` int(11) NOT NULL,
   `khenthuong` varchar(255) NOT NULL,
-  `namkhenthuong` int(4) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
-
---
--- Dumping data for table `lylich`
---
-
-INSERT INTO `lylich` (`id`, `botinh`, `donvitructhuoc`, `donvicoso`, `sohieucanbo`, `hoten`, `gioitinh`, `tengoikhac`, `capuyhientai`, `capuykiem`, `ngaysinh`, `noisinh`, `quequan_xa`, `quequan_huyen`, `quequan_tinh`, `noiohiennay`, `dienthoai`, `dantoc`, `tongiao`, `xuatthan`, `nghetruoctuyendung`, `ngaytuyendung`, `coquanhientai_ngayvao`, `cachmang_ngayvao`, `dangcongsan_ngayvao`, `dangcongsan_ngaychinhthuc`, `doantncs_ngayvao`, `congdoan_ngayvao`, `ngaynhapngu`, `ngayxuatngu`, `quanhamcaonhat_ten`, `quanhamcaonhat_nam`, `giaoducphothong`, `hochamcaonhat_ten`, `hochamcaonhat_nam`, `hochamcaonhat_chuyennganh`, `lyluanchinhtri`, `ngoaingu_ten`, `ngoaingu_trinhdo`, `congtacdanglam`, `ngachcongchuc_ten`, `ngachcongchuc_maso`, `ngachcongchuc_bacluong`, `ngachcongchuc_heso`, `ngachcongchuc_thang`, `ngachcongchuc_nam`, `danhhieu_ten`, `danhhieu_nam`, `sotruongcongtac`, `congvieclaunhat`, `tinhtrangsuckhoe`, `chieucao`, `cannang`, `nhommau`, `cmnd`, `thuongbinhloai`, `giadinhlietsy`, `chucvu`, `chucvudate`, `luong`, `thunhapkhac`, `khenthuong`, `namkhenthuong`) VALUES
-(16, NULL, 'Khối các ban phong trào và Văn phòng', 'Ban Thanh niên công nhân và đô thị Trung ương Đoàn', '120270', 'Nguyễn Đức Hai', 0, 'Hoàng Văn Đạo, Quách Văn Tỉnh', 'Ủy viên bộ chính trị', 'Ủy viên trung ương Đảng', '1993-02-13', 'Xã Thanh Cao - 290 - 30', 'Xã Thanh Cao', '297', '30', 'Thanh Cao - Thanh Oai - Hà Nội', '1685222522', 'Kinh', 'Không tôn giáo', 'nông dân', 'sinh viên', '2011-03-20', '1960-12-12', '1945-08-19', '1961-01-12', '1962-02-22', '1999-12-23', '0000-00-00', '2003-06-30', '2003-07-30', 'Thiếu úy', 2003, '12', 'cử nhân', 2001, 'Công nghệ thông tin', 'Trung Cấp', 'Anh', 'B1', 'Sinh viên Đại học Công Nghệ', '2.25', '9.9', 10, 10, 0, 0, 'Anh hùng lực lượng vũ trang', 2003, 'Công việc văn phòng', 'In ấn tài liệu', 'bình thường', 1, 55, 'A', '123654789', '', 0, 'BÍ thư', '2005-05-14', 200000000, 0, 'Học sinh giỏi toàn diện', 2011),
-(17, NULL, 'Khối các ban phong trào và Văn phòng', 'Ban Thanh niên công nhân và đô thị Trung ương Đoàn', '120281', 'Mẫn Việt Dũng', 0, 'Hoàng Văn Đạo, Quách Văn Tỉnh', 'Ủy viên bộ chính trị', 'Ủy viên trung ương Đảng', '1950-02-13', 'Xã Thanh Cao - 258 - 27', 'Xã Thanh Cao', '258', '27', 'Thanh Cao - Thanh Oai - Hà Nội', '1685222522', 'Kinh', 'Không tôn giáo', 'nông dân', 'sinh viên', '2011-03-20', '1960-12-12', '1945-08-19', '1961-01-12', '1962-02-22', '1999-12-23', '0000-00-00', '2003-06-30', '2003-07-30', 'Thiếu úy', 2003, '12', 'cử nhân', 2001, 'Công nghệ thông tin', 'Trung Cấp', 'Anh', 'B1', 'Sinh viên Đại học Công Nghệ', '2.25', '9.9', 10, 10, 0, 0, 'Anh hùng lực lượng vũ trang', 2003, 'Công việc văn phòng', 'In ấn tài liệu', 'bình thường', 1, 55, 'A', '156472365', '', 0, 'Phó bí thư', '2005-05-14', 200000000, 0, 'Học sinh giỏi toàn diện', 2011),
-(18, NULL, 'Khối các ban phong trào và Văn phòng', 'Ban Thanh niên công nhân và đô thị Trung ương Đoàn', '120282', 'Nguyễn Văn Nam', 0, 'Hoàng Văn Đạo, Quách Văn Tỉnh', 'Ủy viên bộ chính trị', 'Ủy viên trung ương Đảng', '1993-02-13', 'Xã Thanh Cao - 960 - 95', 'Xã Thanh Cao', '960', '95', 'Thanh Cao - Thanh Oai - Hà Nội', '1685222522', 'Kinh', 'Không tôn giáo', 'nông dân', 'sinh viên', '2011-03-20', '1960-12-12', '1945-08-19', '1961-01-12', '1962-02-22', '1999-12-23', '0000-00-00', '2003-06-30', '2003-07-30', 'Thiếu úy', 2003, '12', 'cử nhân', 2001, 'Công nghệ thông tin', 'Trung Cấp', 'Anh', 'B1', 'Sinh viên Đại học Công Nghệ', '2.25', '9.9', 10, 10, 0, 0, 'Anh hùng lực lượng vũ trang', 2003, 'Công việc văn phòng', 'In ấn tài liệu', 'bình thường', 1, 55, 'A', '156472222', '', 0, 'Trưởng ban trung ương phòng chống tham nhũng', '2005-05-14', 200000000, 0, 'Học sinh giỏi toàn diện', 2011),
-(19, NULL, 'Khối các ban phong trào và Văn phòng', 'Ban Kiểm tra Trung ương Đoàn', '325435', 'Mẫn Việt Dũng', 0, 'Bá đạo', 'Thủ Tướng', 'Tổng thống', '1992-12-15', 'xã Hoằng Đạo - 724 - 74', 'xã Hoằng Đạo', '902', '91', 'Hoằng Đạo - Hoằng Hóa - Thanh Hóa', '1667703512', 'Kinh', 'Không tôn giáo', 'nông dân', 'sinh viên', '1992-08-20', '1320-08-20', '1550-08-20', '2004-03-02', '2012-03-12', '1331-03-26', '0000-00-00', '2003-02-13', '2004-01-20', 'Đại tướng', 1990, '12', 'Kỹ sư', 2000, 'chém gió', 'Cao cấp', 'Anh', 'D1', 'Thuyền trưởng', '2.25', '9.9', 10, 10, 0, 0, 'Nghệ sĩ ưu tú', 1990, 'chém gió', 'cưa bom', 'bình thường', 1, 95, 'A', '353453436', '', 0, 'Chức vụ', '2010-03-22', 123123, 0, 'khenthuong', 1999);
+  `namkhenthuong` int(4) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `quequan_huyen` (`quequan_huyen`),
+  KEY `quequan_tinh` (`quequan_tinh`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 -- --------------------------------------------------------
 
@@ -1010,26 +977,17 @@ INSERT INTO `lylich` (`id`, `botinh`, `donvitructhuoc`, `donvicoso`, `sohieucanb
 --
 
 CREATE TABLE IF NOT EXISTS `phamphap` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `lylich_id` int(11) NOT NULL,
   `lydo` varchar(255) NOT NULL COMMENT 'bi bat, bi tu',
   `thoidiem_batdau` date NOT NULL,
   `thoidiem_ketthuc` date NOT NULL,
   `odau` varchar(255) NOT NULL,
   `khaibaocho` varchar(255) NOT NULL,
-  `vande` varchar(255) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
-
---
--- Dumping data for table `phamphap`
---
-
-INSERT INTO `phamphap` (`id`, `lylich_id`, `lydo`, `thoidiem_batdau`, `thoidiem_ketthuc`, `odau`, `khaibaocho`, `vande`) VALUES
-(25, 16, 'lyDo', '1945-08-01', '1946-08-01', 'bi bat o dau', 'Trưởng xóm', 'Bị giặc đuổi'),
-(26, 17, 'lyDo', '1945-08-01', '1946-08-01', 'bi bat o dau', 'Trưởng xóm', 'Bị giặc đuổi'),
-(27, 18, 'lyDo', '1945-08-01', '1946-08-01', 'bi bat o dau', 'Trưởng xóm', 'Bị giặc đuổi'),
-(28, 19, 'lyDo', '2008-08-01', '2009-09-01', 'bi bat o dau', 'Khai báo cho ai', 'Vấn đề khai báo'),
-(29, 19, 'lyDo', '2009-09-01', '2009-10-01', 'bi bat o dau', 'Khai báo cho ai', 'Vấn đề khai báo');
+  `vande` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `lylich_id` (`lylich_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
 
 -- --------------------------------------------------------
 
@@ -1038,64 +996,16 @@ INSERT INTO `phamphap` (`id`, `lylich_id`, `lydo`, `thoidiem_batdau`, `thoidiem_
 --
 
 CREATE TABLE IF NOT EXISTS `quanhegiadinh` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `lylich_id` int(11) NOT NULL,
   `quanhe` varchar(50) NOT NULL,
   `hoten` varchar(50) NOT NULL,
   `namsinh` int(4) NOT NULL,
   `mota` text NOT NULL,
-  `banthan_vochong` tinyint(1) NOT NULL COMMENT 'Ban than: 0, Ben vo hoac chong: 1'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=67 ;
-
---
--- Dumping data for table `quanhegiadinh`
---
-
-INSERT INTO `quanhegiadinh` (`id`, `lylich_id`, `quanhe`, `hoten`, `namsinh`, `mota`, `banthan_vochong`) VALUES
-(23, 16, 'Bố', 'Nguyễn Xuân Hồng', 1964, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(24, 16, 'Mẹ', 'Nguyễn Thị Miên', 1968, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(25, 16, 'Vợ', 'Lưu Diệc Phi', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(26, 16, 'Con trai', 'Nguyễn Hữu Toàn', 2013, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(27, 16, 'Con gái', 'Nguyễn Khánh Linh', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(28, 16, 'anh', 'Nguyễn Thành Long', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(29, 16, 'chi', 'Nguyễn Thị Hương', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(30, 16, 'Bo', 'Nguyễn Hữu Hồng', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
-(31, 16, 'Me', 'Nguyễn Thị Mai', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
-(32, 16, 'anh', 'Nguyễn Văn Đại', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
-(33, 16, 'em trai', 'Nguyễn Văn Thắng', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
-(34, 17, 'Bố', 'Nguyễn Xuân Hồng', 1964, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(35, 17, 'Mẹ', 'Nguyễn Thị Miên', 1968, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(36, 17, 'Vợ', 'Lưu Diệc Phi', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(37, 17, 'Con trai', 'Nguyễn Hữu Toàn', 2013, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(38, 17, 'Con gái', 'Nguyễn Khánh Linh', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(39, 17, 'anh', 'Nguyễn Thành Long', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(40, 17, 'chi', 'Nguyễn Thị Hương', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(41, 17, 'Bo', 'Nguyễn Hữu Hồng', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
-(42, 17, 'Me', 'Nguyễn Thị Mai', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
-(43, 17, 'anh', 'Nguyễn Văn Đại', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
-(44, 17, 'em trai', 'Nguyễn Văn Thắng', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
-(45, 18, 'Bố', 'Nguyễn Xuân Hồng', 1964, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(46, 18, 'Mẹ', 'Nguyễn Thị Miên', 1968, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(47, 18, 'Vợ', 'Lưu Diệc Phi', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(48, 18, 'Con trai', 'Nguyễn Hữu Toàn', 2013, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(49, 18, 'Con gái', 'Nguyễn Khánh Linh', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(50, 18, 'anh', 'Nguyễn Thành Long', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(51, 18, 'chi', 'Nguyễn Thị Hương', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 0),
-(52, 18, 'Bo', 'Nguyễn Hữu Hồng', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
-(53, 18, 'Me', 'Nguyễn Thị Mai', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
-(54, 18, 'anh', 'Nguyễn Văn Đại', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
-(55, 18, 'em trai', 'Nguyễn Văn Thắng', 1999, 'Thanh Cao-Thanh Oai-Hà Tây, làm ruộng', 1),
-(56, 19, 'Bo', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
-(57, 19, 'Me', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
-(58, 19, 'Vo', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
-(59, 19, 'con trai', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
-(60, 19, 'con gai', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
-(61, 19, 'anh', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
-(62, 19, 'chi', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 0),
-(63, 19, 'Bo', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 1),
-(64, 19, 'Me', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 1),
-(65, 19, 'anh', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 1),
-(66, 19, 'em trai', 'Họ và tên', 1999, 'Quê quán, nghề nghiệp, chức danh, chức vụ,  đơn vị, công tác, học tập, nơi  ở (trong, ngoài nước);', 1);
+  `banthan_vochong` tinyint(1) NOT NULL COMMENT 'Ban than: 0, Ben vo hoac chong: 1',
+  PRIMARY KEY (`id`),
+  KEY `lylich_id` (`lylich_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=122 ;
 
 -- --------------------------------------------------------
 
@@ -1104,27 +1014,15 @@ INSERT INTO `quanhegiadinh` (`id`, `lylich_id`, `quanhe`, `hoten`, `namsinh`, `m
 --
 
 CREATE TABLE IF NOT EXISTS `quatrinhluong` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `lylich_id` int(11) NOT NULL,
   `thoidiem` date NOT NULL,
   `ngach` varchar(255) NOT NULL,
   `bac` int(10) NOT NULL,
-  `heso` float NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
-
---
--- Dumping data for table `quatrinhluong`
---
-
-INSERT INTO `quatrinhluong` (`id`, `lylich_id`, `thoidiem`, `ngach`, `bac`, `heso`) VALUES
-(27, 16, '2007-09-01', 'Ngạch', 1, 2),
-(28, 16, '2010-01-01', 'Ngạch', 2, 3),
-(29, 17, '2014-09-01', 'Ngạch', 1, 2),
-(30, 17, '2010-01-01', 'Ngạch', 2, 3),
-(31, 18, '2014-09-01', 'Ngạch', 1, 2),
-(32, 18, '2010-01-01', 'Ngạch', 2, 3),
-(33, 19, '2008-09-01', 'Ngạch', 1, 2),
-(34, 19, '2010-01-01', 'Ngạch', 2, 3);
+  `heso` float NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `lylich_id` (`lylich_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
 
 -- --------------------------------------------------------
 
@@ -1133,26 +1031,14 @@ INSERT INTO `quatrinhluong` (`id`, `lylich_id`, `thoidiem`, `ngach`, `bac`, `hes
 --
 
 CREATE TABLE IF NOT EXISTS `sohuudat` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `lylich_id` int(11) NOT NULL,
   `loaidat` varchar(255) NOT NULL,
   `cap_mua_khaipha` tinyint(4) NOT NULL COMMENT 'Duoc cap: 0, Tu mua: 1, Tu khai pha: 2',
-  `dientich` int(11) NOT NULL COMMENT 'Don vi m2'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
-
---
--- Dumping data for table `sohuudat`
---
-
-INSERT INTO `sohuudat` (`id`, `lylich_id`, `loaidat`, `cap_mua_khaipha`, `dientich`) VALUES
-(27, 16, 'Tự mua', 0, 400),
-(28, 16, 'Tự khai phá', 0, 500),
-(29, 17, 'Tự mua', 0, 400),
-(30, 17, 'Tự khai phá', 0, 500),
-(31, 18, 'Tự mua', 0, 400),
-(32, 18, 'Tự khai phá', 0, 500),
-(33, 19, 'Tự mua', 0, 333),
-(34, 19, 'Tự khai phá', 0, 234);
+  `dientich` int(11) NOT NULL COMMENT 'Don vi m2',
+  PRIMARY KEY (`id`),
+  KEY `lylich_id` (`lylich_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
 
 -- --------------------------------------------------------
 
@@ -1161,26 +1047,14 @@ INSERT INTO `sohuudat` (`id`, `lylich_id`, `loaidat`, `cap_mua_khaipha`, `dienti
 --
 
 CREATE TABLE IF NOT EXISTS `sohuunha` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `lylich_id` int(11) NOT NULL,
   `cap_thue_mua_xay` tinyint(1) NOT NULL COMMENT 'Duoc cap: 0, Duoc thue: 1, Tu mua: 2, Tu xay: 3',
   `loainha` varchar(255) NOT NULL,
-  `dientich` int(11) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
-
---
--- Dumping data for table `sohuunha`
---
-
-INSERT INTO `sohuunha` (`id`, `lylich_id`, `cap_thue_mua_xay`, `loainha`, `dientich`) VALUES
-(27, 16, 0, 'Được thuê', 200),
-(28, 16, 0, 'Tự mua', 300),
-(29, 17, 0, 'Được thuê', 200),
-(30, 17, 0, 'Tự mua', 300),
-(31, 18, 0, 'Được thuê', 200),
-(32, 18, 0, 'Tự mua', 300),
-(33, 19, 0, 'Được thuê', 123),
-(34, 19, 0, 'Tự mua', 234);
+  `dientich` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `lylich_id` (`lylich_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
 
 -- --------------------------------------------------------
 
@@ -1189,11 +1063,12 @@ INSERT INTO `sohuunha` (`id`, `lylich_id`, `cap_thue_mua_xay`, `loainha`, `dient
 --
 
 CREATE TABLE IF NOT EXISTS `taikhoan` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `tendangnhap` varchar(50) NOT NULL,
   `matkhau` varchar(50) NOT NULL COMMENT 'Duoc ma hoa MD5',
   `email` varchar(50) NOT NULL,
-  `nhom` tinyint(1) NOT NULL COMMENT 'QL thuong: 0, QL cap cao: 1, Admin: 2'
+  `nhom` tinyint(1) NOT NULL COMMENT 'QL thuong: 0, QL cap cao: 1, Admin: 2',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
@@ -1210,27 +1085,15 @@ INSERT INTO `taikhoan` (`id`, `tendangnhap`, `matkhau`, `email`, `nhom`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `thannhannuocngoai` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `lylich_id` int(11) NOT NULL,
   `quanhe` varchar(255) NOT NULL,
   `hoten` varchar(255) NOT NULL,
   `lamgi` varchar(255) NOT NULL,
-  `diachi` varchar(255) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
-
---
--- Dumping data for table `thannhannuocngoai`
---
-
-INSERT INTO `thannhannuocngoai` (`id`, `lylich_id`, `quanhe`, `hoten`, `lamgi`, `diachi`) VALUES
-(27, 16, 'Bạn thân', 'Nguyễn Tuấn Anh', 'Nghiên cứu', 'New York'),
-(28, 16, 'Em họ', 'Nguyễn Thị Thanh Tâm', 'Đua xe F1', 'California'),
-(29, 17, 'Bạn thân', 'Nguyễn Tuấn Anh', 'Nghiên cứu', 'New York'),
-(30, 17, 'Em họ', 'Nguyễn Thị Thanh Tâm', 'Đua xe F1', 'California'),
-(31, 18, 'Bạn thân', 'Nguyễn Tuấn Anh', 'Nghiên cứu', 'New York'),
-(32, 18, 'Em họ', 'Nguyễn Thị Thanh Tâm', 'Đua xe F1', 'California'),
-(33, 19, 'Bo', 'Họ và tên', 'Công việc', 'Diachi'),
-(34, 19, 'Me', 'Họ và tên', 'Công việc', 'Diachi');
+  `diachi` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `lylich_id` (`lylich_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
 
 -- --------------------------------------------------------
 
@@ -1239,26 +1102,14 @@ INSERT INTO `thannhannuocngoai` (`id`, `lylich_id`, `quanhe`, `hoten`, `lamgi`, 
 --
 
 CREATE TABLE IF NOT EXISTS `thidua` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `lylich_id` int(11) NOT NULL,
   `nam` date NOT NULL,
   `danhhieu` varchar(255) NOT NULL,
-  `lydo` varchar(255) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
-
---
--- Dumping data for table `thidua`
---
-
-INSERT INTO `thidua` (`id`, `lylich_id`, `nam`, `danhhieu`, `lydo`) VALUES
-(27, 16, '2000-02-08', 'Lao động tiên tiến', 'Khong'),
-(28, 16, '2013-03-08', 'Chiến sĩ thi đua Trung ương Đoàn', 'Khong'),
-(29, 17, '2000-02-08', 'Lao động tiên tiến', 'Khong'),
-(30, 17, '2013-03-08', 'Chiến sĩ thi đua Trung ương Đoàn', 'Khong'),
-(31, 18, '2000-02-08', 'Lao động tiên tiến', 'Khong'),
-(32, 18, '2013-03-08', 'Chiến sĩ thi đua Trung ương Đoàn', 'Khong'),
-(33, 19, '2000-02-08', 'Lao động tiên tiến', 'Khong'),
-(34, 19, '2013-03-08', 'Chiến sĩ thi đua Trung ương Đoàn', 'Khong');
+  `lydo` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `lylich_id` (`lylich_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
 
 -- --------------------------------------------------------
 
@@ -1267,12 +1118,14 @@ INSERT INTO `thidua` (`id`, `lylich_id`, `nam`, `danhhieu`, `lydo`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `thunhap` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `lylich_id` int(11) NOT NULL,
   `luong` int(11) NOT NULL COMMENT 'Don vi vnd',
   `nguonkhac` int(11) NOT NULL COMMENT 'Don vi vnd',
   `datcap_dientich` int(11) NOT NULL COMMENT 'Don vi m2',
-  `datmua_dientich` int(11) NOT NULL COMMENT 'Don vi m2'
+  `datmua_dientich` int(11) NOT NULL COMMENT 'Don vi m2',
+  PRIMARY KEY (`id`),
+  KEY `lylich_id` (`lylich_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -1284,7 +1137,8 @@ CREATE TABLE IF NOT EXISTS `thunhap` (
 CREATE TABLE IF NOT EXISTS `tinh` (
   `provinceid` varchar(5) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `type` varchar(30) NOT NULL
+  `type` varchar(30) NOT NULL,
+  PRIMARY KEY (`provinceid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -1363,26 +1217,14 @@ INSERT INTO `tinh` (`provinceid`, `name`, `type`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `tochucnuocngoai` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `lylich_id` int(11) NOT NULL,
   `lamgi` varchar(255) NOT NULL,
   `tochuc` varchar(255) NOT NULL,
-  `truso` varchar(255) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
-
---
--- Dumping data for table `tochucnuocngoai`
---
-
-INSERT INTO `tochucnuocngoai` (`id`, `lylich_id`, `lamgi`, `tochuc`, `truso`) VALUES
-(27, 16, 'In ấn tài liệu', 'Đại sứ quán Đức', 'Hà Nội'),
-(28, 16, 'Sao lưu tài liệu', 'Đại sứ quán Pháp', 'Hà Nội'),
-(29, 17, 'In ấn tài liệu', 'Đại sứ quán Đức', 'Hà Nội'),
-(30, 17, 'Sao lưu tài liệu', 'Đại sứ quán Pháp', 'Hà Nội'),
-(31, 18, 'In ấn tài liệu', 'Đại sứ quán Đức', 'Hà Nội'),
-(32, 18, 'Sao lưu tài liệu', 'Đại sứ quán Pháp', 'Hà Nội'),
-(33, 19, 'Nhiệm vụ', 'Tên tổ chức', 'Trụ sở'),
-(34, 19, 'Nhiệm vụ', 'Tên tổ chức', 'Trụ sở');
+  `truso` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `lylich_id` (`lylich_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
 
 -- --------------------------------------------------------
 
@@ -1395,7 +1237,9 @@ CREATE TABLE IF NOT EXISTS `xa` (
   `name` varchar(100) NOT NULL,
   `type` varchar(30) NOT NULL,
   `location` varchar(30) NOT NULL,
-  `districtid` varchar(5) NOT NULL
+  `districtid` varchar(5) NOT NULL,
+  PRIMARY KEY (`wardid`),
+  KEY `districtid` (`districtid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -12529,252 +12373,6 @@ INSERT INTO `xa` (`wardid`, `name`, `type`, `location`, `districtid`) VALUES
 ('32248', 'Đất Mũi', 'Xã', '8 36 41N, 104 47 12E', '973');
 
 --
--- Indexes for dumped tables
---
-
---
--- Indexes for table `chedocu`
---
-ALTER TABLE `chedocu`
- ADD PRIMARY KEY (`id`), ADD KEY `lylich_id` (`lylich_id`);
-
---
--- Indexes for table `chucvu`
---
-ALTER TABLE `chucvu`
- ADD PRIMARY KEY (`id`), ADD KEY `lylich_id` (`lylich_id`), ADD KEY `loaichucvu_id` (`loaichucvu_id`);
-
---
--- Indexes for table `congtac`
---
-ALTER TABLE `congtac`
- ADD PRIMARY KEY (`id`), ADD KEY `lylich_id` (`lylich_id`);
-
---
--- Indexes for table `daotao`
---
-ALTER TABLE `daotao`
- ADD PRIMARY KEY (`id`), ADD KEY `lylich_id` (`lylich_id`);
-
---
--- Indexes for table `donvicoso`
---
-ALTER TABLE `donvicoso`
- ADD PRIMARY KEY (`id`), ADD KEY `donvitructhuoc_id` (`donvitructhuoc_id`);
-
---
--- Indexes for table `donvitructhuoc`
---
-ALTER TABLE `donvitructhuoc`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `huyen`
---
-ALTER TABLE `huyen`
- ADD PRIMARY KEY (`districtid`), ADD KEY `provinceid` (`provinceid`);
-
---
--- Indexes for table `khenthuong`
---
-ALTER TABLE `khenthuong`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `kyluat`
---
-ALTER TABLE `kyluat`
- ADD PRIMARY KEY (`id`), ADD KEY `lylich_id` (`lylich_id`);
-
---
--- Indexes for table `loaichucvu`
---
-ALTER TABLE `loaichucvu`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `lylich`
---
-ALTER TABLE `lylich`
- ADD PRIMARY KEY (`id`), ADD KEY `quequan_huyen` (`quequan_huyen`), ADD KEY `quequan_tinh` (`quequan_tinh`);
-
---
--- Indexes for table `phamphap`
---
-ALTER TABLE `phamphap`
- ADD PRIMARY KEY (`id`), ADD KEY `lylich_id` (`lylich_id`);
-
---
--- Indexes for table `quanhegiadinh`
---
-ALTER TABLE `quanhegiadinh`
- ADD PRIMARY KEY (`id`), ADD KEY `lylich_id` (`lylich_id`);
-
---
--- Indexes for table `quatrinhluong`
---
-ALTER TABLE `quatrinhluong`
- ADD PRIMARY KEY (`id`), ADD KEY `lylich_id` (`lylich_id`);
-
---
--- Indexes for table `sohuudat`
---
-ALTER TABLE `sohuudat`
- ADD PRIMARY KEY (`id`), ADD KEY `lylich_id` (`lylich_id`);
-
---
--- Indexes for table `sohuunha`
---
-ALTER TABLE `sohuunha`
- ADD PRIMARY KEY (`id`), ADD KEY `lylich_id` (`lylich_id`);
-
---
--- Indexes for table `taikhoan`
---
-ALTER TABLE `taikhoan`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `thannhannuocngoai`
---
-ALTER TABLE `thannhannuocngoai`
- ADD PRIMARY KEY (`id`), ADD KEY `lylich_id` (`lylich_id`);
-
---
--- Indexes for table `thidua`
---
-ALTER TABLE `thidua`
- ADD PRIMARY KEY (`id`), ADD KEY `lylich_id` (`lylich_id`);
-
---
--- Indexes for table `thunhap`
---
-ALTER TABLE `thunhap`
- ADD PRIMARY KEY (`id`), ADD KEY `lylich_id` (`lylich_id`);
-
---
--- Indexes for table `tinh`
---
-ALTER TABLE `tinh`
- ADD PRIMARY KEY (`provinceid`);
-
---
--- Indexes for table `tochucnuocngoai`
---
-ALTER TABLE `tochucnuocngoai`
- ADD PRIMARY KEY (`id`), ADD KEY `lylich_id` (`lylich_id`);
-
---
--- Indexes for table `xa`
---
-ALTER TABLE `xa`
- ADD PRIMARY KEY (`wardid`), ADD KEY `districtid` (`districtid`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `chedocu`
---
-ALTER TABLE `chedocu`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
---
--- AUTO_INCREMENT for table `chucvu`
---
-ALTER TABLE `chucvu`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `congtac`
---
-ALTER TABLE `congtac`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=57;
---
--- AUTO_INCREMENT for table `daotao`
---
-ALTER TABLE `daotao`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
---
--- AUTO_INCREMENT for table `donvicoso`
---
-ALTER TABLE `donvicoso`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `donvitructhuoc`
---
-ALTER TABLE `donvitructhuoc`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `khenthuong`
---
-ALTER TABLE `khenthuong`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `kyluat`
---
-ALTER TABLE `kyluat`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
---
--- AUTO_INCREMENT for table `loaichucvu`
---
-ALTER TABLE `loaichucvu`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `lylich`
---
-ALTER TABLE `lylich`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=20;
---
--- AUTO_INCREMENT for table `phamphap`
---
-ALTER TABLE `phamphap`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
---
--- AUTO_INCREMENT for table `quanhegiadinh`
---
-ALTER TABLE `quanhegiadinh`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=67;
---
--- AUTO_INCREMENT for table `quatrinhluong`
---
-ALTER TABLE `quatrinhluong`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
---
--- AUTO_INCREMENT for table `sohuudat`
---
-ALTER TABLE `sohuudat`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
---
--- AUTO_INCREMENT for table `sohuunha`
---
-ALTER TABLE `sohuunha`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
---
--- AUTO_INCREMENT for table `taikhoan`
---
-ALTER TABLE `taikhoan`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `thannhannuocngoai`
---
-ALTER TABLE `thannhannuocngoai`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
---
--- AUTO_INCREMENT for table `thidua`
---
-ALTER TABLE `thidua`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
---
--- AUTO_INCREMENT for table `thunhap`
---
-ALTER TABLE `thunhap`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `tochucnuocngoai`
---
-ALTER TABLE `tochucnuocngoai`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
---
 -- Constraints for dumped tables
 --
 
@@ -12782,111 +12380,117 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
 -- Constraints for table `chedocu`
 --
 ALTER TABLE `chedocu`
-ADD CONSTRAINT `chedocu_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `chedocu_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `chucvu`
 --
 ALTER TABLE `chucvu`
-ADD CONSTRAINT `chucvu_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE,
-ADD CONSTRAINT `chucvu_ibfk_2` FOREIGN KEY (`loaichucvu_id`) REFERENCES `loaichucvu` (`id`);
+  ADD CONSTRAINT `chucvu_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `chucvu_ibfk_2` FOREIGN KEY (`loaichucvu_id`) REFERENCES `loaichucvu` (`id`);
 
 --
 -- Constraints for table `congtac`
 --
 ALTER TABLE `congtac`
-ADD CONSTRAINT `congtac_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `congtac_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `daotao`
 --
 ALTER TABLE `daotao`
-ADD CONSTRAINT `daotao_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `daotao_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `donvicoso`
 --
 ALTER TABLE `donvicoso`
-ADD CONSTRAINT `donvicoso_ibfk_1` FOREIGN KEY (`donvitructhuoc_id`) REFERENCES `donvitructhuoc` (`id`);
+  ADD CONSTRAINT `donvicoso_ibfk_1` FOREIGN KEY (`donvitructhuoc_id`) REFERENCES `donvitructhuoc` (`id`);
 
 --
 -- Constraints for table `huyen`
 --
 ALTER TABLE `huyen`
-ADD CONSTRAINT `huyen_ibfk_1` FOREIGN KEY (`provinceid`) REFERENCES `tinh` (`provinceid`);
+  ADD CONSTRAINT `huyen_ibfk_1` FOREIGN KEY (`provinceid`) REFERENCES `tinh` (`provinceid`);
 
 --
 -- Constraints for table `kyluat`
 --
 ALTER TABLE `kyluat`
-ADD CONSTRAINT `kyluat_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `kyluat_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `luanchuyen`
+--
+ALTER TABLE `luanchuyen`
+  ADD CONSTRAINT `luanchuyen_ibfk_1` FOREIGN KEY (`canbo_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `lylich`
 --
 ALTER TABLE `lylich`
-ADD CONSTRAINT `lylich_ibfk_2` FOREIGN KEY (`quequan_huyen`) REFERENCES `huyen` (`districtid`),
-ADD CONSTRAINT `lylich_ibfk_3` FOREIGN KEY (`quequan_tinh`) REFERENCES `tinh` (`provinceid`);
+  ADD CONSTRAINT `lylich_ibfk_2` FOREIGN KEY (`quequan_huyen`) REFERENCES `huyen` (`districtid`),
+  ADD CONSTRAINT `lylich_ibfk_3` FOREIGN KEY (`quequan_tinh`) REFERENCES `tinh` (`provinceid`);
 
 --
 -- Constraints for table `phamphap`
 --
 ALTER TABLE `phamphap`
-ADD CONSTRAINT `phamphap_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `phamphap_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `quanhegiadinh`
 --
 ALTER TABLE `quanhegiadinh`
-ADD CONSTRAINT `quanhegiadinh_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `quanhegiadinh_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `quatrinhluong`
 --
 ALTER TABLE `quatrinhluong`
-ADD CONSTRAINT `quatrinhluong_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `quatrinhluong_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `sohuudat`
 --
 ALTER TABLE `sohuudat`
-ADD CONSTRAINT `sohuudat_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `sohuudat_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `sohuunha`
 --
 ALTER TABLE `sohuunha`
-ADD CONSTRAINT `sohuunha_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `sohuunha_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `thannhannuocngoai`
 --
 ALTER TABLE `thannhannuocngoai`
-ADD CONSTRAINT `thannhannuocngoai_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `thannhannuocngoai_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `thidua`
 --
 ALTER TABLE `thidua`
-ADD CONSTRAINT `thidua_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `thidua_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `thunhap`
 --
 ALTER TABLE `thunhap`
-ADD CONSTRAINT `thunhap_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `thunhap_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `tochucnuocngoai`
 --
 ALTER TABLE `tochucnuocngoai`
-ADD CONSTRAINT `tochucnuocngoai_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `tochucnuocngoai_ibfk_1` FOREIGN KEY (`lylich_id`) REFERENCES `lylich` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `xa`
 --
 ALTER TABLE `xa`
-ADD CONSTRAINT `xa_ibfk_1` FOREIGN KEY (`districtid`) REFERENCES `huyen` (`districtid`);
+  ADD CONSTRAINT `xa_ibfk_1` FOREIGN KEY (`districtid`) REFERENCES `huyen` (`districtid`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
