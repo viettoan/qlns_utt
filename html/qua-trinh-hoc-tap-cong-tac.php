@@ -184,9 +184,9 @@ if( !isset($_SESSION["login_user"]) ) {
                         <td style="width: 15%;"><b>Văn bằng</b><br></td>
                         </tr>
                         <tr>
-                        <td style="width: 20%;">ĐH Công nghệ - ĐHQGHN<br></td>
+                        <td style="width: 20%;">ĐH Công nghệ - GTVT<br></td>
                         <td style="width: 30%;">Công nghệ thông tin<br></td>
-                        <td style="width: 20%;">8/2010-8/2014<br></td>
+                        <td style="width: 20%;">8/2010-8/2015<br></td>
                         <td style="width: 15%;"><select class="form-control" id="selectquanham">
                         <option select="">Chính quy
                         </option><option>Tại chức

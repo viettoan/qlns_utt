@@ -1,0 +1,121 @@
+Option Explicit
+Sub Auto_Open()
+  Dim queProvince As DropDown
+  Dim nsProvince As DropDown
+  Dim dvTrucThuoc As DropDown
+  Dim dvCoSo As DropDown
+  Dim sArray, Arr, sArray1, nsArr, dvArray, dvArr
+  On Error Resume Next
+  sArray = Sheet2.Range("A2:A1000").Value
+  sArray1 = Sheet2.Range("A2:A1000").Value
+  dvArray = Sheet3.Range("A2:A1000").Value
+  Set queProvince = Sheet1.DropDowns("queProvince")
+  Set nsProvince = Sheet1.DropDowns("nsProvince")
+  Set dvTrucThuoc = Sheet1.DropDowns("dvTrucThuoc")
+  Arr = UniqueList(sArray)
+  nsArr = UniqueList(sArray1)
+  dvArr = UniqueList(dvArray)
+  If IsArray(Arr) Then queProvince.List() = Arr
+  If IsArray(nsArr) Then nsProvince.List() = nsArr
+  If IsArray(dvArr) Then dvTrucThuoc.List() = dvArr
+End Sub
+
+Sub dvTrucThuoc_Change()
+  Dim dvCoSo As DropDown
+  Dim sTrucThuoc As String, sArray, Arr()
+  Dim lR As Long, n As Long
+  On Error Resume Next
+  sArray = Sheet3.Range("A2:B1000").Value
+  Set dvCoSo = Sheet1.DropDowns("dvCoso")
+  With Sheet1.DropDowns("dvTrucThuoc")
+    sTrucThuoc = .List(.Value)
+  End With
+  For lR = 1 To UBound(sArray, 1)
+    If sArray(lR, 1) = sTrucThuoc Then
+      n = n + 1
+      ReDim Preserve Arr(1 To n)
+      Arr(n) = sArray(lR, 2)
+    End If
+  Next
+  If n Then dvCoSo.List = Arr
+  'set value to cell for PHPExcel reader
+  ActiveSheet.Range("dvTrucThuoc2").Value = sTrucThuoc
+End Sub
+
+
+Sub queProvince_Change()
+  Dim queDistrict As DropDown
+  Dim sProvince As String, sArray, Arr()
+  Dim lR As Long, n As Long
+  On Error Resume Next
+  sArray = Sheet2.Range("A2:B1000").Value
+  Set queDistrict = Sheet1.DropDowns("queDistrict")
+  With Sheet1.DropDowns("queProvince")
+    sProvince = .List(.Value)
+  End With
+  For lR = 1 To UBound(sArray, 1)
+    If sArray(lR, 1) = sProvince Then
+      n = n + 1
+      ReDim Preserve Arr(1 To n)
+      Arr(n) = sArray(lR, 2)
+    End If
+  Next
+  If n Then queDistrict.List = Arr
+  'set value to cell for PHPExcel reader
+  ActiveSheet.Range("queProvince2").Value = sProvince
+  ActiveSheet.Range("queDistrict2").Value = ""
+End Sub
+
+Sub nsProvince_Change()
+  Dim nsDistrict As DropDown
+  Dim sProvince As String, sArray, Arr()
+  Dim lR As Long, n As Long
+  On Error Resume Next
+  sArray = Sheet2.Range("A2:B1000").Value
+  Set nsDistrict = Sheet1.DropDowns("nsDistrict")
+  With Sheet1.DropDowns("nsProvince")
+    sProvince = .List(.Value)
+  End With
+  For lR = 1 To UBound(sArray, 1)
+    If sArray(lR, 1) = sProvince Then
+      n = n + 1
+      ReDim Preserve Arr(1 To n)
+      Arr(n) = sArray(lR, 2)
+    End If
+  Next
+  If n Then nsDistrict.List = Arr
+  'set value to cell for PHPExcel reader
+  ActiveSheet.Range("nsProvince2").Value = sProvince
+  ActiveSheet.Range("nsDistrict2").Value = ""
+End Sub
+
+
+Function UniqueList(ParamArray sArray())
+  Dim Item, TmpArr, SubArr
+  On Error Resume Next
+  With CreateObject("Scripting.Dictionary")
+    For Each SubArr In sArray
+      TmpArr = SubArr
+      If TypeName(TmpArr) <> "Variant()" Then
+        If TmpArr <> "" Then .Add TmpArr, ""
+      Else
+        For Each Item In TmpArr
+          If Item <> "" Then
+            If Not .Exists(Item) Then .Add Item, ""
+          End If
+        Next
+      End If
+    Next
+    UniqueList = .Keys
+  End With
+End Function
+
+Sub InsertCopyRow1()
+    ActiveCell.Offset(1, 0).EntireRow.Insert
+    ActiveCell.EntireRow.Copy ActiveCell.Offset(1, 0).EntireRow
+End Sub
+
+Sub InsertCopyColumn()
+    ActiveCell.Offset(1, 0).EntireColumn.Insert
+    ActiveCell.EntireColumn.Copy ActiveCell.Offset(1, 0).EntireColumn
+End Sub

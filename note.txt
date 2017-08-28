@@ -1,0 +1,6 @@
+ALTER TABLE `quanlynhansu`.`loaichucvu` 
+CHANGE COLUMN `id` `id` INT(11) NOT NULL AUTO_INCREMENT ,
+ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `quanlynhansu`.`loaichucvu` 
+CHANGE COLUMN `ten` `ten` VARCHAR(255) NOT NULL ;

@@ -15,7 +15,7 @@
   define('EOL',(PHP_SAPI == 'cli') ? PHP_EOL : '<br />');
 
   date_default_timezone_set('Europe/London');
-
+  //$songayconlai = "30 DAY";
   /** Include PHPExcel_IOFactory */
   require_once '../../lib/PHPExcel/Classes/PHPExcel/IOFactory.php';
 
@@ -27,14 +27,46 @@
   // Lay file mau
   $objPHPExcel = PHPExcel_IOFactory::load("../../../file_export/huu_tri/danhsach_form.xlsx");
 
-  $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G3', date("Y"));
+  $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G3', '2017');
 
   // Lay du lieu tu CSDL
   $i = 1;
   $r = 7; // Dong dau tien
 
+
+  function get_csdt($id) { // Cơ sở đào tạo
+    $sql = "SELECT * FROM cosodaotao WHERE cosodaotaoid=$id";
+    $result = mysql_query($sql);
+    $row = mysql_fetch_array($result);
+    return $row['name'];
+  }
+
+  function get_kpb($id) { // KHoa phòng ban
+    $sql = "SELECT * FROM khoaphongban WHERE khoaphongbanid=$id";
+    $result = mysql_query($sql);
+    $row = mysql_fetch_array($result);
+    return $row['name'];
+  }
+
+  function get_bmt($id) { // Bộ môn tổ
+    $sql = "SELECT * FROM bomonto WHERE bomontoid=$id";
+    $result = mysql_query($sql);
+    $row = mysql_fetch_array($result);
+    return $row['name'];
+  }
+
   // Thong bao truoc 6 thang han 60 tuoi NAM hoac 55 tuoi NU
-  $sql = "SELECT * FROM lylich WHERE (gioitinh = 1 AND DATEDIFF(curdate(),ngaysinh)>(60*365-6*30)) OR (gioitinh = 0 AND DATEDIFF(curdate(),ngaysinh)>(55*365-6*30))";
+  $sql = "SELECT *, datediff(ngaynghihuu, date(now())) as songayconlai
+          FROM (
+            SELECT id, hoten, ngaysinh, sohieucanbo, gioitinh, chucvu, bomonto_id, cosodaotao_id, khoaphongban_id,
+              (CASE 
+                WHEN gioitinh = 1 THEN DATE_ADD(ngaysinh, INTERVAL 60 YEAR) 
+                ELSE DATE_ADD(ngaysinh, INTERVAL 55 YEAR) 
+              END) as 'ngaynghihuu'
+            FROM lylich  
+          ) H
+          WHERE year(H.ngaynghihuu) = 2017 
+          ORDER BY ngaynghihuu";
   $result = mysql_query($sql);
   while ($row = mysql_fetch_array($result)){
 	  $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.(string)($r), $i);
@@ -43,8 +75,25 @@
       $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.(string)($r), date("d-m-Y",strtotime($row["ngaysinh"])));
     else
       $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.(string)($r), date("d-m-Y",strtotime($row["ngaysinh"])));
-	  $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.(string)($r), $row["chucvu"]." - ".$row["donvicoso"]);
-	  $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.(string)($r), $row["ngachcongchuc_ten"]." - ".$row["luong"]);
+	  $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.(string)($r), 
+      ( $row["chucvu"] == "" ? "" : ($row["chucvu"] . " - ") ) . 
+      ( $row["donvicoso"] == "" ? "" : ($row["donvicoso"] . " - ") ) . 
+      ( get_bmt($row["bomonto_id"]) == "" ? "" : (get_bmt($row["bomonto_id"]) . " - ")  ) . 
+      ( get_kpb($row["khoaphongban_id"]) == "" ? "" : (get_kpb($row["khoaphongban_id"]) . " - ") ) . 
+      ( get_csdt($row["cosodaotao_id"]) == "" ? "" : (get_csdt($row["cosodaotao_id"])))
+    );
+
+    $sql = "SELECT * FROM quatrinhluong WHERE lylich_id = " . $row['id'] . " AND thoidiem = (SELECT max(thoidiem) FROM quatrinhluong WHERE lylich_id=" . $row['id'] . ")";
+    $result_ngach = mysql_query($sql);
+    $row_ngach = mysql_fetch_array($result_ngach);
+	  $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.(string)($r), $row_ngach["ngach"]);
+
+    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.(string)($r), date("d-m-Y",strtotime($row["ngaynghihuu"])));
+
+    $result_nghihuu = mysql_query("SELECT * FROM luanchuyen WHERE canbo_id = " . $row['id']);
+    $row_nghihuu = mysql_fetch_array($result_nghihuu);
+    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.(string)($r), ($row_nghihuu["ngaydieuchuyen"] == '') ? '' :date("d-m-Y",strtotime($row_nghihuu["ngaydieuchuyen"])));
+    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.(string)($r), $row_nghihuu["lydodieuchuyen"]);
 	  $r++;
 	  $i++;
 	}

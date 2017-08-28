@@ -29,17 +29,32 @@ list($ok, $err) = nhapTatCa();
     <div class="art-shapes">
     </div>
     <nav class="art-nav">
-      <ul class="art-hmenu">
-	    <li>
-		  <a href="../NhapFileCB/PLNhapFileCB.php" class="active">Nhập lý lịch</a>
+    <ul class="art-hmenu">
+        <li>
+            <a href="../NhapFileCB/PLNhapFileCB.php" class="active">Nhập lý lịch</a>
           <ul class="active">
             <li><a href="../CapNhatFileCB/PLCapNhatCB.php" >Cập nhật lý lịch</a></li>
           </ul>
+      </li>
+      <li>
+        <a href="../NhapFileCB/PLDanhSachCB.php">Danh sách cán bộ</a>
+          <ul>            
+            <!--li><a href="" >Tìm kiếm</a></li-->
+            <!--li><a href="../DieuChuyenCB/PLDieuChuyenCB.php" >Điều chuyển</a></li-->
+            <!--li><a href="../NhapFileCB/PLTienIch.php" >Tiện ích</a></li-->            
+          </ul>
+      </li>
+        <li><a href="../NhapFileCB/PLDanhSachTK.php">Thống kê</a>
+          <!--ul>            
+            <li><a href="" >Thống kê M1</a></li>                
+          </ul-->
         </li>
-        <li><a href="../NhapFileCB/PLDanhSachCB.php" class="">Danh sách cán bộ</a></li>
-		<li><a href="../DieuChuyenCB/PLDieuChuyenCB.php" class="">Điều chuyển</a></li>
-        <li><a href="../NhapFileCB/PLTienIch.php" class="">Tiện ích</a></li>
-        </ul>
+        <li><a href="">Báo cáo</a>
+          <!--ul>
+            <li><a href="" >Báo cáo B1</a></li>                    
+          </ul-->
+        </li>        
+      </ul>
       <ul class="art-hmenu-user">
         <li>
           <a href="#" >Chào, <?=$_SESSION["username_user"]?></a>
@@ -51,7 +66,10 @@ list($ok, $err) = nhapTatCa();
         </li>
       </ul>
     </nav>
-  </header>
+</header>
+  <?php
+      //include("../../header1.php");
+      ?>
   <div class="art-layout-wrapper">
     <div class="art-content-layout">
       <div class="art-content-layout-row">
@@ -200,11 +218,11 @@ list($ok, $err) = nhapTatCa();
                 <div class="art-content-layout-row">
                   <div class="art-layout-cell layout-item-3" style="width: 50%" >
                     <p>
-                    	Đoàn TNCS Hồ Chí Minh
+                    	Cán bộ trường ĐHCNGTVT
                     </p>
                   </div>
                   <div class="art-layout-cell layout-item-3" style="width: 50%" >
-                    <p style="float: right;">Hệ thống được phát triển bởi nhóm SV ĐH Công Nghệ</p>
+                    <p style="float: right;">Hệ thống được phát triển bởi Khoa công nghệ, ĐH Công nghệ GTVT</p>
                   </div>
                 </div>
               </div>

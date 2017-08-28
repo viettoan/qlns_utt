@@ -1,6 +1,6 @@
 <head><!-- Created by Artisteer v4.1.0.59861 -->
     <meta charset="utf-8">
-    <title>Quản lý cán bộ đoàn</title>
+    <title>Quản lý nhân sự trường ĐHCNGTVT</title>
     <link href="../../images/doanthanhnien.ico" rel="shortcut icon" />
     <meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
 
@@ -15,7 +15,7 @@
     <script src="../../js/script.responsive.js"></script>
 
 	<style>.art-content .art-postcontent-0 .layout-item-0 { color: #0B0D0E; background: #E1EBEF; padding: 20px;  }
-	.art-content .art-postcontent-0 .layout-item-1 { padding: 20px;  }
+	.art-content .art-postcontent-0 .layout-item-1 { padding: 10px;  }
 	.art-content .art-postcontent-0 .layout-item-2 { color: #1C1C1C; background: #FFE8D7;  }
 	.art-content .art-postcontent-0 .layout-item-3 { color: #1C1C1C; padding: 20px;  }
 	.ie7 .art-post .art-layout-cell {border:none !important; padding:0 !important; }

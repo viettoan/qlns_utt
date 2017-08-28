@@ -25,7 +25,7 @@ list($ok, $err) = nhapTatCa();
 //die('here');
 ?>
 <body>
-  <header class="art-header">
+  <!--header class="art-header">
     <div class="art-shapes">
     </div>
     <nav class="art-nav">
@@ -42,7 +42,7 @@ list($ok, $err) = nhapTatCa();
       </ul>
       <ul class="art-hmenu-user">
         <li>
-          <a href="#" >Chào, <?=$_SESSION["username_user"]?></a>
+          <a href="#" >Chào, <?//=$_SESSION["username_user"]?></a>
           <ul class="active">
             <li><a href="#">Hộp thư</a></li>
             <li><a href="../QLTaikhoan/PLchangepass.php">Đổi mật khẩu</a></li>
@@ -51,7 +51,10 @@ list($ok, $err) = nhapTatCa();
         </li>
       </ul>
     </nav>
-  </header>
+  </header-->
+  <?php
+      include("../../header1.php");
+      ?>
   <div class="art-layout-wrapper">
     <div class="art-content-layout">
       <div class="art-content-layout-row">
@@ -200,11 +203,11 @@ list($ok, $err) = nhapTatCa();
                 <div class="art-content-layout-row">
                   <div class="art-layout-cell layout-item-3" style="width: 50%" >
                     <p>
-                    	Đoàn TNCS Hồ Chí Minh
+                    	Cán bộ trường ĐHCNGTVT
                     </p>
                   </div>
                   <div class="art-layout-cell layout-item-3" style="width: 50%" >
-                    <p style="float: right;">Hệ thống được phát triển bởi nhóm SV ĐH Công Nghệ</p>
+                    <p style="float: right;">Hệ thống được phát triển bởi Khoa công nghệ, ĐH Công nghệ GTVT</p>
                   </div>
                 </div>
               </div>

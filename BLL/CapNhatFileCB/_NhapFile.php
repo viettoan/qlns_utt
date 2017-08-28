@@ -43,8 +43,12 @@ class MyGetter {
 		}
 		
 		// empty value with option flag dont need be checked for error
-		if (($val == "") && ($flag & self::$FLAG_OPTION))
+		//if (($val == "") && ($flag & self::$FLAG_OPTION))
+		if ((($val == "") && ($flag & self::$FLAG_OPTION)) || (($val == "") && ($flag == 0)))
 			return $val;
+
+		
+
 
 		// check if cell has value
 		if ( (($val == "") && 0 == ($flag & self::$FLAG_OPTION))
@@ -238,6 +242,8 @@ class MyGetter {
 		catch (Exception $ex){
 			$cell = false;
 			$this->_isValidExcelFile = false;
+			var_dump("cellName=".$cellName."---".$ex->getMessage());
+			die();
 		}
 		return $cell;
 	}
@@ -390,16 +396,22 @@ function xuLyFile2($fileName){
 	buildQuery($sql, 'chucvu', $chucVu);
 	//***$phuCapCV = $myget->getCell("phucap_chucvu", "Mục 9: Phụ cấp chức vụ");
 	//4
-	$ngaySinh = $myget->getCell("ngaysinh", "Mục 3: ngày sinh", MyGetter::$FLAG_DATE);
+	$ngaySinh = $myget->getCell("ngaysinh", "Mục 3: ngày sinh", MyGetter::$FLAG_OPTION);	
+	if($ngaySinh != "")
+		$ngaySinh = $myget->getCell("ngaysinh", "Mục 3: ngày sinh", MyGetter::$FLAG_DATE);
 	convertDate($ngaySinh);
 	buildQuery($sql, 'ngaysinh', $ngaySinh);
 	
 	//14
-	$ngayVaoDang = $myget->getCell("dang_ngayvao", "Mục 9: Ngày vào Đảng Cộng Sản", MyGetter::$FLAG_DATE);
+	$ngayVaoDang = $myget->getCell("dang_ngayvao", "Mục 9: Ngày vào Đảng Cộng Sản", MyGetter::$FLAG_OPTION);	
+	if($ngayVaoDang != "")
+		$ngayVaoDang = $myget->getCell("dang_ngayvao", "Mục 9: Ngày vào Đảng Cộng Sản", MyGetter::$FLAG_DATE);
 	convertDate($ngayVaoDang);
 	buildQuery($sql, 'dangcongsan_ngayvao', $ngayVaoDang);
 	
-	$ngayChinhThucDang = $myget->getCell("dang_ngaychinhthuc", "Mục 9: Ngày vào Đảng Cộng Sản chính thức", MyGetter::$FLAG_DATE);
+	$ngayChinhThucDang = $myget->getCell("dang_ngaychinhthuc", "Mục 9: Ngày vào Đảng Cộng Sản chính thức", MyGetter::$FLAG_OPTION);	
+	if($ngayChinhThucDang != "")
+		$ngayChinhThucDang = $myget->getCell("dang_ngaychinhthuc", "Mục 9: Ngày vào Đảng Cộng Sản chính thức", MyGetter::$FLAG_DATE);
 	convertDate($ngayChinhThucDang);
 	buildQuery($sql, 'dangcongsan_ngaychinhthuc', $ngayChinhThucDang);
 	
@@ -412,7 +424,10 @@ function xuLyFile2($fileName){
 	buildQuery($sql, 'ngachcongchuc_bacluong', $bacLuong);
 	$heSoLuong = $myget->getCell("luong_heso", "Mục 8: Hệ số lương");
 	buildQuery($sql, 'ngachcongchuc_heso', $heSoLuong);
-	$ngayLuong = $myget->getCell("ngayluong", "Mục 8: Ngày lương", MyGetter::$FLAG_MONTHDATE);
+
+	$ngayLuong = $myget->getCell("ngayluong", "Mục 8: Ngày lương", MyGetter::$FLAG_OPTION);	
+	if($ngayLuong != "")
+		$ngayLuong = $myget->getCell("ngayluong", "Mục 8: Ngày lương", MyGetter::$FLAG_MONTHDATE);
 	$tmp = explode('/', $ngayLuong);
 	if (count($tmp) == 2){
 		$ngayLuongNam = $tmp[1];
@@ -421,7 +436,8 @@ function xuLyFile2($fileName){
 		$ngayLuongNam = "";
 		$ngayLuongThang = "";
 	}
-	buildQuery($sql, 'ngachcongchuc_thang', "$ngayLuongNam-$ngayLuongThang");
+	buildQuery($sql, 'ngachcongchuc_thang', "$ngayLuongThang");
+	buildQuery($sql, 'ngachcongchuc_nam', "$ngayLuongNam");
 	
 	//20
 	$tmp = $myget->getCell2(array(
@@ -455,54 +471,82 @@ function xuLyFile2($fileName){
 	
 	buildQuery($sql, 'luong', $luong);
 	buildQuery($sql, 'thunhapkhac', $nguonKhac);
-	
-	
+
+	//var_dump("----cmnd:".$cmnd."-----");
+	$lylich_id = getLyLichIdFromCmnd($cmnd);
+	//var_dump("lylich_id=".$lylich_id."----cmnd:".$cmnd);
+	//die();	
 	//
 	// insert to lylich
 	//
-	$sql = $sql . " cmnd = $cmnd where cmnd = $cmnd ";
-	
-	// execute sql if no error found
+	$sql = $sql . " cmnd = '$cmnd' where id = $lylich_id ";
+	//var_dump("vao day 1 sql=".$sql);
+	//die();
+	// execute sql if no error found	
 	$success = $success && $myget->getReturnCode();
 	if ($success){
+		//var_dump("vao day 1 sql=".$sql);
+		//die();
 		$result = mysql_query($sql);
 		if (!$result){
 			die(mysql_error());
 		}
-	}
-	$lylich_id = getLyLichIdFromCmnd($cmnd);
+		echo "<p>ok ly lich</p>";
+	}		
 	
 	//
 	// tbl_daotao
 	//
 	list($x, $y) = $myget->getAddressCell("tbl_daotao");
 	$y++;
-	$array = $myget->getCellTable("A".$y, array(
-		array("cellName" => "A", "description" => "Mục 26: Tên trường", "flag"=> 0),
+	$array = $myget->getCellTable("B".$y, array(
+		array("cellName" => "B", "description" => "Mục 26: Tên trường", "flag"=> 0),
 		array("cellName" => "D", "description" => "Mục 26: Ngành học hoặc tên lớp", "flag"=> 0), 
-		array("cellName" => "H", "description" => "Mục 26: Thời gian học", "flag"=> MyGetter::$FLAG_2DATE),
-		array("cellName" => "K", "description" => "Mục 26: Hình thức học", "flag"=> 0),
-		array("cellName" => "M", "description" => "Mục 26: Văn bằng, chứng chỉ", "flag"=> 0),), false);
+		//array("cellName" => "H", "description" => "Mục 26: Thời gian học", "flag"=> MyGetter::$FLAG_2DATE),
+		array("cellName" => "H", "description" => "Mục 26: Thời gian học", "flag"=> 0),
+		array("cellName" => "J", "description" => "Mục 26: Hình thức học", "flag"=> 0),
+		array("cellName" => "L", "description" => "Mục 26: Văn bằng, chứng chỉ", "flag"=> 0),
+		array("cellName" => "N", "description" => "Mục 26: Nơi đào tạo", "flag"=> 0),
+		array("cellName" => "P", "description" => "Mục 26: Khóa học", "flag"=> 0),
+		array("cellName" => "Q", "description" => "Mục 26: Đi theo đề án", "flag"=> 0),
+		array("cellName" => "R", "description" => "Mục 26: Đi theo quyết định số", "flag"=> 0),
+		array("cellName" => "S", "description" => "Mục 26: Thời điểm cử đi", "flag"=> 0),
+		array("cellName" => "U", "description" => "Mục 26: Đối tượng cử đi", "flag"=> 0),), false);
 	//var_dump($array);
 	if ($array != false && $success){
+		//var_dump($array);
 		foreach ($array as $row){
-			$tenTruong 		= $row['A'.$y];
+			$tenTruong 		= $row['B'.$y];
 			$nganhHoc 		= $row['D'.$y];
 			$thoiGianHoc 	= $row['H'.$y];
-			$hinhThucHoc 	= $row['K'.$y];
-			$vanBang 		= $row['M'.$y];
+			$hinhThucHoc 	= $row['J'.$y];
+			$vanBang 		= $row['L'.$y];
+			$noidaotao 		= $row['N'.$y];
+			$khoahoc 		= $row['P'.$y];
+			$dean 			= $row['Q'.$y];
+			$quyetdinh 		= $row['R'.$y];
+			$ngaycudi 		= $row['S'.$y];
+			$doituong 		= $row['U'.$y];
 			
-			// insert to database
-			$sql = "INSERT INTO `QLCBDoan`.`daotao` (`id`, `lylich_id`, `tentruong`, `nganhhoc`, 
-			`thoigianhoc`, `hinhthuchoc`, `vanbang`, `daotao_boiduong`) 
-			VALUES (NULL, '$lylich_id', '$tenTruong', '$nganhHoc', 
-			'$thoiGianHoc', '$hinhThucHoc', '$vanBang', '0')";
-			
-			$result = mysql_query($sql);
-			if (!$result){
-				die(mysql_error());
+			// insert to database, 			
+			$sql = "";
+			if(!empty($tenTruong)){
+				if($hinhThucHoc=="Bồi dưỡng")
+				$sql = "INSERT INTO `qlnscongnghegtvt`.`daotao` (`id`, `lylich_id`, `tentruong`, `nganhhoc`, 
+				`thoigianhoc`, `hinhthuchoc`, `vanbang`, `daotao_boiduong`, `noidaotao`, `khoahoc`, `dean`, `quyetdinh`, `doituong`, `ngaycudi`) 
+				VALUES (NULL, '$lylich_id', '$tenTruong', '$nganhHoc', 
+				'$thoiGianHoc', '$hinhThucHoc', '$vanBang', '1', '$noidaotao', '$khoahoc', '$dean', '$quyetdinh', '$doituong', '$ngaycudi')";
+				else
+					$sql = "INSERT INTO `qlnscongnghegtvt`.`daotao` (`id`, `lylich_id`, `tentruong`, `nganhhoc`, 
+				`thoigianhoc`, `hinhthuchoc`, `vanbang`, `daotao_boiduong`, `noidaotao`, `khoahoc`, `dean`, `quyetdinh`, `doituong`, `ngaycudi`) 
+				VALUES (NULL, '$lylich_id', '$tenTruong', '$nganhHoc', 
+				'$thoiGianHoc', '$hinhThucHoc', '$vanBang', '0', '$noidaotao', '$khoahoc', '$dean', '$quyetdinh', '$doituong', '$ngaycudi')";
+				$result = mysql_query($sql);
+				if (!$result){
+					die(mysql_error());
+				}
+				echo "<p>ok daotao</p>";
 			}
-			//echo "<p>ok daotao</p>";
 			$y++;
 		}
 	}
@@ -528,14 +572,16 @@ function xuLyFile2($fileName){
 			$hinhThucKL 	= $row['J'.$y];
 			
 			// insert to database
-			$sql = "INSERT INTO `QLCBDoan`.`kyluat` (`id`, `lylich_id`, `capquyetdinh`, `nam`, `lydo`, `hinhthuc`) 
-			VALUES (NULL, '$lylich_id', '$capQuyetDinh', '$namKL', '$lyDoKL', '$hinhThucKL')";
-	
-			$result = mysql_query($sql);
-			if (!$result){
-				die(mysql_error());
+			if(!empty($capQuyetDinh)){
+				$sql = "INSERT INTO `qlnscongnghegtvt`.`kyluat` (`id`, `lylich_id`, `capquyetdinh`, `nam`, `lydo`, `hinhthuc`) 
+				VALUES (NULL, '$lylich_id', '$capQuyetDinh', '$namKL', '$lyDoKL', '$hinhThucKL')";
+		
+				$result = mysql_query($sql);
+				if (!$result){
+					die(mysql_error());
+				}
+				echo "<p>ok kyluat</p>";
 			}
-			//echo "<p>ok kyluat</p>";
 			$y++;
 		}
 	}
@@ -548,23 +594,31 @@ function xuLyFile2($fileName){
 	$array = $myget->getCellTable("$x$y", array(
 		array("cellName" => "B", "description" => "Mục 29: Tên tổ chức", "flag"=> 0),
 		array("cellName" => "E", "description" => "Mục 29: Trụ sở", "flag"=> 0),
-		array("cellName" => "H", "description" => "Mục 29: Nhiệm vụ", "flag"=> 0),), false);
+		array("cellName" => "H", "description" => "Mục 29: Nhiệm vụ", "flag"=> 0),
+		array("cellName" => "P", "description" => "Mục 29: Từ ngày", "flag"=> 0),
+		array("cellName" => "R", "description" => "Mục 29: Đến ngày", "flag"=> 0),), false);
 	//var_dump($array);
 	if ($array != false && $success){
 		foreach ($array as $row){
 			$tenToChuc 	= $row['B'.$y];
 			$truSo 		= $row['E'.$y];
 			$nhiemVu 	= $row['H'.$y];
+			$tuNgay 	= $row['P'.$y];
+			$denNgay 	= $row['R'.$y];
+			convertDate($tuNgay);
+			convertDate($denNgay);
 	
 			// insert to database
-			$sql = "INSERT INTO `QLCBDoan`.`tochucnuocngoai` (`id`, `lylich_id`, `lamgi`, `tochuc`, `truso`) 
-			VALUES (NULL, '$lylich_id', '$nhiemVu', '$tenToChuc', '$truSo')";
-	
-			$result = mysql_query($sql);
-			if (!$result){
-				die(mysql_error());
+			if(!empty($tenToChuc)){
+				$sql = "INSERT INTO `qlnscongnghegtvt`.`tochucnuocngoai` (`id`, `lylich_id`, `lamgi`, `tochuc`, `truso`, `tungay`, `denngay`) 
+				VALUES (NULL, '$lylich_id', '$nhiemVu', '$tenToChuc', '$truSo', '$tuNgay', '$denNgay')";
+		
+				$result = mysql_query($sql);
+				if (!$result){
+					die(mysql_error());
+				}
+				echo "<p>ok tochucnuocngoai</p>";
 			}
-			//echo "<p>ok tochucnuocngoai</p>";
 			$y++;
 		}
 	}
@@ -627,45 +681,49 @@ function xuLyFile2($fileName){
 				VALUES (NULL, '$lylich_id', '{$row['quanhe']}', '{$row['hoten']}', '{$row['namsinh']}', '{$row['mota']}', '0')";
 		}
 		
-		$result = mysql_query($sql);
-		if (!$result){
-			die(mysql_error());
+		if(!empty($hoten)){
+			$result = mysql_query($sql);
+			if (!$result){
+				die(mysql_error());
+			}
+			echo "<p>ok quanhegiadinh</p>";
 		}
 	}
 	
 	//
 	// tbl_quatrinhluong
 	//
-	list($x, $y) = $myget->getAddressCell("tbl_qtluong"); $y++;
+	list($x, $y) = $myget->getAddressCell("tbl_hoancanhgiadinh"); $y++;
 	$array = $myget->getCellTable("$x$y", array(
 		array("cellName" => "B", "description" => "Mục 31: Tháng/Năm", "flag"=> MyGetter::$FLAG_MONTHDATE),
-		array("cellName" => "D", "description" => "Mục 31: Ngạch", "flag"=> 0),
-		array("cellName" => "E", "description" => "Mục 31: Bậc", "flag"=> 0),
-		array("cellName" => "F", "description" => "Mục 31: Hế số lương", "flag"=> 0),), false);
+		array("cellName" => "C", "description" => "Mục 31: Ngạch", "flag"=> 0),
+		array("cellName" => "D", "description" => "Mục 31: Bậc", "flag"=> 0),
+		array("cellName" => "E", "description" => "Mục 31: Hế số lương", "flag"=> 0),
+		array("cellName" => "F", "description" => "Mục 31: Vượt khung", "flag"=> 0),), false);
 	//var_dump($array);
 	if ($array != false && $success){
 		foreach ($array as $row){
 			$thoidiem 	= $row['B'.$y];
-			$ngach 		= $row['D'.$y];
-			$bac 		= $row['E'.$y];
-			$heso 		= $row['F'.$y];
-			
+			$ngach 		= $row['C'.$y];
+			$bac 		= $row['D'.$y];
+			$heso 		= $row['E'.$y];
+			$vuotkhung 	= $row['F'.$y];
 			convertDate($thoidiem);
 	
 			// insert to database
-			$sql = "INSERT INTO `QLCBDoan`.`quatrinhluong` (`id`, `lylich_id`, `thoidiem`, `ngach`, `bac`, `heso`) 
-			VALUES (NULL, '$lylich_id', '$thoidiem', '$ngach', '$bac', '$heso')";
-	
-			$result = mysql_query($sql);
-			if (!$result){
-				die(mysql_error());
+			if(!empty($thoidiem)){
+				$sql = "INSERT INTO `qlnscongnghegtvt`.`quatrinhluong` (`id`, `lylich_id`, `thoidiem`, `ngach`, `bac`, `heso`, `vuotkhung`) 
+				VALUES (NULL, '$lylich_id', '$thoidiem', '$ngach', '$bac', '$heso', '$vuotkhung')";
+
+				$result = mysql_query($sql);
+				if (!$result){
+					die(mysql_error());
+				}
+				echo "<p>ok quatrinhluong</p>";
 			}
-			//echo "<p>ok quatrinhluong</p>";
 			$y++;
 		}
-	}
-	
-	
+	}	
 	//
 	// tbl_nhao
 	//
@@ -682,14 +740,16 @@ function xuLyFile2($fileName){
 			$dientich 	= $row['D'.$y];
 	
 			// insert to database
-			$sql = "INSERT INTO `QLCBDoan`.`sohuunha` (`id`, `lylich_id`, `loainha`, `dientich`) 
-			VALUES (NULL, '$lylich_id', '$loainha', '$dientich')";
-	
-			$result = mysql_query($sql);
-			if (!$result){
-				die(mysql_error());
+			if(!empty($loainha)){
+				$sql = "INSERT INTO `qlnscongnghegtvt`.`sohuunha` (`id`, `lylich_id`, `loainha`, `dientich`) 
+				VALUES (NULL, '$lylich_id', '$loainha', '$dientich')";
+		
+				$result = mysql_query($sql);
+				if (!$result){
+					die(mysql_error());
+				}
+				echo "<p>ok sohuunha</p>";
 			}
-			//echo "<p>ok sohuunha</p>";
 			$y++;
 		}
 	}
@@ -711,19 +771,59 @@ function xuLyFile2($fileName){
 			$dientich 	= $row['D'.$y];
 	
 			// insert to database
-			$sql = "INSERT INTO `QLCBDoan`.`sohuudat` (`id`, `lylich_id`, `loaidat`, `dientich`) 
-			VALUES (NULL, '$lylich_id', '$loaidat', '$dientich')";
-	
-			$result = mysql_query($sql);
-			if (!$result){
-				die(mysql_error());
+			if(!empty($loaidat)){
+				$sql = "INSERT INTO `qlnscongnghegtvt`.`sohuudat` (`id`, `lylich_id`, `loaidat`, `dientich`) 
+				VALUES (NULL, '$lylich_id', '$loaidat', '$dientich')";
+		
+				$result = mysql_query($sql);
+				if (!$result){
+					die(mysql_error());
+				}
+				echo "<p>ok sohuudat</p>";
 			}
-			//echo "<p>ok sohuudat</p>";
+			$y++;
+		}
+	}
+
+	//
+	// tbl_cudihoc
+	//
+	//*** format ngay/thang/nam trong excel co van de???
+	list($x, $y) = $myget->getAddressCell("tbl_cudihoc"); $y++;
+	$array = $myget->getCellTable("$x$y", array(
+		array("cellName" => "B", "description" => "Thông tin hợp đồng: Đề án", "flag"=> 0),
+		array("cellName" => "C", "description" => "Thông tin hợp đồng: Loại HĐ lao động", "flag"=> 0),
+		array("cellName" => "D", "description" => "Thông tin hợp đồng: Ngày HĐ lao động", "flag"=> 0),
+		array("cellName" => "G", "description" => "Thông tin hợp đồng: Loại HĐ làm việc", "flag"=> 0),
+		array("cellName" => "I", "description" => "Thông tin hợp đồng: Ngày HĐ làm việc", "flag"=> 0),), false);
+	if ($array != false && $success){
+		//var_dump($array);
+		foreach ($array as $row){
+			$dean 		= $row['B'.$y];
+			$loaihdlaodong 	= $row['C'.$y];
+			$ngayhdlaodong 	= $row['G'.$y];
+			$loaihdlamviec 	= $row['D'.$y];
+			$ngayhdlamviec 	= $row['I'.$y];			
+			
+			convertDate($ngayhdlaodong);		
+			convertDate($ngayhdlamviec);	
+	
+			// insert to database
+			if(!empty($loaihdlaodong)){
+				$sql = "INSERT INTO `qlnscongnghegtvt`.`hopdong` (`id`, `lylich_id`, `loaihdlaodong`, `ngayhdlaodong`, `loaihdlamviec`, `ngayhdlamviec`) 
+				VALUES (NULL, '$lylich_id', '$loaihdlaodong', '$ngayhdlaodong', '$loaihdlamviec', '$ngayhdlamviec')";
+		
+				$result = mysql_query($sql);
+				if (!$result){
+					die(mysql_error());
+				}
+				//echo "<p>ok thidua</p>";
+			}
 			$y++;
 		}
 	}
 	
-	if (!$myget->isValidExcelFile()){
+	if (!$myget->isValidExcelFile()){		
 		return array(3, array());
 	}
 	//var_dump($myget->getReturnCode(), $myget->getErrorTexts());
@@ -757,6 +857,7 @@ function xuLyFile2($fileName){
 	}
 }
 
+/*
 function xuLyFile(){
 	$file = isset($_FILES['file']) ? $_FILES['file'] : null;
 	//var_dump($_FILES, $file);
@@ -860,4 +961,4 @@ function xuLyFile(){
 	}
 	//echo "<p><a href='../../PL/NhapFileCB/PLNhapFileCB.php'>Okay</a></p>";
 }
-
+*/

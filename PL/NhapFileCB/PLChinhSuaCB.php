@@ -281,11 +281,11 @@
                 <div class="art-content-layout-row">
                   <div class="art-layout-cell layout-item-3" style="width: 50%" >
                     <p>
-                    	Đoàn TNCS Hồ Chí Minh
+                    	Cán bộ trường ĐHCNGTVT
                     </p>
                   </div>
                   <div class="art-layout-cell layout-item-3" style="width: 50%" >
-                    <p style="float: right;">Hệ thống được phát triển bởi nhóm SV ĐH Công Nghệ</p>
+                    <p style="float: right;">Hệ thống được phát triển bởi Khoa công nghệ, ĐH Công nghệ GTVT</p>
                   </div>
                 </div>
               </div>

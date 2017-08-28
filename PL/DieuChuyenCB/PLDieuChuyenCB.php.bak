@@ -1,0 +1,310 @@
+<?php
+ob_start();
+session_start();
+include("../../config/config.php");
+include_once("header.php");
+if( !isset($_SESSION["login_user"]) ) {
+	header('Location: index.php');
+	exit();
+}
+require("../../config/config.php");
+?>
+<?php
+	if(isset($_POST)&&!empty($_POST))
+		{
+			$cs = $_POST['cosodaotao'];
+			$tc = $_POST['tochuctructhuoc'];
+			$kpb = $_POST['khoaphongban'];
+			$tbm = $_POST['bomonto'];
+			$ngaydc = $_POST['ngaydc'];
+			$ld = $_POST['lydo'];
+			$mt = $_POST['mota'];
+			$cosodaotaomoi = isset($_POST['cosodaotaomoi'])?("`cosodaotao_id` = '".$_POST['cosodaotaomoi']."'"):"";
+			$tochuctructhuocmoi = isset($_POST['tochuctructhuocmoi'])?("`tochuctructhuoc_id` = '".$_POST['tochuctructhuocmoi']."'"):"";
+			$khoaphongbanmoi = isset($_POST['khoaphongbanmoi'])?("`khoaphongban_id` = '".$_POST['khoaphongbanmoi']."'"):"";
+			$bomontomoi = isset($_POST['bomontomoi'])?("`bomonto_id` = '".$_POST['bomontomoi']."'"):"";
+			$idc = $_POST['canbocu'];
+			$mysql = "UPDATE `lylich` SET $cosodaotaomoi, $tochuctructhuocmoi, $khoaphongbanmoi, $bomontomoi WHERE id = ".$idc;
+			$kq = mysql_query($mysql);
+			$mysql1 = "INSERT INTO `luanchuyen` (`id`, `canbo_id`, `cosodaotao_id`, `tochuctructhuoc_id`, `khoaphongban_id`, `bomonto_id`, `ngaydieuchuyen`, `lydodieuchuyen`, `mota`, `flag`) VALUES (NULL, '$idc', '$cs', '$tc', '$kpb', '$tbm', '$ngaydc', '$ld', '$mt', NULL)";
+			$kq = mysql_query($mysql1);
+			
+		}
+?><body>
+<style type="text/css">
+	fieldset{
+		border: none;
+		border-left: 2px red solid;
+		margin-bottom: 2px;
+	}
+	textarea{
+		border: 2px #BDBDBD solid;	
+	}
+</style>
+  <header class="art-header">
+    <div class="art-shapes">
+    </div>
+    <nav class="art-nav">
+      <ul class="art-hmenu">
+        <li><a href="../NhapFileCB/Danh_sach_tai_khoan.php" >Danh sách tài khoản</a>
+        </li>
+      <li>
+            <a href="../NhapFileCB/PLNhapFileCB.php" class="active">Nhập lý lịch</a>
+          <ul >
+            <li><a href="../NhapFileCB/PLNhapFileCB.php" >Nhập lí lịch</a></li>
+          </ul>
+      </li>      
+        <li>
+        <a href="../NhapFileCB/PLDanhSachCB.php" >Danh sách cán bộ</a>
+          <ul>            
+            <!--li><a href="" >Tìm kiếm</a></li-->
+            <li><a href="../NhapFileCB/PLDanhSachCB.php" >Danh sách cán bộ</a></li>
+            <li><a href="../NhapFileCB/PLTienIch.php" >Tiện ích</a></li>            
+          </ul>
+      </li>
+        <li><a href="../NhapFileCB/PLDanhSachTK.php">Thống kê</a>
+        
+          <!--ul>            
+            <li><a href="" >Thống kê M1</a></li>                      
+          </ul-->
+        </li>
+    
+        <li><a href="">Báo cáo</a>
+          <!--ul>
+            <li><a href="">Báo cáo B1</a></li>                      
+          </ul-->
+        </li>
+         <li><a href="../NhapFileCB/temp.php">Nhập màn hình</a>
+          <!--ul>
+            <li><a href="" >Báo cáo B1</a></li>                    
+          </ul-->
+        </li>   
+      </ul>
+
+      <ul class="art-hmenu-user">
+        <li>
+          <a href="#" >Chào, <?=$_SESSION["username_user"]?></a>
+          <ul class="active">
+            <li><a href="#">Hộp thư</a></li>
+            <li><a href="../../QLTaikhoan/PLchangepass.php">Đổi mật khẩu</a></li>
+            <li><a href="../../BLL/QLTaikhoan/BLLlogout.php">Thoát</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <?php
+      // include("../../header1.php");
+      ?>
+  <div class="art-layout-wrapper">
+    <div class="art-content-layout">
+      <div class="art-content-layout-row">
+        <div class="art-layout-cell art-content">
+          <article class="art-post art-article">
+            <div class="art-postcontent art-postcontent-0 clearfix">
+              <div class="art-content-layout">
+                <div class="art-content-layout-row">
+                  <div class="art-layout-cell layout-item-1" style="width: 50%" >
+                    <div style:="width:">
+                           <div class="">
+							<p><h3 style="font-family: arial;">Điều chuyển cán bộ</h3></p>
+							<?php
+							if(isset($kq)) echo "<span style='color:red'>Điều chuyển cán bộ thành công</span>";
+							?>
+								<!-- SearhBox -->
+								<div style="width: 100%" >
+
+								<form method="POST" name="fmDC"> <!-- Form điều chuyển -->
+								<div style="width: 100%; display: table;">
+									<div style="width: 100%; display: table;">
+										<div style="width: 70%; display: table-cell;"><p style="font-weight: bold;">Đơn vị cũ</p>
+											<div id="s_box">
+											<?php 
+												function createcb($table, $col1, $col2, $cmt, $selected=0, $name="", $w=24){ // hàm tạo select
+													$sql1 = "select $col1,$col2 from $table";
+													$re_s = mysql_query($sql1);
+													$ar = array();
+													while($row=mysql_fetch_array($re_s)){
+														$ar[$row[$col1]] = $row[$col2];
+													}
+													echo '<select style="width:'.$w.'%;margin-left:5px;" name="'.$table.$name.'" id='.$table.$name.' >
+													    <option value="0">'.$cmt.'</option>';
+													foreach ($ar as $k => $v) {
+														echo '<option '.($selected==$k?"selected":"").' value="'.$k.'">'.$v.'</option>';
+													}
+													echo '</select>';
+												}
+												createcb("cosodaotao","cosodaotaoid","name","MỜI CHỌN CƠ SỞ ĐÀO TẠO");
+												createcb("tochuctructhuoc","tochuctructhuocid","name","MỜI CHỌN TỔ CHỨC TRỰC THUỘC");
+												createcb("khoaphongban","khoaphongbanid","name","MỜI CHỌN KHOA PHÒNG BAN");
+												createcb("bomonto","bomontoid","name","MỜI CHỌN TỔ BỘ MÔN");
+								            ?>
+								            </div>
+								        </div>
+										<div style="display: table-cell;"><p style="font-weight: bold;">Đơn vị mới</p></div>
+									</div>
+										<script type="text/javascript">
+											$(document).ready(function(){ // ajax
+												$("#s_box > select").change(function(){
+													var fin;
+													fin=$("#cosodaotao").val();
+													fin=fin+'_'+$("#tochuctructhuoc").val();
+													fin=fin+'_'+$("#khoaphongban").val();
+													fin=fin+'_'+$("#bomonto").val();
+													$.ajax({
+														method:'post',
+														dataType:"json",
+														data:{thu:fin},
+														url:'../ajax/fdc.php',
+														success:function(data){
+															if(data){
+																$("#findcb").html(data.da);
+																if(data.tc){$("#tochuctructhuoc").html(data.tc);}
+																if(data.kh){$("#khoaphongban").html(data.kh);}
+																if(data.bm){$("#bomonto").html(data.bm);}
+															}
+														}
+													});
+													console.log(fin);
+												});
+											});
+										</script>
+										<div style="width: 100%;">
+											<div id="findcb" style="width: 70%; float: left; max-height: 500px; overflow-y: scroll; overflow-x: hidden;">
+												Chọn cán bộ
+											</div>
+											<div id="dvm" style="float: left;width: 28%">
+												<?php
+													createcb("cosodaotao","cosodaotaoid","name","MỜI CHỌN CƠ SỞ ĐÀO TẠO", 0, "moi", 100);
+													createcb("tochuctructhuoc","tochuctructhuocid","name","MỜI CHỌN TỔ CHỨC TRỰC THUỘC", 0, "moi", 100);
+													createcb("khoaphongban","khoaphongbanid","name","MỜI CHỌN KHOA PHÒNG BAN", 0, "moi", 100);
+													createcb("bomonto","bomontoid","name","MỜI CHỌN TỔ BỘ MÔN", 0, "moi", 100);
+												?>
+												<script type="text/javascript">
+													$(document).ready(function(){ // ajax
+														$("#dvm > select").change(function(){
+															var finz;
+															finz=$("#cosodaotaomoi").val();
+															finz=finz+'_'+$("#tochuctructhuocmoi").val();
+															finz=finz+'_'+$("#khoaphongbanmoi").val();
+															finz=finz+'_'+$("#bomontomoi").val();
+															$.ajax({
+																method:'post',
+																dataType:"json",
+																data:{thu:finz},
+																url:'../ajax/fdcm.php',
+																success:function(data){
+																	if(data){
+																		$("#dvm").html(data.da);
+																		if(data.tc){$("#tochuctructhuocmoi").html(data.tc);}
+																		if(data.kh){$("#khoaphongbanmoi").html(data.kh);}
+																		if(data.bm){$("#bomontomoi").html(data.bm);}
+																	}
+																}
+															});
+															console.log(finz);
+														});
+													});
+												</script>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+								<div style="width: 100%;">
+								<fieldset>
+									<label>Ngày điều chuyển:</label>
+									<input name="ngaydc" type="date" value="<?php echo date('Y-m-d'); ?>">
+								</fieldset>
+								<fieldset>
+									<label>Lý do:</label>
+									<textarea name="lydo" cols="100"  maxlength="500"></textarea>
+								</fieldset>
+								<fieldset>
+									<label>Mô tả</label>
+									<textarea name="mota" cols="101" maxlength="500"></textarea>
+								</fieldset>
+								<center><button id="btnDC">Điều Chuyển</button><button type="reset">Reset</button></center></div>
+								</form> <!-- End form điều chuyển -->
+								<script>
+									$('#btnDC').click(function() {
+										if($('input[name=canbocu]:checked').val()) { }
+										else {
+											alert("Chưa chọn cán bộ cần điều chuyển");
+											return false;
+										}
+										if($('select#cosodaotaomoi').val()==0||$('select#tochuctructhuocmoi').val()==0) {
+											alert("Chưa chọn đủ vị trí đơn vị mới!");
+											return false;
+										}
+									});
+								</script>
+						     	
+						     </div>
+						     </div>
+						     <div style="float: none;clear: both;"></div>
+							<div class="hoz-line-space"></div>
+							
+                        
+                      </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="art-content-layout layout-item-2">
+                <div class="art-content-layout-row">
+                  <div class="art-layout-cell layout-item-3" style="width: 50%" >
+                    <p>
+                    	Cán bộ trường ĐHCNGTVT
+                    </p>
+                  </div>
+                  <div class="art-layout-cell layout-item-3" style="width: 50%" >
+                    <p style="float: right;">Hệ thống được phát triển bởi Khoa công nghệ, ĐH Công nghệ GTVT</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+  <?php
+    //include_once("footer.php");
+    ?>
+  </div>
+  </div>
+</body>
+
+
+<link href="../../css/mystyle1.css" rel="stylesheet" type="text/css" />
+<SCRIPT TYPE="text/javascript" SRC="../../js/jquery-1.11.1.min.js"></SCRIPT>
+<SCRIPT TYPE="text/javascript" SRC="../../js/filterlist.js"></SCRIPT>
+<SCRIPT TYPE="text/javascript">
+$(document).ready(function(){
+	$("#canbo_info").html("<strong><i>Chưa chọn</i></strong>");
+});
+function loadListCB(phongban){
+	$("#listCB").load("ajax.php", {"a":"loadListCB", "phongban":phongban});
+}
+function getCB(id){
+	$("#canbo_info").load("ajax.php", {"a":"getCB", "id":id});
+}
+function formValidate(){
+	if ($("#phongbancu").val() == $("#phongban").val()){
+		alert("Phòng ban mới không được trùng phòng ban cũ");
+		return false;
+	}
+	if ($("#listCB").val() == -1){
+		alert("Hãy chọn cán bộ để điều chuyển");
+		return false;
+	}
+	if ($("#phongban").val() == -1){
+		alert("Hãy chọn phòng ban để điều chuyển đến");
+		return false;
+	}
+	return true || confirm('Xác nhận chuyển cán bộ?');
+}
+var myfilter = new filterlist(document.frmDieuChuyen.slDonvi);
+</SCRIPT>
+

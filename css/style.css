@@ -386,7 +386,7 @@ li p, .art-postcontent li p, .art-blockcontent li p
    right: 0;
    bottom: 0;
    left: 0;
-   overflow: hidden;
+   
    z-index: 0;
 }
 
@@ -425,15 +425,15 @@ li p, .art-postcontent li p, .art-blockcontent li p
    margin:0 auto;
    position:relative;
    cursor:auto;
-   width: 900px;
+   width: 100%;
    z-index: auto !important;
 }
 
 .art-header
 {
    margin:0 auto;
-   height: 200px;
-   background-image: url('../images/header.jpg');
+   height: 220px;
+   background-image: url('../images/banner2.jpg');
    background-position: 0;
    background-repeat: no-repeat;
    position: relative;
@@ -441,9 +441,10 @@ li p, .art-postcontent li p, .art-blockcontent li p
    z-index: auto !important;
 }
 
+
 .responsive .art-header 
 {
-   background-image: url('../images/header.jpg');
+   background-image: url('../images/banner2.jpg');
    background-position: center center;
 }
 
@@ -621,13 +622,13 @@ ul.art-hmenu>li>a, ul.art-hmenu-user>li>a
 .art-hmenu-user a:visited, 
 .art-hmenu-user a.active, 
 .art-hmenu-user a:hover{
-	font-size: 14px;
-	color: #FFFEEE;
-	font-family: 'Century Gothic', Arial, 'Arial Unicode MS', Helvetica, Sans-Serif;
-	font-weight: bold;
-	font-style: normal;
-	text-decoration: none;
-	text-align: left;
+   font-size: 14px;
+   color: #FFFEEE;
+   font-family: 'Century Gothic', Arial, 'Arial Unicode MS', Helvetica, Sans-Serif;
+   font-weight: bold;
+   font-style: normal;
+   text-decoration: none;
+   text-align: left;
 }
 
 ul.art-hmenu>li>a.active, ul.art-hmenu-user>li>a.active
@@ -1254,7 +1255,7 @@ form.art-search input[type="submit"], input.art-search-button, a.art-search-butt
    border: 0;
    top: 1px;
    bottom: 1px;
-   right: 	1px;
+   right:   1px;
    padding:0 6px;
    color: #DDE2E4 !important;
    font-size: 13px;
@@ -1709,8 +1710,8 @@ a img
 .art-article th, .art-article td
 {
    padding: 2px;
-   border: solid 1px #96A5AB;
-   vertical-align: top;
+   border: solid 0px #96A5AB;
+   vertical-align: middle;
    text-align: left;
 }
 
@@ -1942,7 +1943,7 @@ pre
 
 .art-postcontent ul>li:before,  .art-post ul>li:before,  .art-textblock ul>li:before
 {
-   margin-left: -11px;
+   /*margin-left: -11px;*/
 }
 
 .art-postcontent ol, .art-post ol, .art-textblock ol, .art-postcontent ul, .art-post ul, .art-textblock ul
@@ -2423,3 +2424,26 @@ blockquote p,
 /* Begin Additional CSS Styles */
 .art-blockheader .t, .art-vmenublockheader .t {white-space: nowrap;}
 /* End Additional CSS Styles */
+
+.dataTable th {
+   text-align: left;
+}
+
+input[type="text"], input[type="password"], input[type="email"], input[type="url"], textarea {
+   width: 100%;
+   border: 1px solid #ccc;
+   padding: 6px 12px;
+   font-size: 14px;
+}
+
+input[type="search"] {
+   border: 1px solid #ccc;
+   height: 34px;
+   border-radius: 4px;
+}
+ 
+.dataTables_length select {
+   border: 1px solid #ccc;
+   height: 34px;
+   border-radius: 4px;
+}

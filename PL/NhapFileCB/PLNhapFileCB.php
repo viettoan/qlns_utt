@@ -44,29 +44,55 @@
     <div class="art-shapes">
     </div>
     <nav class="art-nav">
-      <ul class="art-hmenu">
-	    <li>
-		  <a href="../NhapFileCB/PLNhapFileCB.php" class="active">Nhập lý lịch</a>
+    <ul class="art-hmenu">
+     <?php if($_SESSION['role']!=0){ ?>
+
+               <li>
+            <a href="../NhapFileCB/PLNhapFileCB.php" class="active">Nhập lý lịch</a>
           <ul class="active">
-            <li><a href="../CapNhatFileCB/PLCapNhatCB.php" >Cập nhật lý lịch</a></li>
+             <li><a href="temp.php">Nhập giao diện</a>
+                <li><a href="../NhapFileCB/PLNhapFileCB.php" >Nhập file exel</a></li>
           </ul>
-        </li>
-        <li><a href="../NhapFileCB/PLDanhSachCB.php" class="">Danh sách cán bộ</a></li>
-		<li><a href="../DieuChuyenCB/PLDieuChuyenCB.php" class="">Điều chuyển</a></li>
-        <li><a href="../NhapFileCB/PLTienIch.php" class="">Tiện ích</a></li>
-        </ul>
-      <ul class="art-hmenu-user">
-        <li>
-          <a href="#" >Chào, <?=$_SESSION["username_user"]?></a>
-          <ul class="active">
-            <li><a href="#">Hộp thư</a></li>
-            <li><a href="../QLTaikhoan/PLchangepass.php">Đổi mật khẩu</a></li>
-            <li><a href="../../BLL/QLTaikhoan/BLLlogout.php">Thoát</a></li>
+      </li>
+      <li>
+        <a href="../NhapFileCB/PLDanhSachCB.php">Danh sách cán bộ</a>
+          <ul>            
+            <!--li><a href="" >Tìm kiếm</a></li-->
+            <!--li><a href="../DieuChuyenCB/PLDieuChuyenCB.php" >Điều chuyển</a></li-->
+            <!--li><a href="../NhapFileCB/PLTienIch.php" >Tiện ích</a></li-->            
           </ul>
+      </li>
+        <li><a href="../NhapFileCB/PLDanhSachTK.php">Thống kê</a>
+          <!--ul>            
+            <li><a href="" >Thống kê M1</a></li>                
+          </ul-->
         </li>
+        <li><a href="">Báo cáo</a>
+          <!--ul>
+            <li><a href="" >Báo cáo B1</a></li>                    
+          </ul-->
+        </li>        
+          <?php } else{ ?>
+                <li>
+            <a href="../NhapFileCB/PLNhapFileCB.php" class="active">Nhập lý lịch</a>
+          <ul >
+                     <li><a href="temp.php">Nhập giao diện</a>
+                <li><a href="../NhapFileCB/PLNhapFileCB.php" >Nhập file exel</a></li>
+          </ul>
+      </li>
+          <?php } ?>
+          <!--ul>
+            <li><a href="" >Báo cáo B1</a></li>                    
+          </ul-->
+        </li>          
       </ul>
+    <?php include("user.php");?>
     </nav>
-  </header>
+</header>
+      <?php
+      //include("../../header1.php");
+      ?>
+          
   <div class="art-layout-wrapper">
     <div class="art-content-layout">
       <div class="art-content-layout-row">
@@ -100,13 +126,15 @@
                                 }
                                 ?>
                                 <p>Kích thuớc tối đa 1Mb, chấp nhận đuôi xls, xlsx</p>
+                                <p style='color: red; font-size:16px'><b>Chức năng tải lý lịch bằng excel tạm thời bị khóa. Chuyển sang chức năng nhập lý lịch bằng giao diện (NHẬP LÝ LỊCH-->NHẬP GIAO DIỆN)</b></p>
                                 <!-- Multiple file upload html form-->
-                                <form action="../../BLL/NhapFileCB/UploadFiles.php" method="post" enctype="multipart/form-data" name="uploadForm">
-								  <div id="uploadBtn" onclick="getFile()">Chọn hồ sơ để tải lên</div>
-								  <!-- this is your file input tag, so i hide it!-->
-								  <!-- i used the onchange event to fire the form submission-->
+                                <!-- this is your file input tag, so i hide it!-->
+                  <!-- i used the onchange event to fire the form submission-->
+                                <!--form action="../../BLL/NhapFileCB/UploadFiles.php" method="post" enctype="multipart/form-data" name="uploadForm">
+								  <div id="uploadBtn" onClick="getFile()">Chọn hồ sơ để tải lên</div>
+								  
 								  <div style='height: 0px;width: 0px; overflow:hidden;'>
-								  <input id="upfile" type="file" name="files[]" value="upload" multiple="multiple" accept=".xls, .xlsx, .xlsm" onchange="sub(this)"/></div>
+								  <input id="upfile" type="file" name="files[]" value="upload" multiple accept=".xls, .xlsx, .xlsm" onChange="sub(this)"/></div-->
 								  <!-- here you can have file submit button or you can write a simple script to upload the file automatically-->
 								  <!-- <input type="submit" value='submit' > -->
                                 </form>
@@ -160,9 +188,10 @@
                                 <?php
                                 $_SESSION["file_list_import"] = array();
                                 $dir    = '../../upload/';
+                                //$abc ="456";
                                 $files = scandir($dir,1);
                                 $check_empty = true;
-                                
+                                //var_dump("123:".$abc);
                                 for ($i=0; $i < count($files); $i++)
                                   //var_dump($files[$i]);
                                   if ($files[$i][0] != "." && $files[$i][0] != "o" && $files[$i][0] != "d" && $files[$i] != "ReadMe.txt"){
@@ -188,7 +217,7 @@
                                       try {
                                       	$cmnd = $objPHPExcel->getActiveSheet()->getCell('cmnd')->getFormattedValue();
                                       	$hoten = $objPHPExcel->getActiveSheet()->getCell('hoten')->getFormattedValue();
-                                      	$soyeulylich = $objPHPExcel->getActiveSheet()->getCell('J2')->getFormattedValue();
+                                      	$soyeulylich = $objPHPExcel->getActiveSheet()->getCell('F3')->getFormattedValue();
                                       } catch (Exception $ex){
                                       	$cmnd = "";
                                       	$hoten = "";
@@ -196,7 +225,8 @@
                                       }
                                       
                                       $file_chuan = true;
-                                      if ((int)($cmnd) == 0 || $soyeulylich != "SƠ YẾU LÝ LỊCH") $file_chuan = false;
+                                      //if ((int)($cmnd) == 0 || $soyeulylich != "SƠ YẾU LÝ LỊCH") $file_chuan = false;
+                                      if ((int)($cmnd) == 0 || ($soyeulylich != "SƠ YẾU LÝ LỊCH CÁN BỘ VIÊN CHỨC" and $soyeulylich != "SƠ YẾU LÝ LỊCH NHÂN VIÊN")) $file_chuan = false;
                                     ?>
 
                                     <td>
@@ -218,12 +248,14 @@
                                       $result = mysql_query($sql);
                                       $count = mysql_num_rows($result);
                                       $row = mysql_fetch_array($result);
+                                      
                                       if ($file_chuan == false){
                                         $lylich_tontai = 0;
                                         echo "<p style='color: gray; text-decoration: line-through;'>Hồ sơ không đúng chuẩn</p>";
                                       } elseif ($count > 0){
                                         $lylich_tontai = 1;
                                         $lylich_id = $row['id'];
+                                        $taikhoan_id = $row['id'];
                                         echo "<p style='color: red'>Đã tồn tại</p>";
                                       } else {
                                         $lylich_tontai = 0;
@@ -278,11 +310,11 @@
                 <div class="art-content-layout-row">
                   <div class="art-layout-cell layout-item-3" style="width: 50%" >
                     <p>
-                    	Đoàn TNCS Hồ Chí Minh
+                    	Cán bộ trường ĐHCNGTVT
                     </p>
                   </div>
                   <div class="art-layout-cell layout-item-3" style="width: 50%" >
-                    <p style="float: right;">Hệ thống được phát triển bởi nhóm SV ĐH Công Nghệ</p>
+                    <p style="float: right;">Hệ thống được phát triển bởi Khoa công nghệ, ĐH Công nghệ GTVT</p>
                   </div>
                 </div>
               </div>

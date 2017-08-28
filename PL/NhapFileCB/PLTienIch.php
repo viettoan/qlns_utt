@@ -19,16 +19,33 @@
     </div>
     <nav class="art-nav">
       <ul class="art-hmenu">
-	    <li>
-		  <a href="../NhapFileCB/PLNhapFileCB.php" class="">Nhập lý lịch</a>
-          <ul class="active">
-            <li><a href="../CapNhatFileCB/PLCapNhatCB.php" >Cập nhật lý lịch</a></li>
-          </ul>
+          <li><a href="../NhapFileCB/Danh_sach_tai_khoan.php" >Danh sách tài khoản</a>
         </li>
-        <li><a href="../NhapFileCB/PLDanhSachCB.php" class="">Danh sách cán bộ</a></li>
-		<li><a href="../DieuChuyenCB/PLDieuChuyenCB.php" class="">Điều chuyển</a></li>
-        <li><a href="../NhapFileCB/PLTienIch.php" class="active">Tiện ích</a></li>
-        </ul>
+        <li><a href="temp.php">Nhập lý lịch</a></li>        
+        <li>
+        <a href="../NhapFileCB/PLDanhSachCB.php" class="active">Danh sách cán bộ</a>
+          <ul>            
+            <!--li><a href="" >Tìm kiếm</a></li-->
+            <li><a href="../DieuChuyenCB/PLDieuChuyenCB.php" >Điều chuyển</a></li>
+            <li><a href="PLDanhSachCB.php" >Danh sách cán bộ</a></li>            
+          </ul>
+      </li>
+        <li><a href="../NhapFileCB/PLDanhSachTK.php">Thống kê</a>
+        
+          <!--ul>            
+            <li><a href="" >Thống kê M1</a></li>                      
+          </ul-->
+        </li>
+    
+        <li><a href="">Báo cáo</a>
+          <!--ul>
+            <li><a href="">Báo cáo B1</a></li>                      
+          </ul-->
+        </li>
+ 
+    
+      </ul>
+
       <ul class="art-hmenu-user">
         <li>
           <a href="#" >Chào, <?=$_SESSION["username_user"]?></a>
@@ -41,6 +58,9 @@
       </ul>
     </nav>
   </header>
+  <?php
+      //include("../../header1.php");
+      ?>
   <div class="art-layout-wrapper">
     <div class="art-content-layout">
       <div class="art-content-layout-row">
@@ -52,13 +72,13 @@
                   <div class="art-layout-cell layout-item-1" style="width: 50%" >
                   <p>
                     <b>Tải tài liệu:</b><br>
-                    <ul>
-                      <li>Mẫu M1: <a href="../../BLL/BieuMau/m1.php">Download</a> | <a href="../../BLL/BieuMau/m1_online.php" target="_blank">Xem online</a></li>
-                      <li>Mẫu M2: <a href="../../BLL/BieuMau/m2.php">Download</a> | <a href="../../BLL/BieuMau/m2_online.php" target="_blank">Xem online</a></li>
+                    <!--ul>
+                      <li>Mẫu M1:THỐNG KÊ THỰC TRẠNG ĐỘI NGŨ VIÊN CHỨC TRONG ĐƠN VỊ SỰ NGHIỆP CÔNG LẬP <a href="../../BLL/BieuMau/m1.php">Download</a> | <a href="../../BLL/BieuMau/m1_online.php" target="_blank">Xem online</a></li>
+                      <li>Mẫu M2:BÁO CÁO SỐ LƯỢNG, CHẤT LƯỢNG, CƠ CẤU ĐỘI NGŨ VIÊN CHỨC TẠI ĐƠN VỊ SỰ NGHIỆP CÔNG LẬP <a href="../../BLL/BieuMau/m2.php">Download</a> | <a href="../../BLL/BieuMau/m2_online.php" target="_blank">Xem online</a></li>
                       <li>Mẫu M3: <a href="../../BLL/BieuMau/m3.php">Download</a> | <a href="../../BLL/BieuMau/m3_online.php" target="_blank">Xem online</a></li>
                       <li>Mẫu M4: <a href="../../BLL/BieuMau/m4.php">Download</a> | <a href="../../BLL/BieuMau/m4_online.php" target="_blank">Xem online</a></li>
-					  <li>Mẫu M5: <a href="../../BLL/BieuMau/m5.php">Download</a> | <a href="../../BLL/BieuMau/m5_online.php" target="_blank">Xem online</a></li>
-                    </ul>
+					            <li>Mẫu M5: <a href="../../BLL/BieuMau/m5.php">Download</a> | <a href="../../BLL/BieuMau/m5_online.php" target="_blank">Xem online</a></li>
+                    </ul-->
                   </p>
                     <fieldset style="border: 1px solid lightgray;">
                     <legend><span style="font-weight: bold; color: #0080FF">Cán bộ được bổ nhiệm lại</span></legend>
@@ -287,7 +307,7 @@
                                     </p>
                                   </td>
                                   <td>
-                                    <!-- <a href="../../BLL/TienIch/nang_luong/BLLThongBao.php?lylich_id=<?php echo $row["id"];?>">
+                                    <!-- <a href="../../BLL/TienIch/nang_luong/BLLThongBao.php?lylich_id=<?php// echo $row["id"];?>">
                                       <img src="../../images/icon_word.gif" style="width: 20px; height: 20px; cursor: pointer;" alt="Tải file thông báo">
                                     </a>: Thông báo
                                     <br> -->
@@ -310,6 +330,61 @@
                         </table>
                       </div>
                       </fieldset>
+
+                      <?php 
+                      // DANH SÁCH NGHỈ HƯU
+                    ?>
+                    <?php 
+                      $songayconlai = isset($_POST['songayconlai']) ? $_POST['songayconlai'] : "30 DAY";
+                      $sql = "SELECT *, datediff(ngaynghihuu, date(now())) as songayconlai
+                              FROM (
+                                SELECT id, hoten, ngaysinh, sohieucanbo, chucvu,
+                                  (CASE 
+                                    WHEN gioitinh = 1 THEN DATE_ADD(ngaysinh, INTERVAL 60 YEAR) 
+                                    ELSE DATE_ADD(ngaysinh, INTERVAL 55 YEAR) 
+                                  END) as 'ngaynghihuu'
+                                FROM lylich 
+                                WHERE id not in (SELECT canbo_id FROM luanchuyen WHERE hinhthuc = 'Nghỉ hưu') 
+                                ORDER BY ngaynghihuu
+                              ) H
+                              WHERE H.ngaynghihuu < DATE_ADD(date(now()), INTERVAL " . $songayconlai . ")";
+                      $result = mysql_query($sql);
+                    ?>
+                    <fieldset>
+                      <legend>Các cán bộ sắp nghỉ hưu</legend>
+                      <p>Độ tuổi nghỉ hưu của các cán bộ trên hệ thống là 60 tuổi đối với Nam và 55 tuổi đối với Nữ. Dưới đây là danh sách các cán bộ sắp nghỉ hưu tính tới ngày <strong><?php echo date('d-m-Y', strtotime($songayconlai)); ?></strong>.</p>
+                      <form action="" method="POST">
+                        <label>Số ngày lựa chọn là khác: </label>
+                        <select name="songayconlai" id="" onchange="submit()">
+                          <option value="30 DAY" <?php if($songayconlai == "30 DAY") echo "selected" ?>>30 ngày</option>
+                          <option value="1 MONTH" <?php if($songayconlai == "1 MONTH") echo "selected" ?>>1 tháng</option>
+                          <option value="3 MONTH" <?php if($songayconlai == "3 MONTH") echo "selected" ?>>3 tháng</option>
+                          <option value="6 MONTH" <?php if($songayconlai == "6 MONTH") echo "selected" ?>>6 tháng</option>
+                          <option value="1 YEAR" <?php if($songayconlai == "1 YEAR") echo "selected" ?>>1 năm</option>
+                        </select>
+                      </form>
+                      <table width=100%>
+                        <thead>
+                          <th><b style="float:left">Họ tên</b></th>
+                          <th><b style="float:left">Ngày sinh</b></th>
+                          <th><b style="float:left">Chức vụ</b></th>
+                          <th><b style="float:left">Ngày nghỉ hưu</b></th>
+                        </thead>
+                        <tbody>
+                        <?php while ($row = mysql_fetch_array($result)) { ?>
+                        <?php //if $row['ngaynghihuu'] > date() continue ?>
+                          <tr>
+                            <td><?php echo $row['hoten'] ?></td>
+                            <td><?php echo date("d-m-Y",strtotime($row["ngaysinh"])) ?></td>
+                            <td><?php echo $row['chucvu'] ?></td>
+                            <td><?php echo date("d-m-Y",strtotime($row["ngaynghihuu"])) ?> (còn <strong><?php echo $row['songayconlai'] ?></strong> ngày nữa)</td>
+                          </tr>
+                        <?php } ?>
+                        </tbody>
+                      </table>
+                    </fieldset>
+
+                    
                   </div>
                 </div>
               </div>
@@ -318,11 +393,11 @@
                 <div class="art-content-layout-row">
                   <div class="art-layout-cell layout-item-3" style="width: 50%" >
                     <p>
-                    	Đoàn TNCS Hồ Chí Minh
+                    	Cán bộ trường ĐHCNGTVT
                     </p>
                   </div>
                   <div class="art-layout-cell layout-item-3" style="width: 50%" >
-                    <p style="float: right;">Hệ thống được phát triển bởi nhóm SV ĐH Công Nghệ</p>
+                    <p style="float: right;">Hệ thống được phát triển bởi Khoa công nghệ, ĐH Công nghệ GTVT</p>
                   </div>
                 </div>
               </div>
