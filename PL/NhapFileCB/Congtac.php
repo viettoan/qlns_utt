@@ -109,7 +109,7 @@ function keypress(str,str1) {
 		  if(str1 != 0){
 				  thoidiembatdau = document.getElementById("thoidiembatdau"+str1).value;
 				  thoidiemketthuc = document.getElementById("thoidiemketthuc"+str1).value;
-				   chucvu = document.getElementById("chucvu"+str1).value;
+				  chucvu = document.getElementById("chucvu"+str1).value;
 			
 		  }
 		  else{
@@ -161,49 +161,42 @@ function keypress(str,str1) {
  // });*/
 }
 
+function keypress100(str,str1) {
+    var thoidiembatdau, thoidiemketthuc, chucvu, image;
+    if(str1 != 0){
+        thoidiembatdau = document.getElementById("thoidiembatdau" + str1).value;
+        image = document.getElementById("image" + str1);
+        thoidiemketthuc = document.getElementById("thoidiemketthuc" + str1).value;
+        chucvu = document.getElementById("chucvu" + str1).value;
+        type = document.getElementById("image" + str1).getAttribute("data-type");
 
+    } else {
+        thoidiembatdau = document.getElementById("thoidiembatdau").value;
+        thoidiemketthuc = document.getElementById("thoidiemketthuc").value;
+        image = document.getElementById("image").value;
+        chucvu = document.getElementById("chucvu").value;
+        type = document.getElementById("image").getAttribute("data-type");
+    }
 
-	function keypress100(str,str1) {
-    
-          
-		  var thoidiembatdau,thoidiemketthuc,chucvu;
-		  if(str1 != 0){
-				  thoidiembatdau = document.getElementById("thoidiembatdau"+str1).value;
-				  thoidiemketthuc = document.getElementById("thoidiemketthuc"+str1).value;
-				   chucvu = document.getElementById("chucvu"+str1).value;
-			
-		  }
-		  else{
-			  	  thoidiembatdau = document.getElementById("thoidiembatdau").value;
-				  thoidiemketthuc = document.getElementById("thoidiemketthuc").value;
-				  chucvu = document.getElementById("chucvu").value;
-			
-		  }
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        document.getElementById("load_bussiness").innerHTML = xmlhttp.responseText;
+    }
+};
 
- 
-	         if (window.XMLHttpRequest) {
-            // code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
-        } else {
-            // code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                document.getElementById("load_bussiness").innerHTML = xmlhttp.responseText;
-            }
-        };
-	
-		//var comment = document.getElementById("txtComment").text;
-	
-        xmlhttp.open("GET","../load_data/load_business.php?action="+str+"&&thoidiembatdau="+thoidiembatdau+"&&thoidiemketthuc="+thoidiemketthuc+"&&chucvu="+chucvu+"&&id="+str1,true);
-        xmlhttp.send();
-     event.preventDefault();
+//var comment = document.getElementById("txtComment").text;
 
-
+    xmlhttp.open("GET","../load_data/load_business.php?action="+str+"&&thoidiembatdau="+thoidiembatdau+"&&thoidiemketthuc="+thoidiemketthuc+"&&chucvu="+chucvu+"&&image="+image+"&&type="+type+"&&id="+str1,true);
+    xmlhttp.send();
+    event.preventDefault();
 }
-
-
 </script>
 <div style="width:70% ;float:left;margin-left:10px;">
         <div id="s_box" style="text-align:center"><h1>CÔNG TÁC - <?php  if(isset($_SESSION['hoten'])) echo $_SESSION['hoten'] ?> </h1></div>                   
@@ -247,7 +240,6 @@ function keypress(str,str1) {
 								 echo'</tr>';
 					  }
 		  	?>
-                  
                                     <tr >
                                         <td style="width:140px" >
                                            <input style="width:140px"  type="month"  name="thoidiembatdau" id="thoidiembatdau" size="25" onKeyPress=""="keypress(1,0)"  />
@@ -258,9 +250,9 @@ function keypress(str,str1) {
                                         <td >
                                                <input type="text" name="chucvu" id="chucvu" size="100" onKeyPress="keypress(1,0)"  />  
                                         </td>
-										<td>
-											<input type="file" name="image" id="image" onKeyPress="keypress(1,0)" />
-										</td>
+                    										<td>
+                    											<input type="file" name="image" id="image" onKeyPress="keypress(1,0)" data-type ="<?php echo $type_image['congtac']; ?>" />
+                    										</td>
                                         <td >
                                                 <button name="btnInsert" id="btnInsert" onClick="keypress100(1,0)" >Thêm</button>
                                         </td>
@@ -270,7 +262,6 @@ function keypress(str,str1) {
                   </div>
                 </div>
               </div>
-              
               <div class="art-content-layout layout-item-2">
                 <div class="art-content-layout-row">
                   <div class="art-layout-cell layout-item-3" style="width: 50%" >
